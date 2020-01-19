@@ -31,17 +31,17 @@ install.packages("blogdown")
 blogdown::install_hugo()
 ```
 
-5. Make sure that `/Users/leej39/Dropbox/GitHub/netlify` does not include files other than `LICENSE`, the RStudio project file (`*.Rproj`), `README` or `README.md`. If you are okay with the default theme, run the following 
+5. Make sure that `/Users/leej39/Dropbox/GitHub/blog2020` does not include files other than `LICENSE`, the RStudio project file (`*.Rproj`), `README` or `README.md`. If you are okay with the default theme, run the following 
 
 ```{r, eval = F}
 blogdown::new_site() # or blogdown::new_site(theme = "user/repo") to choose a different theme
 ```
 
-6. Change the configuration file `/Users/leej39/Dropbox/GitHub/netlify/config.toml` as appropriate.
+6. Change the configuration file `/Users/leej39/Dropbox/GitHub/blog2020/config.toml` as appropriate.
 
-7. If you want to delete example or unnecessary posts that came with the default theme, you can do so by deleting the corresponding `.md` or `.html` files under `/Users/leej39/Dropbox/GitHub/netlify/content`.
+7. If you want to delete example or unnecessary posts that came with the default theme, you can do so by deleting the corresponding `.md` or `.html` files under `/Users/leej39/Dropbox/GitHub/blog2020/content`.
 
-8. Stage changes in `/Users/leej39/Dropbox/GitHub/netlify`, commit, and push. 
+8. Stage changes in `/Users/leej39/Dropbox/GitHub/blog2020`, commit, and push. 
 
 9. Go to https://www.netlify.com/ and link the GitHub repository https://github.com/junglee0713/blog2020 so that Netlify can sync with GitHub and deploy any changes in the repository real time. 
 
