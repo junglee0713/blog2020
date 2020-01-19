@@ -10,6 +10,8 @@
 <meta property="og:title" content="Netlify blog workflow - Jung-Jin Lee&#39;s blog">
 
 
+  <link href='/bday.png' rel='icon' type='image/x-icon'/>
+
 
 
   
@@ -86,8 +88,7 @@ blogdown::install_hugo()</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>Make sure that <code>/Users/leej39/Dropbox/GitHub/netlify</code> does not include files other than <code>LICENSE</code>, the RStudio project file (<code>*.Rproj</code>), <code>README</code> or <code>README.md</code>. If you are okay with the default theme, run the following</li>
 </ol>
-<pre class="r"><code>blogdown::serve_site() # or blogdown::serve_site(theme = &quot;user/repo&quot;) to choose a different theme
-blogdown::hugo_build()</code></pre>
+<pre class="r"><code>blogdown::new_site() # or blogdown::new_site(theme = &quot;user/repo&quot;) to choose a different theme</code></pre>
 <ol start="6" style="list-style-type: decimal">
 <li><p>Change the configuration file <code>/Users/leej39/Dropbox/GitHub/netlify/config.toml</code> as appropriate.</p></li>
 <li><p>If you want to delete example or unnecessary posts that came with the default theme, you can do so by deleting the corresponding <code>.md</code> or <code>.html</code> files under <code>/Users/leej39/Dropbox/GitHub/netlify/content</code>.</p></li>

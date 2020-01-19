@@ -34,8 +34,7 @@ blogdown::install_hugo()
 5. Make sure that `/Users/leej39/Dropbox/GitHub/netlify` does not include files other than `LICENSE`, the RStudio project file (`*.Rproj`), `README` or `README.md`. If you are okay with the default theme, run the following 
 
 ```{r, eval = F}
-blogdown::serve_site() # or blogdown::serve_site(theme = "user/repo") to choose a different theme
-blogdown::hugo_build()
+blogdown::new_site() # or blogdown::new_site(theme = "user/repo") to choose a different theme
 ```
 
 6. Change the configuration file `/Users/leej39/Dropbox/GitHub/netlify/config.toml` as appropriate.
