@@ -19,9 +19,9 @@
       <guid>/2018/11/17/netlify-blog-workflow/</guid>
       <description>R package blogdown과 Netlify를 이용한 블로그 개설/관리 과정을 여기에 기록해 둠
 How to create a blog using blogdown and Netlify
-Create a new repository: https://github.com/junglee0713/netlify
+Create a new repository: https://github.com/junglee0713/blog2020
  Clone the repository, e.g.
-  cd /Users/leej39/Dropbox/GitHub git clone git@github.com:junglee0713/netlify.git  (optional) Create an R project, say /Users/leej39/Dropbox/GitHub/netlify/netlify.Rproj.
+  cd /Users/leej39/Dropbox/GitHub git clone git@github.com:junglee0713/blog2020.git  (optional) Create an R project, say /Users/leej39/Dropbox/GitHub/blog2020/blog2020.Rproj.
  (do only once) Open RStudio and install necessary packages, following instruction in https://bookdown.org/yihui/blogdown/installation.html
   install.packages(&amp;quot;blogdown&amp;quot;) blogdown::install_hugo() Make sure that /Users/leej39/Dropbox/GitHub/blog2020 does not include files other than LICENSE, the RStudio project file (*.</description>
     </item>

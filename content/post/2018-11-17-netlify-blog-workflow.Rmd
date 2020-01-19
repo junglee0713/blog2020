@@ -13,16 +13,16 @@ R package blogdown과 Netlify를 이용한 블로그 개설/관리 과정을 여
 
 How to create a blog using blogdown and Netlify
 
-1. Create a new repository: https://github.com/junglee0713/netlify 
+1. Create a new repository: https://github.com/junglee0713/blog2020 
 
 2. Clone the repository, e.g.
 
 ```{bash, eval = F}
 cd /Users/leej39/Dropbox/GitHub
-git clone git@github.com:junglee0713/netlify.git 
+git clone git@github.com:junglee0713/blog2020.git 
 ```
 
-3. (optional) Create an R project, say `/Users/leej39/Dropbox/GitHub/netlify/netlify.Rproj`.
+3. (optional) Create an R project, say `/Users/leej39/Dropbox/GitHub/blog2020/blog2020.Rproj`.
 
 4. (do only once) Open RStudio and install necessary packages, following instruction in https://bookdown.org/yihui/blogdown/installation.html
 
@@ -34,7 +34,9 @@ blogdown::install_hugo()
 5. Make sure that `/Users/leej39/Dropbox/GitHub/blog2020` does not include files other than `LICENSE`, the RStudio project file (`*.Rproj`), `README` or `README.md`. If you are okay with the default theme, run the following 
 
 ```{r, eval = F}
-blogdown::new_site() # or blogdown::new_site(theme = "user/repo") to choose a different theme
+blogdown::new_site() 
+# or blogdown::new_site(theme = "user/repo") 
+# to choose a different theme
 ```
 
 6. Change the configuration file `/Users/leej39/Dropbox/GitHub/blog2020/config.toml` as appropriate.
