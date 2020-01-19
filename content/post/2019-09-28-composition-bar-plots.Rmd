@@ -1,0 +1,79 @@
+---
+title: '그림을 그립시다 The Joy of ggplotting: compositional bar plots'
+author: Jung-Jin Lee
+date: '2019-09-28'
+slug: compositional-bar-plots
+---
+
+```{r, message = F, warning = F, echo = F}
+knitr::opts_chunk$set(
+  message = F,
+  warning = F,
+  echo = T,
+  fig.align = "center"
+)
+knitr::opts_knit$set(bookdown.internal.label = FALSE) # disable automatic figure/table numbering
+```
+
+```{r out.width = "70%", fig.cap="We don't make mistakes, just happy little accidents.", echo = F}
+knitr::include_graphics("/bob-ross.jpg")
+``` 
+
+First of all, download a publicly available dataset from kaggle https://www.kaggle.com/bbhatt001/human-microbiome-project
+
+```{r}
+library(tidyverse)  
+d0 <- read_csv("project_catalog.csv")
+dim(d0)
+names(d0)
+table(d0$`HMP Isolation Body Site`) 
+```
+
+We subset the data to include only body sites with sufficient data:
+
+```{r}
+d <- d0 %>%
+  filter(`HMP Isolation Body Site` %in% c("airways", "gastrointestinal_tract",
+                                          "oral", "skin", "urogenital_tract")) %>%
+  mutate(`Body site` = factor(`HMP Isolation Body Site`)) %>%
+  mutate(Genus = str_extract(`Organism Name`, "^[^\\s]+")) %>% # extract the string before the first space
+  count(`Body site`, Genus) %>%
+  pivot_wider(Genus, names_from = `Body site`, values_from = "n", values_fill = list(n = 0)) 
+```
+
+Proportion of genera in each body site:
+
+```{r}
+num_top <- 19 # plus "Other" will make 20
+prop <- d %>%
+  column_to_rownames("Genus") %>%
+  sweep(2, colSums(.), "/")
+
+meanProp <- apply(prop, 1, mean) %>% sort(decreasing = T) 
+topGenus <- names(meanProp[1:num_top])
+print(topGenus)
+
+d2 <- d %>%
+  mutate(Genus = ifelse(Genus %in% topGenus, Genus, "Other")) 
+
+propNew <- rowsum(d2 %>% select(-Genus), d2$Genus) %>%
+  sweep(2, colSums(.), "/") %>%
+  rownames_to_column("Genus") %>%
+  pivot_longer(-Genus, names_to = "Body site", values_to = "Proportion") %>%
+  mutate(Genus = fct_relevel(Genus, "Other", after = Inf)) 
+```
+
+Now fun part:
+
+```{r}
+library(ggsci)
+g <- propNew %>%
+  ggplot(aes(x = `Body site`, y = Proportion)) +
+  geom_col(aes(fill = Genus)) +
+  scale_fill_d3(palette = "category20") +
+  scale_y_continuous(labels = scales::percent) +
+  theme_classic() 
+
+print(g)  
+```
+

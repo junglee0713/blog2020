@@ -1,0 +1,16 @@
+---
+title: Drexel lectures Spring 2020
+author: Jung-Jin Lee
+date: '2020-01-04'
+slug: drexel-lectures-spring-2020
+categories: []
+tags: []
+---
+
+[Lecture 1](/Drexel_2020/Drexel_2020_Lecture_1.html)
+
+[Lecture 2](/Drexel_2020/Drexel_2020_Lecture_2.html)
+
+[Homework 1](/Drexel_2020/HW1.pdf)
+
+[Lecture 3](/Drexel_2020/Drexel_2020_Lecture_3.html)

@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.62.2" />
+
+
+<title>그림을 그립시다 The Joy of ggplotting: compositional bar plots - Jung-Jin Lee&#39;s blog</title>
+<meta property="og:title" content="그림을 그립시다 The Joy of ggplotting: compositional bar plots - Jung-Jin Lee&#39;s blog">
+
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/home.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="https://github.com/junglee0713">GitHub</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">2 min read</span>
+    
+
+    <h1 class="article-title">그림을 그립시다 The Joy of ggplotting: compositional bar plots</h1>
+
+    
+    <span class="article-date">2019-09-28</span>
+    
+
+    <div class="article-content">
+      
+
+
+<div class="figure" style="text-align: center">
+<img src="/bob-ross.jpg" alt="We don't make mistakes, just happy little accidents." width="70%" />
+<p class="caption">
+We don’t make mistakes, just happy little accidents.
+</p>
+</div>
+<p>First of all, download a publicly available dataset from kaggle <a href="https://www.kaggle.com/bbhatt001/human-microbiome-project" class="uri">https://www.kaggle.com/bbhatt001/human-microbiome-project</a></p>
+<pre class="r"><code>library(tidyverse)  
+d0 &lt;- read_csv(&quot;project_catalog.csv&quot;)
+dim(d0)</code></pre>
+<pre><code>## [1] 2915   17</code></pre>
+<pre class="r"><code>names(d0)</code></pre>
+<pre><code>##  [1] &quot;HMP ID&quot;                  &quot;GOLD ID&quot;                
+##  [3] &quot;Organism Name&quot;           &quot;Domain&quot;                 
+##  [5] &quot;NCBI Superkingdom&quot;       &quot;HMP Isolation Body Site&quot;
+##  [7] &quot;Project Status&quot;          &quot;Current Finishing Level&quot;
+##  [9] &quot;NCBI Submission Status&quot;  &quot;NCBI Project ID&quot;        
+## [11] &quot;Genbank ID&quot;              &quot;Gene Count&quot;             
+## [13] &quot;IMG/HMP ID&quot;              &quot;HOMD ID&quot;                
+## [15] &quot;Sequencing Center&quot;       &quot;Funding Source&quot;         
+## [17] &quot;Strain Repository ID&quot;</code></pre>
+<pre class="r"><code>table(d0$`HMP Isolation Body Site`) </code></pre>
+<pre><code>## 
+##                airways                  blood                   bone 
+##                    236                     75                     27 
+##                    ear                    eye gastrointestinal_tract 
+##                      4                      8                    745 
+##                  heart                  liver            lymph_nodes 
+##                      2                      1                      1 
+##                   nose                   oral                  other 
+##                      2                    347                     13 
+##                   skin                unknown       urogenital_tract 
+##                    267                    654                    529 
+##                  wound 
+##                      4</code></pre>
+<p>We subset the data to include only body sites with sufficient data:</p>
+<pre class="r"><code>d &lt;- d0 %&gt;%
+  filter(`HMP Isolation Body Site` %in% c(&quot;airways&quot;, &quot;gastrointestinal_tract&quot;,
+                                          &quot;oral&quot;, &quot;skin&quot;, &quot;urogenital_tract&quot;)) %&gt;%
+  mutate(`Body site` = factor(`HMP Isolation Body Site`)) %&gt;%
+  mutate(Genus = str_extract(`Organism Name`, &quot;^[^\\s]+&quot;)) %&gt;% # extract the string before the first space
+  count(`Body site`, Genus) %&gt;%
+  pivot_wider(Genus, names_from = `Body site`, values_from = &quot;n&quot;, values_fill = list(n = 0)) </code></pre>
+<p>Proportion of genera in each body site:</p>
+<pre class="r"><code>num_top &lt;- 19 # plus &quot;Other&quot; will make 20
+prop &lt;- d %&gt;%
+  column_to_rownames(&quot;Genus&quot;) %&gt;%
+  sweep(2, colSums(.), &quot;/&quot;)
+
+meanProp &lt;- apply(prop, 1, mean) %&gt;% sort(decreasing = T) 
+topGenus &lt;- names(meanProp[1:num_top])
+print(topGenus)</code></pre>
+<pre><code>##  [1] &quot;Streptococcus&quot;     &quot;Staphylococcus&quot;    &quot;Propionibacterium&quot;
+##  [4] &quot;Corynebacterium&quot;   &quot;Neisseria&quot;         &quot;Lactobacillus&quot;    
+##  [7] &quot;Rothia&quot;            &quot;Prevotella&quot;        &quot;Enterococcus&quot;     
+## [10] &quot;Pseudomonas&quot;       &quot;Actinomyces&quot;       &quot;Helicobacter&quot;     
+## [13] &quot;Clostridium&quot;       &quot;Fusobacterium&quot;     &quot;Selenomonas&quot;      
+## [16] &quot;Treponema&quot;         &quot;Bacteroides&quot;       &quot;Bifidobacterium&quot;  
+## [19] &quot;Eubacterium&quot;</code></pre>
+<pre class="r"><code>d2 &lt;- d %&gt;%
+  mutate(Genus = ifelse(Genus %in% topGenus, Genus, &quot;Other&quot;)) 
+
+propNew &lt;- rowsum(d2 %&gt;% select(-Genus), d2$Genus) %&gt;%
+  sweep(2, colSums(.), &quot;/&quot;) %&gt;%
+  rownames_to_column(&quot;Genus&quot;) %&gt;%
+  pivot_longer(-Genus, names_to = &quot;Body site&quot;, values_to = &quot;Proportion&quot;) %&gt;%
+  mutate(Genus = fct_relevel(Genus, &quot;Other&quot;, after = Inf)) </code></pre>
+<p>Now fun part:</p>
+<pre class="r"><code>library(ggsci)
+g &lt;- propNew %&gt;%
+  ggplot(aes(x = `Body site`, y = Proportion)) +
+  geom_col(aes(fill = Genus)) +
+  scale_fill_d3(palette = &quot;category20&quot;) +
+  scale_y_continuous(labels = scales::percent) +
+  theme_classic() 
+
+print(g)  </code></pre>
+<p><img src="/post/2019-09-28-composition-bar-plots_files/figure-html/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+
+    </div>
+  </article>
+
+  
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script>
+  var disqus_config = function () {
+  
+  };
+  (function() {
+    var inIFrame = function() {
+      var iframe = true;
+      try { iframe = window.self !== window.top; } catch (e) {}
+      return iframe;
+    };
+    if (inIFrame()) return;
+    var d = document, s = d.createElement('script');
+    s.src = '//junglee0713-netlify.disqus.com/embed.js'; s.async = true;
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-129677462-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+  </body>
+</html>
+

@@ -1,0 +1,58 @@
+---
+title: Netlify blog workflow
+author: Jung-Jin Lee
+date: '2018-11-17'
+categories:
+  - Netlify
+tags:
+  - GitHub
+slug: netlify-blog-workflow
+---
+
+R package blogdown과 Netlify를 이용한 블로그 개설/관리 과정을 여기에 기록해 둠
+
+How to create a blog using blogdown and Netlify
+
+1. Create a new repository: https://github.com/junglee0713/netlify 
+
+2. Clone the repository, e.g.
+
+```{bash, eval = F}
+cd /Users/leej39/Dropbox/GitHub
+git clone git@github.com:junglee0713/netlify.git 
+```
+
+3. (optional) Create an R project, say `/Users/leej39/Dropbox/GitHub/netlify/netlify.Rproj`.
+
+4. (do only once) Open RStudio and install necessary packages, following instruction in https://bookdown.org/yihui/blogdown/installation.html
+
+```{r, eval = F}
+install.packages("blogdown")
+blogdown::install_hugo()
+```
+
+5. Make sure that `/Users/leej39/Dropbox/GitHub/netlify` does not include files other than `LICENSE`, the RStudio project file (`*.Rproj`), `README` or `README.md`. If you are okay with the default theme, run the following 
+
+```{r, eval = F}
+blogdown::serve_site() # or blogdown::serve_site(theme = "user/repo") to choose a different theme
+blogdown::hugo_build()
+```
+
+6. Change the configuration file `/Users/leej39/Dropbox/GitHub/netlify/config.toml` as appropriate.
+
+7. If you want to delete example or unnecessary posts that came with the default theme, you can do so by deleting the corresponding `.md` or `.html` files under `/Users/leej39/Dropbox/GitHub/netlify/content`.
+
+8. Stage changes in `/Users/leej39/Dropbox/GitHub/netlify`, commit, and push. 
+
+9. Go to https://www.netlify.com/ and link the GitHub repository https://github.com/junglee0713/netlify so that Netlify can sync with GitHub and deploy any changes in the repository real time. 
+
+10. To create a new post, click on **Addins** in RStudio and use **New Post**. Use **Update Metadata** to update the metadata associated with the post.
+
+11. As noted in https://bookdown.org/yihui/blogdown/static-files.html, all files under the `static/` directory are copied to `public/` when Hugo renders a website. Therefore one needs to be cautious about files under `static/`. Also to build `.Rmd` documents with custom output formats, i.e., `.Rmd` documents not using the `blogdown::html_page()` format, a custom build script `R/build.R` must be provided with a single line of code in it:
+
+```{r, eval = F}
+blogdown::build_dir("static")
+```
+
+
+

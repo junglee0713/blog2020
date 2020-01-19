@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jung-Jin Lee&#39;s blog</title>
+    <link>/</link>
+    <description>Recent content on Jung-Jin Lee&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 04 Jan 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Drexel lectures Spring 2020</title>
+      <link>/2020/01/04/drexel-lectures-spring-2020/</link>
+      <pubDate>Sat, 04 Jan 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/01/04/drexel-lectures-spring-2020/</guid>
+      <description>Lecture 1
+Lecture 2
+Homework 1
+Lecture 3</description>
+    </item>
+    
+    <item>
+      <title>Distance between groups</title>
+      <link>/2019/10/25/distance-between-groups/</link>
+      <pubDate>Fri, 25 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/10/25/distance-between-groups/</guid>
+      <description>library(usedist) library(tidyverse) library(ggforce) library(ggsci) library(gt) library(ggrepel) library(ggdendro) First, we make a fake data set:
+set.seed(2019) n &amp;lt;- 6 ADf &amp;lt;- tibble(x = rnorm(n, sample(10, 1), sample(2, 1)), y = rnorm(n, sample(10, 1), sample(2, 1)), group = &amp;quot;A&amp;quot;) BDf &amp;lt;- tibble(x = rnorm(n, sample(10, 1), sample(2, 1)), y = rnorm(n, sample(10, 1), sample(2, 1)), group = &amp;quot;B&amp;quot;) CDf &amp;lt;- tibble(x = rnorm(n, sample(10, 1), sample(2, 1)), y = rnorm(n, sample(10, 1), sample(2, 1)), group = &amp;quot;C&amp;quot;) DDf &amp;lt;- tibble(x = rnorm(n, sample(10, 1), sample(2, 1)), y = rnorm(n, sample(10, 1), sample(2, 1)), group = &amp;quot;D&amp;quot;) EDf &amp;lt;- tibble(x = rnorm(n, sample(10, 1), sample(2, 1)), y = rnorm(n, sample(10, 1), sample(2, 1)), group = &amp;quot;E&amp;quot;) df &amp;lt;- bind_rows(ADf, BDf, CDf, DDf, EDf) %&amp;gt;% group_by(group) %&amp;gt;% mutate(SampleID = paste0(group, 1:n())) %&amp;gt;% ungroup() Visualization of the data:</description>
+    </item>
+    
+    <item>
+      <title>Exploring RStan</title>
+      <link>/2019/10/20/exploring-rstan/</link>
+      <pubDate>Sun, 20 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/10/20/exploring-rstan/</guid>
+      <description>Unit 1</description>
+    </item>
+    
+    <item>
+      <title>그림을 그립시다 The Joy of ggplotting: compositional bar plots</title>
+      <link>/2019/09/28/compositional-bar-plots/</link>
+      <pubDate>Sat, 28 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/09/28/compositional-bar-plots/</guid>
+      <description>We don’t make mistakes, just happy little accidents.  First of all, download a publicly available dataset from kaggle https://www.kaggle.com/bbhatt001/human-microbiome-project
+library(tidyverse) d0 &amp;lt;- read_csv(&amp;quot;project_catalog.csv&amp;quot;) dim(d0) ## [1] 2915 17 names(d0) ## [1] &amp;quot;HMP ID&amp;quot; &amp;quot;GOLD ID&amp;quot; ## [3] &amp;quot;Organism Name&amp;quot; &amp;quot;Domain&amp;quot; ## [5] &amp;quot;NCBI Superkingdom&amp;quot; &amp;quot;HMP Isolation Body Site&amp;quot; ## [7] &amp;quot;Project Status&amp;quot; &amp;quot;Current Finishing Level&amp;quot; ## [9] &amp;quot;NCBI Submission Status&amp;quot; &amp;quot;NCBI Project ID&amp;quot; ## [11] &amp;quot;Genbank ID&amp;quot; &amp;quot;Gene Count&amp;quot; ## [13] &amp;quot;IMG/HMP ID&amp;quot; &amp;quot;HOMD ID&amp;quot; ## [15] &amp;quot;Sequencing Center&amp;quot; &amp;quot;Funding Source&amp;quot; ## [17] &amp;quot;Strain Repository ID&amp;quot; table(d0$`HMP Isolation Body Site`)  ## ## airways blood bone ## 236 75 27 ## ear eye gastrointestinal_tract ## 4 8 745 ## heart liver lymph_nodes ## 2 1 1 ## nose oral other ## 2 347 13 ## skin unknown urogenital_tract ## 267 654 529 ## wound ## 4 We subset the data to include only body sites with sufficient data:</description>
+    </item>
+    
+    <item>
+      <title>anova( ) and Anova( )</title>
+      <link>/2019/03/17/anova-and-anova/</link>
+      <pubDate>Sun, 17 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/03/17/anova-and-anova/</guid>
+      <description>After spending hours of despair and confusion, I came across an excellent illustration given at Stack Exchange.
+There are various \(p\)-values coming out of lm(), anova(), and Anova(). First of all, car library is loaded for use of Anova():
+library(car) # for Anova() The built-in mtcars will be used as an example.
+attach(mtcars) head(mtcars) ## mpg cyl disp hp drat wt qsec vs am gear carb ## Mazda RX4 21.</description>
+    </item>
+    
+    <item>
+      <title>Arithmetic sequences of prime numbers</title>
+      <link>/2019/02/10/arithmetic-sequences-of-prime-numbers/</link>
+      <pubDate>Sun, 10 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/02/10/arithmetic-sequences-of-prime-numbers/</guid>
+      <description>Today, I saw a question that goes as follows:
+If \(\{a,b,c,d,e\}\) is an increasing arithmetic sequence of five prime numbers, what is the least possible value of \(|a-b|\)?
+Let’s write the sequence as \(\{a, a+k, a+2k, a+3k, a+4k\}\), where \(k \in \mathbb{N}\). It is easy to see that \(a\neq 2\). It is also easy to see that \(k\) cannot be odd.
+Assume that \(k=2\) and consider the remainders of \(\{a, a+2, a+4, a+6, a+8\}\) when divided by \(3\).</description>
+    </item>
+    
+    <item>
+      <title>PCoA of distances generated from points in Euclidean space</title>
+      <link>/2019/01/10/pcoa-of-points-in-euclidean-space/</link>
+      <pubDate>Thu, 10 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/01/10/pcoa-of-points-in-euclidean-space/</guid>
+      <description>knitr::opts_chunk$set( message = F ) library(tidyverse) library(ggrepel) library(ape) # for pcoa() Original points in \(\mathbb{R}^2\) are generated:
+set.seed(2019) n &amp;lt;- 15 d0 &amp;lt;- data.frame(ID = 1:n, x = rnorm(n), y = rnorm(n)) g &amp;lt;- ggplot(d0, aes(x, y)) + geom_point() + geom_text_repel(aes(label = ID), size = 3, segment.color = &amp;quot;grey&amp;quot;) + theme(aspect.ratio = 1) print(g) DistMat &amp;lt;- d0 %&amp;gt;% select(-ID) %&amp;gt;% dist() PCoA_Result &amp;lt;- pcoa(DistMat) d &amp;lt;- PCoA_Result$vectors %&amp;gt;% as.data.frame() %&amp;gt;% mutate(ID = 1:n) g &amp;lt;- ggplot(d, aes(Axis.</description>
+    </item>
+    
+    <item>
+      <title>Drexel lectures Spring 2019</title>
+      <link>/2018/12/15/drexel-lectures-spring-2019/</link>
+      <pubDate>Sat, 15 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/12/15/drexel-lectures-spring-2019/</guid>
+      <description>Lecture 1
+Lecture 2
+Homework 1
+Lecture 3
+Lecture 4
+Homework 2
+Lecture 5
+Lecture 6
+Homework 3
+Lecture 7
+Lecture 8
+Homework 4
+Lecture 9
+Lecture 10
+Homework 5
+Lecture 11
+Lecture 12</description>
+    </item>
+    
+    <item>
+      <title>Shannon diversity index</title>
+      <link>/2018/12/12/shannon-diversity-index/</link>
+      <pubDate>Wed, 12 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/12/12/shannon-diversity-index/</guid>
+      <description>In ecology, the Shannon diversity of a community is defined by \[H=-\sum_{i}^R p_i\log p_i,\] where \(R\) is the number of distinct species and \(p_i\) is the proportion of species \(i\). The Shannon diversity measures richness (i.e. the number of distinct species in a community) and evenness (i.e. how evenly the proportions of species are spread). In the following illustration, each dot represents a mock community: the horizontal coordinate shows the number of distinct species (richness) and the color shows the various distributions of proportions given the number of distinct species.</description>
+    </item>
+    
+    <item>
+      <title>Principal component analysis</title>
+      <link>/2018/12/08/principal-component-analysis/</link>
+      <pubDate>Sat, 08 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/12/08/principal-component-analysis/</guid>
+      <description>A mock data set consisting of 100 data points, say \(\mathbf{P}_1, \cdots, \mathbf{P}_{100}\), is generated below. They depict a perturbed and slanted ellipse in \(\mathbb{R}^3\). Let \(X_{raw}\) be the \(100 \times 3\) matrix whose rows consist of \(\mathbf{P}_1, \cdots, \mathbf{P}_{100}\).
+set.seed(2018) n &amp;lt;- 100 ## Create a perturbed and slanted ellipse in R^3 x_center &amp;lt;- 3; y_center &amp;lt;- 1; z_center &amp;lt;- 2 x_stretch &amp;lt;- 4; y_stretch &amp;lt;- 3; z_stretch &amp;lt;- 1 angle &amp;lt;- pi/3 x_ori &amp;lt;- x_stretch*cos(2*pi*(1:n)/n) + rnorm(n, mean = 0, sd = 0.</description>
+    </item>
+    
+    <item>
+      <title>Cabrini lectures Spring 2019</title>
+      <link>/2018/11/27/cabrini-lectures-spring-2019/</link>
+      <pubDate>Tue, 27 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/11/27/cabrini-lectures-spring-2019/</guid>
+      <description>Lecture 1
+Lecture 2
+Homework 1
+Lecture 3
+Lecture 4
+Homework 2
+Lecture 5
+Lecture 6
+Homework 3
+Lecture 7
+Lecture 8
+Homework 4
+Lecture 9
+Lecture 10
+Homework 5</description>
+    </item>
+    
+    <item>
+      <title>Netlify blog workflow</title>
+      <link>/2018/11/17/netlify-blog-workflow/</link>
+      <pubDate>Sat, 17 Nov 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/11/17/netlify-blog-workflow/</guid>
+      <description>R package blogdown과 Netlify를 이용한 블로그 개설/관리 과정을 여기에 기록해 둠
+How to create a blog using blogdown and Netlify
+Create a new repository: https://github.com/junglee0713/netlify
+ Clone the repository, e.g.
+  cd /Users/leej39/Dropbox/GitHub git clone git@github.com:junglee0713/netlify.git  (optional) Create an R project, say /Users/leej39/Dropbox/GitHub/netlify/netlify.Rproj.
+ (do only once) Open RStudio and install necessary packages, following instruction in https://bookdown.org/yihui/blogdown/installation.html
+  install.packages(&amp;quot;blogdown&amp;quot;) blogdown::install_hugo() Make sure that /Users/leej39/Dropbox/GitHub/netlify does not include files other than LICENSE, the RStudio project file (*.</description>
+    </item>
+    
+  </channel>
+</rss>
