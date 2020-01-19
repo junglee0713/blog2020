@@ -10,6 +10,8 @@ output:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
+editor_options: 
+  chunk_output_type: console
 ---
  
 ```{r, message = F, echo = F, warning = F}
@@ -66,19 +68,25 @@ table(d$Species)
 
 ## Exploring data, continued
 
-```{r, out.width = "50%"}
+```{r, out.width = "45%"}
 g <- ggplot(d, aes(Sepal.Length)) + geom_histogram()
 print(g)
+```
+
+One can export a plot as a separate file:
+
+```{r, eval = F}
+ggsave(filename = "histo.pdf", g) 
 ```
 
 ---
 
 ## Data manipulation
 
-Create a data set consists of `setosa` only.
+Reshaping data is an essenstial part of data analysis. We will use a package called `dplyr`, which is a part of `tidyverse`.
 
 ```{r}
-library(dplyr) # dplyr is a part of tidyverse
+library(dplyr) 
 # you could run library(tidyverse) instead
 ```
 

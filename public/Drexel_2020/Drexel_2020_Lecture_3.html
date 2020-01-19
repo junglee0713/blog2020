@@ -86,17 +86,24 @@ g &lt;- ggplot(d, aes(Sepal.Length)) + geom_histogram()
 print(g)
 ```
 
-&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-5-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-5-1.png" width="45%" style="display: block; margin: auto;" /&gt;
+
+One can export a plot as a separate file:
+
+
+```r
+ggsave(filename = "histo.pdf", g) 
+```
 
 ---
 
 ## Data manipulation
 
-Create a data set consists of `setosa` only.
+Reshaping data is an essenstial part of data analysis. We will use a package called `dplyr`, which is a part of `tidyverse`.
 
 
 ```r
-library(dplyr) # dplyr is a part of tidyverse
+library(dplyr) 
 # you could run library(tidyverse) instead
 ```
 
@@ -744,7 +751,7 @@ g &lt;- ggplot(d, aes(x = Species, y = Sepal.Length)) +
 print(g)
 ```
 
-&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-33-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-34-1.png" width="50%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -778,7 +785,7 @@ quantile(ds$Sepal.Length)
 
 **Exercise**: create the following plots.
 
-&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-35-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-36-1.png" width="50%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -795,7 +802,7 @@ g &lt;- ggplot(d, aes(x = Sepal.Length, y = Sepal.Width)) +
 print(g)
 ```
 
-&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-36-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-37-1.png" width="50%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -808,7 +815,7 @@ g &lt;- ggplot(d, aes(Sepal.Length, Sepal.Width, color = Species)) +
 print(g)
 ```
 
-&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-37-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-38-1.png" width="50%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -821,7 +828,7 @@ g2 &lt;- g + theme(aspect.ratio = 1) +
 print(g2)
 ```
 
-&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-38-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-39-1.png" width="60%" style="display: block; margin: auto;" /&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
