@@ -117,6 +117,99 @@ These verbs, when combined with the pipe operator `%&gt;%`, become even more pow
 
 ---
 
+## Piping
+
+**Example**: compute `\(\sqrt{1} + \sqrt{2} + \sqrt{3} + \cdots + \sqrt{100}\)`.
+
+
+```r
+num &lt;- 1:100
+sqrt.num &lt;- sqrt(num) # sqrt() compute the square root
+sum(sqrt.num)
+```
+
+```
+## [1] 671.4629
+```
+
+This can be done in the following way too:
+
+
+```r
+sum(sqrt(1:100)) # repeated application of functions
+```
+
+```
+## [1] 671.4629
+```
+
+--
+
+Piping `%&gt;%` provides a better readability.For a function `f`, `x %&gt;% f(y, z)` returns `f(x, y, z)`
+
+
+```r
+x.in &lt;- c(1, 3, 6, 2, 5, 4) 
+x.in %&gt;% sum()
+```
+
+```
+## [1] 21
+```
+
+---
+
+## Piping, continued
+
+
+```r
+x.in %&gt;% sort()
+```
+
+```
+## [1] 1 2 3 4 5 6
+```
+
+```r
+x.in %&gt;% sort(decreasing = T)
+```
+
+```
+## [1] 6 5 4 3 2 1
+```
+
+--
+
+**Example**: compute `\(\sqrt{1} + \sqrt{2} + \sqrt{3} + \cdots + \sqrt{100}\)`.
+
+
+```r
+num %&gt;% sqrt() %&gt;% sum() # chain reaction!
+```
+
+```
+## [1] 671.4629
+```
+
+
+```r
+sum.value &lt;- num %&gt;% sqrt() %&gt;% sum() ; print(sum.value)
+```
+
+```
+## [1] 671.4629
+```
+
+```r
+ num %&gt;% sqrt() %&gt;% sum() -&gt; sum.value2; print(sum.value2)
+```
+
+```
+## [1] 671.4629
+```
+
+---
+
 ## select()
 
 **Example**: create a data set consisting only of `Sepal.Length` and `Sepal.Width`.
@@ -281,8 +374,7 @@ dim(f3)
 
 
 ```r
-f4 &lt;- filter(d, Sepal.Length &lt; 6) 
-dim(f4)
+f4 &lt;- filter(d, Sepal.Length &lt; 6); dim(f4)
 ```
 
 ```
@@ -303,9 +395,9 @@ head(f4)
 ## 6          5.4         3.9          1.7         0.4  setosa
 ```
 
----
+--
 
-## filter(), continued
+Multiple conditions can be supplied for `filter()`:
 
 **Exercise**: how many `virginica` species have `Sepal.Length` at least 5.7?
 
@@ -313,35 +405,11 @@ head(f4)
 
 
 ```r
-f5 &lt;- filter(d, Sepal.Length &gt;= 5.7) # &gt;= "greater than or equal to"
-```
-
---
-
-
-```r
-table(f5$Species)
+f5 &lt;- filter(d, Sepal.Length &gt;= 5.7, Species == "virginica"); dim(f5)
 ```
 
 ```
-## 
-##     setosa versicolor  virginica 
-##          3         34         48
-```
-
---
-
-
-```r
-Sep.Len.Cut &lt;- 5.7
-f6 &lt;- filter(d, Sepal.Length &gt;= Sep.Len.Cut) 
-table(f6$Species)
-```
-
-```
-## 
-##     setosa versicolor  virginica 
-##          3         34         48
+## [1] 48  5
 ```
 
 ---
@@ -469,7 +537,7 @@ head(a2)
 
 ---
 
-## Piping
+## Wrap-up
 
 **Exercise**: report all `setosa` elements with the difference `Diff` defined by `Diff` =  `Sepal.Length` - `Sepal.Width` &gt; 1.5. Show only `Sepal.Length`, `Sepal.Width` and `Diff`, and sort by descending order of `Diff`.
 
@@ -514,9 +582,9 @@ head(r4)
 
 ---
 
-## Piping, continued
+## Wrap-up, continued
 
-Piping operator `%&gt;%` takes the LHS of `%&gt;%` as the first argument of the RHS of `%&gt;%`.
+Piping operator `%&gt;%` enhances readability.
 
 
 ```r
@@ -577,13 +645,17 @@ mean(virgi_df$Sepal.Length)
 
 ---
 
-## group_by() / summarize()
+## group_by() / summarize(), continued
 
 `group_by()` and `summarize()` combination: summary of data (e.g. mean, max, min, median) by each category of a categorical variable. 
 
+**Exercise**: find the mean `Sepal.Length` for each `Species`.
+
 
 ```r
-iris %&gt;% group_by(Species) %&gt;%
+# For each 'Species' category in the 'iris' data set
+# compute the mean of 'Sepal.Length'
+group_by(iris, Species) %&gt;%
   summarize(SL.mean = mean(Sepal.Length))
 ```
 
@@ -596,9 +668,11 @@ iris %&gt;% group_by(Species) %&gt;%
 ## 3 virginica     6.59
 ```
 
+Note that the result is a data frame with two columns: `Species` and `SL.mean`.
+
 ---
 
-## group_by() / summarize()
+## group_by() / summarize(), continued
 
 **Exercise**: What is the maximum (and minimum) of `Sepal.Length` in each `Species`?
 
@@ -617,6 +691,37 @@ iris %&gt;% group_by(Species) %&gt;%
 ## 1 setosa        5.8    4.3
 ## 2 versicolor    7      4.9
 ## 3 virginica     7.9    4.9
+```
+
+---
+
+## group_by() / summarize(), continued
+
+One can get summary data using multiple "group by" variables.
+
+
+```r
+diamonds %&gt;% 
+  group_by(color, cut) %&gt;%
+  summarize(avg.price = mean(price), top.price = max(price)) 
+```
+
+```
+## # A tibble: 35 x 4
+## # Groups:   color [7]
+##    color cut       avg.price top.price
+##    &lt;ord&gt; &lt;ord&gt;         &lt;dbl&gt;     &lt;int&gt;
+##  1 D     Fair          4291.     16386
+##  2 D     Good          3405.     18468
+##  3 D     Very Good     3470.     18542
+##  4 D     Premium       3631.     18575
+##  5 D     Ideal         2629.     18693
+##  6 E     Fair          3682.     15584
+##  7 E     Good          3424.     18236
+##  8 E     Very Good     3215.     18731
+##  9 E     Premium       3539.     18477
+## 10 E     Ideal         2598.     18729
+## # … with 25 more rows
 ```
 
 ---
@@ -751,7 +856,7 @@ g &lt;- ggplot(d, aes(x = Species, y = Sepal.Length)) +
 print(g)
 ```
 
-&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-34-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-39-1.png" width="50%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -785,7 +890,7 @@ quantile(ds$Sepal.Length)
 
 **Exercise**: create the following plots.
 
-&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-36-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-41-1.png" width="50%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -802,7 +907,7 @@ g &lt;- ggplot(d, aes(x = Sepal.Length, y = Sepal.Width)) +
 print(g)
 ```
 
-&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-37-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-42-1.png" width="50%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -815,7 +920,7 @@ g &lt;- ggplot(d, aes(Sepal.Length, Sepal.Width, color = Species)) +
 print(g)
 ```
 
-&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-38-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-43-1.png" width="50%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -828,7 +933,7 @@ g2 &lt;- g + theme(aspect.ratio = 1) +
 print(g2)
 ```
 
-&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-39-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-44-1.png" width="60%" style="display: block; margin: auto;" /&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

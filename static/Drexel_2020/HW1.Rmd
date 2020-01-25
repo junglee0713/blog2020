@@ -49,7 +49,7 @@ mean(sl); var(sl); quantile(sl, prob = 0.9)
 4. What is the _fifth_ smallest value of `Sepal.Length`?
 
 ```{r, echo = F, eval = F}
-sort(sl, T)[5]
+sort(sl, F)[5]
 ```
 
 

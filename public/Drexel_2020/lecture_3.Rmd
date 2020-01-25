@@ -1,0 +1,94 @@
+---
+title: "lecture 3"
+author: "Jung-Jin Lee"
+date: "1/21/2020"
+output: pdf_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+```{r}
+d <- read.table(file = "heights.txt", header = T, sep = " ")
+dim(d)
+
+g <- ggplot(d, aes(Dheight)) + geom_histogram(bins = 20)
+print(g)  
+
+mean(d$Dheight)
+median(d$Dheight)
+var(d$Dheight)
+sd(d$Dheight)
+sqrt(var(d$Dheight))
+```
+
+
+```{r}
+d <- iris
+g <- ggplot(d, aes(Sepal.Length)) + geom_histogram()
+print(g)
+
+ggsave(filename = "histo.jpeg", g)
+```
+
+```{r}
+f1 <- filter(d, Species == "setosa")
+
+dd <- filter(d, Sepal.Length >= 5.7 & Species == "virginica")
+```
+
+```{r}
+aa <- 1:5
+ifelse(aa <= 3, "what", "Ever")
+```
+
+```{r}
+r1 <- mutate(d, Diff = Sepal.Length - Sepal.Width)
+r2 <- filter(r1, Diff > 1.5, Species == "setosa")
+r3 <- select(r2, Sepal.Length, Sepal.Width, Diff)
+r4 <- arrange(r3, desc(Diff))
+```
+
+
+```{r}
+cal_wide <- data.frame(subject = paste0("Patient", 1:4),
+                      breakfast = c(300, 350, 300, 250),
+                      lunch = c(500, 500, 500, 450),
+                      dinner = c(600, 650, 450, 500))
+print(cal_wide)
+```
+
+```{r}
+d %>%
+  filter(Species %in% c("setosa", "virginica")) %>%
+  ggplot(aes(Species, Sepal.Width)) +
+  geom_boxplot() +
+  theme(aspect.ratio = 1)
+```
+
+```{r}
+g <- ggplot(d, aes(x = Sepal.Length, y = Sepal.Width)) +
+  geom_point()
+print(g)
+
+g2 <- g + theme(aspect.ratio = 1)
+```
+
+
+```{r}
+"heights.txt" %>%
+  read.table(header = T, sep = " ") %>%
+  ggplot(aes(Mheight, Dheight)) +
+  geom_point()
+```
+
+```{r}
+3 | 0
+```
+
+
+
