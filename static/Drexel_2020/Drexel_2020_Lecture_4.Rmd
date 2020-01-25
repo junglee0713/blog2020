@@ -51,6 +51,8 @@ ggplot(ht, aes(Mheight)) +
 ```
 ]
 
+--
+
 .pull-right[
 ```{r}
 ggplot(ht, aes(Dheight)) + 
@@ -104,16 +106,6 @@ where $$\phi_{\mu,\sigma}(x) = \frac{1}{\sqrt{2\pi}\sigma} e^{-\frac{(x-\mu)^2}{
 
 ---
 
-## Why is normal distribution important?
-
-- Has mathematically important properties (e.g. Central Limit Theorem).
-
-- Related with other important distributions (e.g. $t$, $F$, $\chi^2$).
-
-- Provides a good model for many real-world data (e.g. A normal distribution is a good model for data such as heights or weights).
-
----
-
 ## Normal pdf
 
 ```{r, echo = FALSE}
@@ -155,6 +147,20 @@ print(g2)
 ]
 
 _mean_ determines the center of the bell shape, while _standard deviation_ measures the spread.
+
+---
+
+## Why is normal distribution important?
+
+- It has mathematically important properties (e.g. it plays a crucial role in the Central Limit Theorem).
+
+--
+
+- Related with other important distributions (e.g. $t$, $F$, $\chi^2$).
+
+--
+
+- Provides a good model for many real-world data (e.g. A normal distribution is a good model for data such as heights or weights).
 
 ---
 
@@ -207,6 +213,8 @@ print(g4)
 ## Normal pdf, continued
 
 - What is the probability that $X \leq 12$?
+
+--
 
 .pull-left[
 ```{r, echo = F}
@@ -464,12 +472,17 @@ sd(ht$Mheight)
 
 Point estimate is too naive -- how much can we trust `r mean(ht$Mheight)` as a reliable estimator for $\mu$, the true population mean?
 
-**Example**: suppose that we are measuring the battery life which is assume to follow a normal distribution. Assume that we collected two sets of samples of size 5:
+**Example**: suppose that we are measuring the battery life which is assumed to follow a normal distribution. Assume that we collected two sets of samples of size 5:
 $$\text{Sample 1: }\{12, 13, 13, 14, 13\}$$
 $$\text{Sample 2: }\{10, 11, 16, 13, 15\}$$
 ```{r}
 sample1 <- c(12, 13, 13, 14, 13); sample2 <- c(10, 11, 16, 13, 15)
 c(mean(sample1), mean(sample2))
+```
+
+--
+
+```{r}
 c(sd(sample1), sd(sample2))
 ```
 
@@ -481,10 +494,12 @@ Suppose that a sample of size $n$, say $X_1, X_2, \ldots, X_n$, is taken from a 
 $$\left(\bar{X} - t_{n-1, \alpha/2}\frac{S}{\sqrt{n}},~\bar{X} + t_{n-1, \alpha/2}\frac{S}{\sqrt{n}}\right),$$
 where, $\bar{X}$ and $S$ represent the sample mean and sample standard deviation, respectively and $t_{n-1, \alpha/2}$ is the quantile value of a $t$-distribution of $n-1$ degrees of freedom with tail probability $\alpha/2$.
 
+--
+
 In particular, the 95% confidence interval (so $\alpha = 0.05$) of $\mu$ is given by 
 $$\left(\bar{X} - t_{n-1, 0.025}\frac{S}{\sqrt{n}},~\bar{X} + t_{n-1, 0.025}\frac{S}{\sqrt{n}}\right),$$
 
-Interpretation of 95% confidence interval: when this procedure of creating 95% confidence intervals is repeated, about 95% of the intervals will contain the true population mean. 
+Interpretation of 95% confidence interval: when this procedure of creating 95% confidence intervals is repeated, about 95% of the intervals will contain the true population mean. In other words, <span style="color: red;">We are 95% confident that the true population mean is captured in the 95% confidence interval.</span>
 
 ---
 

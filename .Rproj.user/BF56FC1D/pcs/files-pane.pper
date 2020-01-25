@@ -1,8 +1,8 @@
 {
-    "path" : "~/Dropbox/Github/blog2020/static/Drexel_2020",
+    "path" : "~/Dropbox/GitHub/blog2020/static/Drexel_2020",
     "sortOrder" : [
         {
-            "ascending" : true,
+            "ascending" : false,
             "columnIndex" : 4
         },
         {
