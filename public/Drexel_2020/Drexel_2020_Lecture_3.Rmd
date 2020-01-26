@@ -118,7 +118,7 @@ sum(sqrt(1:100)) # repeated application of functions
 
 --
 
-Piping `%>%` provides a better readability.For a function `f`, `x %>% f(y, z)` returns `f(x, y, z)`
+Piping `%>%` provides a better readability. For a function `f`, `x %>% f(y, z)` returns `f(x, y, z)`
 
 ```{r}
 x.in <- c(1, 3, 6, 2, 5, 4) 
