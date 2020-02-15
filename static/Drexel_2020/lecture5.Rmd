@@ -1,0 +1,102 @@
+---
+title: "Lecture 5"
+author: "Jung-Jin Lee"
+date: "2/4/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+```{r}
+ht <- read.table(file = "heights.txt", header = T, sep = " ")
+ggplot(ht, aes(Mheight)) + 
+  geom_histogram()
+
+mean(ht$Mheight)
+sd(ht$Mheight)
+t.test(ht$Mheight)
+```
+
+```{r}
+mu <- 62.2 # null hypothesis
+x <- ht$Mheight
+xbar <- mean(x); S <- sd(x); n <- length(x)
+t <- (xbar - mu) / (S/sqrt(n)) 
+print(xbar)
+print(S)
+n
+t
+```
+
+```{r}
+p.value <- 2*(1 - pt(t, df = n-1))
+```
+
+```{r}
+y <- ht$Dheight
+t.test(y, mu = 63.8)
+
+t.test(iris$Sepal.Length, mu = 5.1)
+```
+
+```{r}
+crabs <- read.table("crabs.tsv", header = T, sep = "\t") 
+dim(crabs)
+
+# column names of crabs?
+names(crabs)
+
+crabs <- crabs %>%
+  mutate(color = factor(color)) %>%
+  mutate(spine = factor(spine)) %>%
+  mutate(id = paste0("obs", 1:nrow(crabs)))
+```
+
+```{r}
+crabs %>%
+  ggplot(aes(width)) +
+  geom_histogram(bins = 10) +
+  facet_wrap(~spine)
+```
+
+```{r}
+crabs %>%
+  ggplot(aes(color, weight)) +
+  geom_boxplot()
+```
+
+```{r}
+crabs %>%
+  arrange(desc(weight)) %>%
+  head()
+```
+
+```{r}
+crabs %>%
+  filter(color == 5) %>%
+  arrange(desc(weight)) %>%
+  head()
+```
+
+```{r}
+#association between satell and weight
+crabs %>%
+  ggplot(aes(weight, satell)) +
+  geom_point()
+```
+
+```{r}
+t.test(crabs$width, mu = 26)
+```
+
+```{r}
+t.test(crabs$weight, mu = 2300)
+```
+
+
+
+
+

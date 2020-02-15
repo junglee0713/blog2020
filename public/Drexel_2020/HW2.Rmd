@@ -18,10 +18,10 @@ library(tidyverse)
 
 ```{r, eval = F}
 iris %>%
-  mutate(sum = Sepal.Length + Sepal.Width) %>%
-  arrange(desc(sum)) %>%
+  mutate(Sepal.Sum = Sepal.Length + Sepal.Width) %>%
+  arrange(desc(Sepal.Sum)) %>%
   slice(1) %>%
-  select(sum, Species)
+  select(Sepal.Sum, Species)
 ```
 
 2. Create the following plot using `iris` data set. Note that `setosa` species do not show up. You do NOT need to adjust size or width/height ratio of the plot.
