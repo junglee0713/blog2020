@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>Lecture 2</title>
     <meta charset="utf-8" />
@@ -13,6 +13,7 @@
 class: center, middle, inverse, title-slide
 
 # Lecture 2
+## Exploring data through visualization
 ### Jung-Jin Lee
 ### Jan 14, 2020
 
@@ -33,13 +34,13 @@ class: center, middle, inverse, title-slide
   
 ---
 
-## Explore data
+## Exploring data
 
 
 ```r
-library(tidyverse)
-df &lt;- diamonds ## diamonds comes with ggplot2
-dim(df)
+*library(tidyverse) # need to load the tidyverse library
+dmd &lt;- diamonds # diamonds comes with ggplot2
+dim(dmd)
 ```
 
 ```
@@ -47,7 +48,7 @@ dim(df)
 ```
 
 ```r
-head(df)
+head(dmd)
 ```
 
 ```
@@ -64,36 +65,13 @@ head(df)
 
 ---
 
-## Explore data, continued
-
-
-```r
-names(df)
-```
-
-```
-##  [1] "carat"   "cut"     "color"   "clarity" "depth"   "table"  
-##  [7] "price"   "x"       "y"       "z"
-```
-
-```r
-letters[1:26] 
-```
-
-```
-##  [1] "a" "b" "c" "d" "e" "f" "g" "h" "i" "j" "k" "l" "m" "n" "o"
-## [16] "p" "q" "r" "s" "t" "u" "v" "w" "x" "y" "z"
-```
-
----
-
-## Explore data, continued
+## Exploring data, continued
 
 How many distinct values are there in the variable `cut`?
 
 
 ```r
-DiaCut &lt;- df$cut
+DiaCut &lt;- dmd$cut
 unique(DiaCut)
 ```
 
@@ -123,12 +101,12 @@ One way to visualize categorical data is to use a bar graph
 
 
 ```r
-g &lt;- ggplot(data = df, aes(x = cut)) + 
+g &lt;- ggplot(data = dmd, aes(x = cut)) + 
   geom_bar() 
 print(g)
 ```
 
-&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-6-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-5-1.png" width="50%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -142,7 +120,7 @@ print(g)
 
 
 ```r
-unique(df$color)
+unique(dmd$color)
 ```
 
 ```
@@ -154,7 +132,7 @@ unique(df$color)
 
 
 ```r
-table(df$color)
+table(dmd$color)
 ```
 
 ```
@@ -169,11 +147,11 @@ table(df$color)
 
 
 ```r
-ggplot(df, aes(color)) + ## can omit 'data = ' and 'x = '
+ggplot(dmd, aes(color)) + ## can omit 'data = ' and 'x = '
   geom_bar()
 ```
 
-&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-9-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-8-1.png" width="50%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -183,7 +161,7 @@ Frequency of color for each cut
 
 
 ```r
-table(df$cut, df$color)
+table(dmd$cut, dmd$color)
 ```
 
 ```
@@ -202,12 +180,12 @@ table(df$cut, df$color)
 
 
 ```r
-ggplot(df, aes(color)) + ## can omit 'data = ' and 'x = '
+ggplot(dmd, aes(color)) + ## can omit 'data = ' and 'x = '
   geom_bar() +
 * facet_wrap(~cut)
 ```
 
-&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-11-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-10-1.png" width="50%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -215,12 +193,12 @@ ggplot(df, aes(color)) + ## can omit 'data = ' and 'x = '
 
 
 ```r
-*ggplot(df, aes(color, fill = clarity)) +
+*ggplot(dmd, aes(color, fill = clarity)) +
   geom_bar() +
   facet_wrap(~cut) 
 ```
 
-&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-12-1.png" width="75%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-11-1.png" width="75%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -228,7 +206,7 @@ ggplot(df, aes(color)) + ## can omit 'data = ' and 'x = '
 
 Produce the following plots:
 
-&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-13-1.png" width="75%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-12-1.png" width="75%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -238,11 +216,11 @@ What is the distribution of `carat` like?
 
 
 ```r
-ggplot(df, aes(carat)) +
+ggplot(dmd, aes(carat)) +
   geom_histogram()
 ```
 
-&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-14-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-13-1.png" width="50%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -251,7 +229,7 @@ ggplot(df, aes(carat)) +
 - Measure of location: sample mean and median
 - Measure of spread: sample variance and standard deviation
 
-&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-15-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-14-1.png" width="50%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -262,8 +240,8 @@ The sample mean is given by sum of samples divided by the number of samples:
 
 
 ```r
-d &lt;- read.table(file = "heights.txt", header = TRUE, sep = " ")
-mom &lt;- d$Mheight
+ht &lt;- read.table(file = "heights.txt", header = TRUE, sep = " ")
+mom &lt;- ht$Mheight
 s &lt;- sum(mom); n &lt;- length(mom)
 mom_height_mean &lt;- s/n
 print(mom_height_mean)
@@ -323,7 +301,7 @@ The median is the same as the 50% quantile.
 
 
 ```r
-carat &lt;- df$carat
+carat &lt;- dmd$carat
 mean(carat); median(carat)
 ```
 
@@ -426,20 +404,71 @@ sd(mom) # sd() gives the sample standard deviation of a vector
 
 
 ```r
-ggplot(d, aes(Dheight)) + geom_histogram()
+ggplot(ht, aes(Dheight)) + geom_histogram()
 ```
 
-&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-26-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-25-1.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 
 ```r
-D_height &lt;- d$Dheight
+D_height &lt;- ht$Dheight
 c(mean(D_height), median(D_height), var(D_height))
 ```
 
 ```
 ## [1] 63.751055 63.600000  6.760274
 ```
+
+---
+
+## Box plot
+
+**Example**: using `diamonds` data set, describe the distribution of `carat` for each `cut`
+
+
+```r
+g &lt;- ggplot(dmd, aes(x = cut, y = carat)) +
+  geom_boxplot()
+print(g)
+```
+
+&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-27-1.png" width="45%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Box plot, continued
+
+- The thick line indicates the median.
+- The lower and upper hinges correspond to the 25% and 75% quantiles. 
+- The upper whisker extends from the hinge to the largest value no further than 1.5 `\(\times\)` IQR from the hinge, where IQR is the inter-quartile range (distance between the 25% and 75% quantiles). Similarly for the lower whisker.
+
+---
+
+## Scatter plots
+
+**Example**: how are `carat` and `price` associated in `diamonds` data set?
+
+
+```r
+g &lt;- ggplot(dmd, aes(x = carat, y = price)) +
+  geom_point()
+print(g)
+```
+
+&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-28-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Scatter plots, continued
+
+
+```r
+g &lt;- ggplot(dmd, aes(x = carat, y = price, color = cut)) +
+  geom_point() 
+print(g)
+```
+
+&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-29-1.png" width="55%" style="display: block; margin: auto;" /&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

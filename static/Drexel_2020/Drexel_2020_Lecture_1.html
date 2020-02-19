@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>Lecture 1</title>
     <meta charset="utf-8" />
@@ -13,6 +13,7 @@
 class: center, middle, inverse, title-slide
 
 # Lecture 1
+## R/RStudio basics
 ### Jung-Jin Lee
 ### Jan 7, 2020
 
@@ -24,6 +25,41 @@ class: center, middle, inverse, title-slide
 ## Help on slides
 
 At any time, press `h` to open `Help`.
+
+---
+
+## Installing R/RStudio
+
+- Detailed instruction can be found [here](install_R_RStudio.pdf)
+
+- To install R, go to https://www.r-project.org/ and follow instruction there
+    - Click on CRAN under Download on the left
+    - Choose the closest mirror site (e.g. http://lib.stat.cmu.edu/R/CRAN/)
+    - Download R for your platform (Windows/Mac/Linux)
+    
+- To install RStudio (an integrated development environment for R), go to https://www.rstudio.com/ and follow instruction
+
+- Also, RStudio Cloud is available (currently alpha version) at https://rstudio.cloud/
+
+---
+
+## RStudio IDE overview
+
+&lt;p align = "center"&gt; 
+  &lt;img src = rstudio.png&gt;
+&lt;/p&gt;
+
+---
+
+## Additional software and libraries
+
+- (Not essential) If at all possible, install `\(\TeX\)` using one of the following options:
+    - MiKTeX (http://miktex.org): recommended for Windows users
+    - MacTeX (http://tug.org/mactex): recommended for Mac users
+    
+- Open RStudio, and go to Tools `\(\rightarrow\)` Install Packages... and install the following libraries using default options:
+    - `tidyverse`
+    - `tinytex` (unnecessary if you installed `\(\TeX\)`)
 
 ---
 
@@ -48,29 +84,6 @@ easy descriptions or inferences of the data
 - Excellent support for data visualization
 
 - Free!
-
----
-
-## Installing R/RStudio
-
-- Detailed instruction can be found [here](install_R_RStudio.pdf)
-
-- To install R, go to https://www.r-project.org/ and follow instruction there
-    - Click on CRAN under Download on the left
-    - Choose the closest mirror site (e.g. http://lib.stat.cmu.edu/R/CRAN/)
-    - Download R for your platform (Windows/Mac/Linux)
-    
-- To install RStudio (an integrated development environment for R), go to https://www.rstudio.com/ and follow instruction
-
-- Also, RStudio Cloud is available (currently alpha version) at https://rstudio.cloud/
-
----
-
-## RStudio IDE overview
-
-&lt;p align = "center"&gt; 
-  &lt;img src = rstudio.png&gt;
-&lt;/p&gt;
 
 ---
 
@@ -144,11 +157,10 @@ easy descriptions or inferences of the data
 
 - To create a new .Rmd file, File `\(\rightarrow\)` New File `\(\rightarrow\)` R Markdown `\(\rightarrow\)` (HTML/PDF/Word)
 
-- To produce pdf output, run following (it may take some time):
+- If you have not installed `\(TeX\)`, run following (it may take some time) in console - this is necessary to generate pdf output:
 
 
 ```r
-install.packages("tinytex")
 tinytex::install_tinytex()
 ```
 
@@ -654,6 +666,36 @@ age_Simpsons[c("Bart", "Lisa", "Maggie")]
 ##   Bart   Lisa Maggie 
 ##     10      8      1
 ```
+
+---
+
+## Vector manipulation, continued
+
+Components of a vector can be extracted using logical values:
+
+
+```r
+age_Simpsons[c(TRUE, TRUE, FALSE, TRUE, FALSE)]
+```
+
+```
+## Homer Marge  Lisa 
+##    36    34     8
+```
+
+--
+
+
+```r
+male &lt;- c("Homer", "Bart")
+age_Simpsons[names(age_Simpsons) %in% male]
+```
+
+```
+## Homer  Bart 
+##    36    10
+```
+
 ---
 
 ## Special vectors -- part I
@@ -970,35 +1012,6 @@ tail(d) # last few rows
 ## 1374    70.8    71.0
 ## 1375    63.0    73.1
 ```
-
----
-
-## Histogram
-
-The first step of data analysis is often data visualization. A histogram is a good tool to understand the range and frequency of given data.
-
-.pull-left-code[
-Instead of using graphic feature from base R, we will use a package developed especially for visualization.
-
-
-```r
-install.packages("tidyverse")
-library(tidyverse)
-```
-
-In fact, we need only `ggplot2`, which is one of packages contained in `tidyverse`.
-
-
-```r
-g1 &lt;- ggplot(d, aes(x = Mheight)) + 
-  geom_histogram()
-print(g1)
-```
-]
-
-.pull-right-plot[
-&lt;img src="Drexel_2020_Lecture_1_files/figure-html/unnamed-chunk-53-1.png" style="display: block; margin: auto;" /&gt;
-]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

@@ -1,5 +1,6 @@
 ---
 title: "Lecture 2"
+subtitle: "Exploring data through visualization"
 author: "Jung-Jin Lee"
 date: "Jan 14, 2020"
 output:
@@ -44,32 +45,23 @@ options(width = 65) # controls console (and slide) output width
   
 ---
 
-## Explore data
+## Exploring data
 
 ```{r}
-library(tidyverse)
-df <- diamonds ## diamonds comes with ggplot2
-dim(df)
-head(df)
+library(tidyverse) # need to load the tidyverse library #<<
+dmd <- diamonds # diamonds comes with ggplot2
+dim(dmd)
+head(dmd)
 ```
 
 ---
 
-## Explore data, continued
-
-```{r}
-names(df)
-letters[1:26] 
-```
-
----
-
-## Explore data, continued
+## Exploring data, continued
 
 How many distinct values are there in the variable `cut`?
 
 ```{r}
-DiaCut <- df$cut
+DiaCut <- dmd$cut
 unique(DiaCut)
 ```
 
@@ -86,7 +78,7 @@ table(DiaCut)
 One way to visualize categorical data is to use a bar graph
 
 ```{r, out.width = "50%"}
-g <- ggplot(data = df, aes(x = cut)) + 
+g <- ggplot(data = dmd, aes(x = cut)) + 
   geom_bar() 
 print(g)
 ```
@@ -102,13 +94,13 @@ print(g)
 --
 
 ```{r}
-unique(df$color)
+unique(dmd$color)
 ```
 
 --
 
 ```{r}
-table(df$color)
+table(dmd$color)
 ```
 
 ---
@@ -116,7 +108,7 @@ table(df$color)
 ## Exercise, continued
 
 ```{r, out.width = "50%"}
-ggplot(df, aes(color)) + ## can omit 'data = ' and 'x = '
+ggplot(dmd, aes(color)) + ## can omit 'data = ' and 'x = '
   geom_bar()
 ```
 
@@ -127,7 +119,7 @@ ggplot(df, aes(color)) + ## can omit 'data = ' and 'x = '
 Frequency of color for each cut
 
 ```{r}
-table(df$cut, df$color)
+table(dmd$cut, dmd$color)
 ```
 
 ---
@@ -135,7 +127,7 @@ table(df$cut, df$color)
 ## Graphs using facets
 
 ```{r, out.width = "50%"}
-ggplot(df, aes(color)) + ## can omit 'data = ' and 'x = '
+ggplot(dmd, aes(color)) + ## can omit 'data = ' and 'x = '
   geom_bar() +
   facet_wrap(~cut) #<<
 ```
@@ -145,7 +137,7 @@ ggplot(df, aes(color)) + ## can omit 'data = ' and 'x = '
 ## Colored bar graphs
 
 ```{r, out.width = "75%", fig.asp = 0.7}
-ggplot(df, aes(color, fill = clarity)) + #<<
+ggplot(dmd, aes(color, fill = clarity)) + #<<
   geom_bar() +
   facet_wrap(~cut) 
 ```
@@ -157,7 +149,7 @@ ggplot(df, aes(color, fill = clarity)) + #<<
 Produce the following plots:
 
 ```{r, echo = F, out.width = "75%", fig.asp = 0.85}
-ggplot(df, aes(cut, fill = clarity)) +
+ggplot(dmd, aes(cut, fill = clarity)) +
   geom_bar() +
   theme(axis.text.x = element_text(angle = -90, hjust = 0, vjust = 0.5)) +
   facet_wrap(~color) 
@@ -170,7 +162,7 @@ ggplot(df, aes(cut, fill = clarity)) +
 What is the distribution of `carat` like?
 
 ```{r, out.width = "50%"}
-ggplot(df, aes(carat)) +
+ggplot(dmd, aes(carat)) +
   geom_histogram()
 ```
 
@@ -182,9 +174,9 @@ ggplot(df, aes(carat)) +
 - Measure of spread: sample variance and standard deviation
 
 ```{r, out.width = "50%", echo = F}
-ggplot(df, aes(carat)) +
+ggplot(dmd, aes(carat)) +
   geom_histogram() +
-  geom_vline(xintercept = mean(df$carat), lty = "dashed", color = "red")
+  geom_vline(xintercept = mean(dmd$carat), lty = "dashed", color = "red")
 ```
 
 ---
@@ -195,8 +187,8 @@ The sample mean is given by sum of samples divided by the number of samples:
 $$\bar{x} = \frac{x_1+x_2+\cdots+x_n}{n}$$
 
 ```{r}
-d <- read.table(file = "heights.txt", header = TRUE, sep = " ")
-mom <- d$Mheight
+ht <- read.table(file = "heights.txt", header = TRUE, sep = " ")
+mom <- ht$Mheight
 s <- sum(mom); n <- length(mom)
 mom_height_mean <- s/n
 print(mom_height_mean)
@@ -235,7 +227,7 @@ The median is the same as the 50% quantile.
 --
 
 ```{r}
-carat <- df$carat
+carat <- dmd$carat
 mean(carat); median(carat)
 ```
 
@@ -302,12 +294,52 @@ sd(mom) # sd() gives the sample standard deviation of a vector
 ## Exercise, continued
 
 ```{r, out.width = "40%"}
-ggplot(d, aes(Dheight)) + geom_histogram()
+ggplot(ht, aes(Dheight)) + geom_histogram()
 ```
 
 ```{r}
-D_height <- d$Dheight
+D_height <- ht$Dheight
 c(mean(D_height), median(D_height), var(D_height))
 ```
 
+---
 
+## Box plot
+
+**Example**: using `diamonds` data set, describe the distribution of `carat` for each `cut`
+
+```{r, out.width = "45%"}
+g <- ggplot(dmd, aes(x = cut, y = carat)) +
+  geom_boxplot()
+print(g)
+```
+
+---
+
+## Box plot, continued
+
+- The thick line indicates the median.
+- The lower and upper hinges correspond to the 25% and 75% quantiles. 
+- The upper whisker extends from the hinge to the largest value no further than 1.5 $\times$ IQR from the hinge, where IQR is the inter-quartile range (distance between the 25% and 75% quantiles). Similarly for the lower whisker.
+
+---
+
+## Scatter plots
+
+**Example**: how are `carat` and `price` associated in `diamonds` data set?
+
+```{r, out.width = "50%"}
+g <- ggplot(dmd, aes(x = carat, y = price)) +
+  geom_point()
+print(g)
+```
+
+---
+
+## Scatter plots, continued
+
+```{r, out.width = "55%"}
+g <- ggplot(dmd, aes(x = carat, y = price, color = cut)) +
+  geom_point() 
+print(g)
+```

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>Lecture 3</title>
     <meta charset="utf-8" />
@@ -842,98 +842,6 @@ head(cal_wide_2)
 ## 3 Patient3       300   500    450
 ## 4 Patient4       250   450    500
 ```
-
----
-
-## Box plot
-
-**Example**: describe the distribution of `Sepal.Length` using box plot.
-
-
-```r
-g &lt;- ggplot(d, aes(x = Species, y = Sepal.Length)) +
-  geom_boxplot()
-print(g)
-```
-
-&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-39-1.png" width="50%" style="display: block; margin: auto;" /&gt;
-
----
-
-## Box plot, continued
-
-- The thick line indicates the median.
-- The lower and upper hinges correspond to the 25% and 75% quantiles. 
-- The upper whisker extends from the hinge to the largest value no further than 1.5 `\(\times\)` IQR from the hinge, where IQR is the inter-quartile range (distance between the 25% and 75% quantiles). Similarly for the lower whisker. 
-
---
-
-**Exercise**: compute the maximum, minimum, 25% quantile, 75% quantile and median for `versicola` species and compare with the previous plot. 
-
---
-
-
-```r
-ds &lt;- d %&gt;%
-  filter(Species == "versicolor")
-quantile(ds$Sepal.Length)
-```
-
-```
-##   0%  25%  50%  75% 100% 
-##  4.9  5.6  5.9  6.3  7.0
-```
-
----
-
-## Box plot, continued
-
-**Exercise**: create the following plots.
-
-&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-41-1.png" width="50%" style="display: block; margin: auto;" /&gt;
-
----
-
-## Scatter plots
-
-How are `Sepal.Length` and `Sepal.Width` associated?
-
---
-
-
-```r
-g &lt;- ggplot(d, aes(x = Sepal.Length, y = Sepal.Width)) +
-  geom_point()
-print(g)
-```
-
-&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-42-1.png" width="50%" style="display: block; margin: auto;" /&gt;
-
----
-
-## Scatter plots, continued
-
-
-```r
-g &lt;- ggplot(d, aes(Sepal.Length, Sepal.Width, color = Species)) +
-  geom_point()
-print(g)
-```
-
-&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-43-1.png" width="50%" style="display: block; margin: auto;" /&gt;
-
----
-
-## Scatter plots, continued
-
-
-```r
-g2 &lt;- g + theme(aspect.ratio = 1) +
-  ggtitle("A better shape") # additional features can be added
-print(g2)
-```
-
-&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-44-1.png" width="60%" style="display: block; margin: auto;" /&gt;
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
