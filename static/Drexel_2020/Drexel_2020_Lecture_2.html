@@ -72,7 +72,7 @@ How many distinct values are there in the variable `cut`?
 
 ```r
 DiaCut &lt;- dmd$cut
-unique(DiaCut)
+*unique(DiaCut)
 ```
 
 ```
@@ -80,11 +80,13 @@ unique(DiaCut)
 ## Levels: Fair &lt; Good &lt; Very Good &lt; Premium &lt; Ideal
 ```
 
+--
+
 What is the frequency of each value?
 
 
 ```r
-table(DiaCut)
+*table(DiaCut)
 ```
 
 ```
@@ -101,8 +103,8 @@ One way to visualize categorical data is to use a bar graph
 
 
 ```r
-g &lt;- ggplot(data = dmd, aes(x = cut)) + 
-  geom_bar() 
+*g &lt;- ggplot(data = dmd, aes(x = cut)) +
+* geom_bar()
 print(g)
 ```
 
@@ -217,7 +219,7 @@ What is the distribution of `carat` like?
 
 ```r
 ggplot(dmd, aes(carat)) +
-  geom_histogram()
+* geom_histogram()
 ```
 
 &lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-13-1.png" width="50%" style="display: block; margin: auto;" /&gt;
@@ -228,8 +230,6 @@ ggplot(dmd, aes(carat)) +
 
 - Measure of location: sample mean and median
 - Measure of spread: sample variance and standard deviation
-
-&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-14-1.png" width="50%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -255,7 +255,7 @@ R has a built in function to compute the mean:
 
 
 ```r
-mean(mom) # mean() gives the mean of a vector
+*mean(mom) # mean() gives the mean of a vector
 ```
 
 ```
@@ -270,7 +270,7 @@ The median is the value separating the higher half from the lower half of numeri
 
 
 ```r
-median(mom)
+*median(mom)
 ```
 
 ```
@@ -281,7 +281,7 @@ In general, one can compute quantiles (cut points dividing range of numerical da
 
 
 ```r
-quantile(mom)
+*quantile(mom)
 ```
 
 ```
@@ -321,7 +321,7 @@ mean(carat); median(carat)
 
 
 ```r
-quantile(carat)
+quantile(carat) 
 ```
 
 ```
@@ -333,7 +333,7 @@ quantile(carat)
 
 
 ```r
-quantile(carat, probs = 0.9)
+*quantile(carat, probs = 0.9)
 ```
 
 ```
@@ -349,16 +349,7 @@ The sample variance measures spread of given data:
 `$$s^2 =\frac{(x_1-\bar{x})^2+(x_2-\bar{x})^2+\cdots+(x_n-\bar{x})^2}{n-1}.$$`
 Note that the denominator is `\(n-1\)`, not `\(n\)`.
 
-R has a built in function to compute the sample variance:
-
-
-```r
-var(mom) # var() gives the sample variance of a vector
-```
-
-```
-## [1] 5.546511
-```
+--
 
 One could also compute the sample variance using the definition:
 
@@ -366,6 +357,19 @@ One could also compute the sample variance using the definition:
 ```r
 v1 &lt;- mom-mean(mom); v2 &lt;- v1^2
 sum(v2)/(length(mom)-1)
+```
+
+```
+## [1] 5.546511
+```
+
+--
+
+R has a built in function to compute the sample variance:
+
+
+```r
+*var(mom) # var() gives the sample variance of a vector
 ```
 
 ```
@@ -383,7 +387,7 @@ R has a built in function to compute the sample standard deviation:
 
 
 ```r
-sd(mom) # sd() gives the sample standard deviation of a vector
+*sd(mom) # sd() gives the sample standard deviation of a vector
 ```
 
 ```
@@ -407,7 +411,7 @@ sd(mom) # sd() gives the sample standard deviation of a vector
 ggplot(ht, aes(Dheight)) + geom_histogram()
 ```
 
-&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-25-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-24-1.png" width="40%" style="display: block; margin: auto;" /&gt;
 
 
 ```r
@@ -428,11 +432,11 @@ c(mean(D_height), median(D_height), var(D_height))
 
 ```r
 g &lt;- ggplot(dmd, aes(x = cut, y = carat)) +
-  geom_boxplot()
+* geom_boxplot()
 print(g)
 ```
 
-&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-27-1.png" width="45%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-26-1.png" width="45%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -441,6 +445,21 @@ print(g)
 - The thick line indicates the median.
 - The lower and upper hinges correspond to the 25% and 75% quantiles. 
 - The upper whisker extends from the hinge to the largest value no further than 1.5 `\(\times\)` IQR from the hinge, where IQR is the inter-quartile range (distance between the 25% and 75% quantiles). Similarly for the lower whisker.
+
+---
+
+## Violin plot
+
+**Example**: using `diamonds` data set, describe the distribution of `carat` for each `cut`
+
+
+```r
+g &lt;- ggplot(dmd, aes(x = cut, y = carat)) +
+* geom_violin(draw_quantiles = c(0.25, 0.5, 0.75))
+print(g)
+```
+
+&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-27-1.png" width="45%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -468,7 +487,44 @@ g &lt;- ggplot(dmd, aes(x = carat, y = price, color = cut)) +
 print(g)
 ```
 
-&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-29-1.png" width="55%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-29-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Improving plots
+
+
+```r
+g &lt;- ggplot(dmd, aes(x = carat, y = price, color = cut)) +
+  geom_point() +
+* theme_classic() +
+* labs(x = "Carats", y = "Price of diamond", color = "Cut values") +
+* ggtitle("Diamonds data")
+print(g)
+```
+
+&lt;img src="Drexel_2020_Lecture_2_files/figure-html/unnamed-chunk-30-1.png" width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Exporting plots
+
+`ggsave()` exports plots generated by `ggplot`:
+
+
+```r
+*ggsave(filename = "diamonds.pdf", g)
+```
+
+--
+
+Other file formats are available:
+
+
+```r
+ggsave(filename = "diamonds.png", g) 
+ggsave(filename = "diamonds.jpeg", g) 
+```
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

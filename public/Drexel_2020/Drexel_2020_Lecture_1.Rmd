@@ -35,6 +35,30 @@ At any time, press `h` to open `Help`.
 
 ---
 
+## What is statistics?
+
+- Statistics is the science of learning from data
+
+- The goal of statistics is to summarize data in a way that allows for
+easy descriptions or inferences of the data
+  - Data visualization and computing are important parts of statistics
+
+- R, a language and environment for statistical computing and graphics, will be used as a main tool throughout the course
+
+---
+
+## Why R? 
+
+- Specialized for data analysis
+
+- Many packages have been developed and are available
+
+- Excellent support for data visualization
+
+- Free!
+
+---
+
 ## Installing R/RStudio
 
 - Detailed instruction can be found [here](install_R_RStudio.pdf)
@@ -70,30 +94,6 @@ At any time, press `h` to open `Help`.
 
 ---
 
-## What is statistics?
-
-- Statistics is the science of learning from data
-
-- The goal of statistics is to summarize data in a way that allows for
-easy descriptions or inferences of the data
-  - Data visualization and computing are important parts of statistics
-
-- R, a language and environment for statistical computing and graphics, will be used as a main tool throughout the course
-
----
-
-## Why R? 
-
-- Specialized for data analysis
-
-- Many packages have been developed and are available
-
-- Excellent support for data visualization
-
-- Free!
-
----
-
 ## Using R console as a calculator
 
 ```{r}
@@ -116,43 +116,42 @@ easy descriptions or inferences of the data
 
 ---
 
-## Using R script / Rmd files / Others
-
-- File $\rightarrow$ New File $\rightarrow$ R Script for a plain R script
-
-  - A part of an R script is copied into the R console and run
-  - Saved for future use
-
-- File $\rightarrow$ New File $\rightarrow$ R Markdown for an R markdown files
-
-  - Mixture of plan text and R codes (called *chunks*)
-  - Great for generating report (preferred for **homework submission!**)
-  
-- There are also other options for presentation, web application (Shiny)
-
-  - Not covered in this course
-
----
-
 ## R project setup
 
-- Make a directory to be used for class (e.g. /Users/leej39/MLAS_530S_2020)
+- Make a directory that will be used for the class (e.g. /Users/leej39/MLAS_530S_2020)
+  - For easy access, all the data files and scripts used in the class are assumed to be saved in this directory
 
 - File $\rightarrow$ New Project $\rightarrow$ Existing Directory $\rightarrow$ Create Project from Existing Directory $\rightarrow$ Choose /Users/leej39/MLAS_530S_2020
 
-- Start RStudio by opening the .Rproj file
+- You can start RStudio by opening the .Rproj file
+  - Running `getwd()` in console shows the current working directory, which should be the class directory you made previously.
 
-- To create a new .Rmd file, File $\rightarrow$ New File $\rightarrow$ R Markdown $\rightarrow$ (HTML/PDF/Word)
-
-- If you have not installed $TeX$, run following (it may take some time) in console - this is necessary to generate pdf output:
+- If you have not installed $\TeX$, run following (it may take some time) in console - this is necessary to generate pdf output:
 
 ```{r, eval = FALSE}
 tinytex::install_tinytex()
 ```
 
-- Useful chunk options: `message = F, echo = F, eval = F`
+---
 
-- Inline coding can be done using a pair of backticks and `r`: ` `r "\x60r 2+3\x60"`\`
+## R scripts / R Markdown / Others
+
+- File $\rightarrow$ New File $\rightarrow$ R Script for a plain R script
+
+  - A part of an R script is copied into the R console and run
+  - Can be saved for future use
+
+- File $\rightarrow$ New File $\rightarrow$ R Markdown for an R markdown files
+
+  - Mixture of plain text and R codes (called *chunks*)
+  - Great for generating report (preferred for **homework submission!**)
+  - Can be rendered into (HTML/PDF/Word
+  - Useful chunk options: `message = F, echo = F, eval = F`
+  - Inline coding can be done using a pair of backticks and `r`: ` `r "\x60r 2+3\x60"`\`
+
+- R script and R markdown files can also be developed into presentation (`xaringan`), web application (`Shiny`), blog (`blogdown`), and book (`bookdown`)
+
+  - Not covered in this course
 
 ---
 
@@ -177,7 +176,7 @@ Num1 <- 5
 Num2 <- 3 
 sum_num <- Num1 + Num2
 prod.num <- Num1 * Num2
-print(sum_num) 
+print(sum_num) #<<
 print(prod.num)
 ```
 
@@ -234,11 +233,11 @@ print(call4)
 
 ```{r}
 p <- 4; q <- 6 
-print(p < 5 & q < 7) # & means "and": TRUE only if both are TRUE
+print(p < 5 & q < 7) # & means "and": TRUE only if both are TRUE #<<
 print(p < 5 & q < 5) 
-print(p < 5 | q < 5) # | means "or": FALSE only if both are FALSE
-print(!(p < 5)) # ! means "not"
-```
+print(p < 5 | q < 5) # | means "or": FALSE only if both are FALSE #<<
+print(!(p < 5)) # ! means "not" #<<
+``` 
 
 ---
 
@@ -248,7 +247,7 @@ One or more values can produce new one using R functions.
 
 ```{r}
 a <- 1; b <- 3 
-s <- sum(a, b) # sum() is a function that computes the sum
+s <- sum(a, b) # sum() is a function that computes the sum #<<
 print(s)
 ```
 
@@ -256,7 +255,7 @@ print(s)
 first_name <- "John" 
 last_name <- "Smith"
 # paste() puts together multiple character strings
-full_name <- paste(first_name, last_name) 
+full_name <- paste(first_name, last_name) #<<
 print(full_name)
 ```
 
@@ -269,7 +268,7 @@ For detailed usage of a function, type `help(function_name)`, e.g. `help(paste)`
 Multiple numerical values or characters can be saved as a single variable using an R function `c()`.
 
 ```{r}
-vec1 <- c(2, 3, 5, 7, 1, 4)
+vec1 <- c(2, 3, 5, 7, 1, 4) #<<
 print(vec1)
 ```
 
@@ -288,7 +287,7 @@ print(vec3)
 ## Functions applied to a vector -- part I
 
 ```{r}
-length(vec1)
+length(vec1) # number of components of a vector #<<
 sum(vec1)
 ```
 
@@ -299,7 +298,7 @@ sum(vec1)
 --
 
 ```{r}
-sort(vec1)
+sort(vec1) #<<
 ```
 
 --
@@ -366,7 +365,7 @@ Each member of a vector can be given a name:
 ```{r}
 age_Simpsons <- c(36, 34, 10, 8, 1)
 print(age_Simpsons)
-names(age_Simpsons) # currently no names are given to each component
+names(age_Simpsons) # currently no names are given to each component #<<
 # Now assign names to each member of the vector
 names(age_Simpsons) <- c("Homer", "Marge", "Bart", "Lisa", "Maggie")
 print(age_Simpsons)
@@ -379,13 +378,13 @@ print(age_Simpsons)
 Use brackets `[]` to extract components of a vector.
 
 ```{r}
-a <- vec1[3]
+a <- vec1[3] #<<
 print(a)
 ```
 
 ```{r}
-dm <- vec2[c(1, 5)]
-print(dm)
+b <- vec2[c(1, 5)]
+print(b)
 ```
 
 --
@@ -473,7 +472,7 @@ sum(w2)
 ```{r}
 # one can use a function seq()
 # type ?seq to get help
-w3 <- seq(2, 20, by = 2)
+w3 <- seq(2, 20, by = 2) #<<
 sum(w3)
 ```
 
@@ -501,7 +500,7 @@ print(vec6)
 ```
 
 ```{r}
-vec7 <- paste0("Visitor_", vec5)
+vec7 <- paste0("Visitor_", vec5) #<<
 print(vec7)
 ```
 
@@ -521,11 +520,11 @@ Vectors of an equal length can be combined to form a data frame.
 first_name <- c("Lisa", "John", "Chuck", "Matt")
 last_name <- c("Simpson", "Smith", "Williams", "June")
 age_yrs <- c(8, 42, 81, 23)
-book <- data.frame(first = first_name,
-                   last = last_name,
-                   age = age_yrs)
+book <- data.frame(first = first_name, #<<
+                   last = last_name,   #<<
+                   age = age_yrs)      #<<
 print(book)
-dim(book) # dimensions of a data frame: dim()
+dim(book) # dimensions of a data frame: dim() #<<
 ```
 
 ---
@@ -536,7 +535,7 @@ dim(book) # dimensions of a data frame: dim()
 # extract a single element from a data frame
 book[2, 3]
 # extract a column: use $
-age_extracted <- book$age
+age_extracted <- book$age #<<
 print(age_extracted)
 # extract a row
 book[4, ]
@@ -579,20 +578,19 @@ print(book)
 
 ## Reading a data file 
 
-Download a [file](heights.txt) to be used in an example (Chrome users: Menu $\rightarrow$ More Tools $\rightarrow$ Save Page As).
+Download a [file](heights.txt) (Chrome users: Menu $\rightarrow$ More Tools $\rightarrow$ Save Page As) and move it to the class directory.
 
 ```{r}
-# "heights.txt" is a space-separated file 
-# consisting of 1375 observations of mom/daughter age height pairs
-# It is assumed to be saved in the course project folder
-d <- read.table(file = "heights.txt", header = TRUE, sep = " ")
+# "heights.txt" is a space-separated file with a header
+# 1375 observations of UK mom/daughter age height pairs
+ht <- read.table(file = "heights.txt", header = TRUE, sep = " ") #<<
 ```
 
 A glance at a data frame:
 
 ```{r}
-dim(d) # dimension
-names(d) # variable(column) names
+dim(ht); nrow(ht); ncol(ht) # dimension, number of rows/columns #<<
+names(ht) # variable(column) names
 ```
 
 ---
@@ -600,6 +598,6 @@ names(d) # variable(column) names
 ## Inspecting a data frame
 
 ```{r}
-head(d) # first few rows (6 rows by default)
-tail(d) # last few rows
+head(ht) # first few rows (6 rows by default) #<<
+tail(ht) # last few rows #<<
 ```
