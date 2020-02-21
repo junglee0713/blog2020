@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>Lecture 4</title>
     <meta charset="utf-8" />
@@ -20,6 +20,125 @@ class: center, middle, inverse, title-slide
 
  
 
+
+## Wide and long form of data
+
+Calories taken by four patients on a certain day:
+
+
+```r
+cal_wide &lt;- data.frame(subject = paste0("Patient", 1:4),
+                      breakfast = c(300, 350, 300, 250),
+                      lunch = c(500, 500, 500, 450),
+                      dinner = c(600, 650, 450, 500))
+print(cal_wide)
+```
+
+```
+##    subject breakfast lunch dinner
+## 1 Patient1       300   500    600
+## 2 Patient2       350   500    650
+## 3 Patient3       300   500    450
+## 4 Patient4       250   450    500
+```
+
+---
+
+## Wide and long form of data
+
+At times, _long_ format of data is more convenient to deal with:
+
+`$$\begin{array}{c|c|c} \text{subject} &amp; \text{meal} &amp; \text{calorie} \\ \hline   
+\text{Patient1} &amp; \text{breakfast} &amp; 300   \\  
+\text{Patient1} &amp; \text{lunch} &amp; 500  \\
+\text{Patient1} &amp; \text{dinner} &amp; 600  \\
+\text{Patient2} &amp; \text{breakfast} &amp; 350   \\  
+\text{Patient2} &amp; \text{lunch} &amp; 500  \\
+\text{Patient2} &amp; \text{dinner} &amp; 650  \\
+\vdots &amp; \vdots &amp; \vdots
+\end{array}$$`
+
+---
+
+## Wide and long form of data
+
+`pivot_longer()` transforms wide format into long format:
+
+
+```r
+cal_long &lt;- cal_wide %&gt;%
+  pivot_longer(cols = c("breakfast", "lunch", "dinner"), 
+               names_to = "meal", 
+               values_to = "calorie") %&gt;%
+  arrange(subject)
+head(cal_long)
+```
+
+```
+## # A tibble: 6 x 3
+##   subject  meal      calorie
+##   &lt;fct&gt;    &lt;chr&gt;       &lt;dbl&gt;
+## 1 Patient1 breakfast     300
+## 2 Patient1 lunch         500
+## 3 Patient1 dinner        600
+## 4 Patient2 breakfast     350
+## 5 Patient2 lunch         500
+## 6 Patient2 dinner        650
+```
+
+---
+
+## Wide and long form of data
+
+`pivot_longer()` can be used in a way excluding column(s) not to be transformed:
+
+
+```r
+cal_long_2 &lt;- cal_wide %&gt;%
+  pivot_longer(cols = -c("subject"), # note the use of -
+               names_to = "meal", 
+               values_to = "calorie") %&gt;%
+  arrange(subject)
+head(cal_long_2)
+```
+
+```
+## # A tibble: 6 x 3
+##   subject  meal      calorie
+##   &lt;fct&gt;    &lt;chr&gt;       &lt;dbl&gt;
+## 1 Patient1 breakfast     300
+## 2 Patient1 lunch         500
+## 3 Patient1 dinner        600
+## 4 Patient2 breakfast     350
+## 5 Patient2 lunch         500
+## 6 Patient2 dinner        650
+```
+
+---
+
+## Wide and long form of data
+
+`pivot_wider()` transforms long format to wide format:
+
+
+```r
+cal_wide_2 &lt;- cal_long %&gt;%
+  pivot_wider(names_from = "meal", values_from = "calorie")
+
+head(cal_wide_2)
+```
+
+```
+## # A tibble: 4 x 4
+##   subject  breakfast lunch dinner
+##   &lt;fct&gt;        &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+## 1 Patient1       300   500    600
+## 2 Patient2       350   500    650
+## 3 Patient3       300   500    450
+## 4 Patient4       250   450    500
+```
+
+---
 
 ## Normal distribution
 
@@ -60,7 +179,7 @@ ggplot(ht, aes(Mheight)) +
   geom_histogram()
 ```
 
-&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-3-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-7-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 --
@@ -72,7 +191,7 @@ ggplot(ht, aes(Dheight)) +
   geom_histogram()
 ```
 
-&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-4-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 Note that the histograms look like a bell.
@@ -90,7 +209,7 @@ ggplot(diamonds, aes(depth)) +
   geom_histogram()
 ```
 
-&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-5-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 --
@@ -102,7 +221,7 @@ ggplot(iris, aes(Sepal.Width)) +
   geom_histogram() 
 ```
 
-&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-6-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-10-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -132,13 +251,13 @@ where `$$\phi_{\mu,\sigma}(x) = \frac{1}{\sqrt{2\pi}\sigma} e^{-\frac{(x-\mu)^2}
 
 
 .pull-left[
-&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-12-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 --
 
 .pull-right[
-&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-9-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-13-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 _mean_ determines the center of the bell shape, while _standard deviation_ measures the spread.
@@ -163,7 +282,7 @@ _mean_ determines the center of the bell shape, while _standard deviation_ measu
 
 **Example**: the life of a fully-charged cell phone battery is normally distributed with a mean of 13 hours with a standard deviation of 1 hour. `\(X\)`, the life of a randomly selected fully-charged phone battery, can be assumed to follow `\(N(13, 1^2)\)`. 
 
-&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-10-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-14-1.png" width="50%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -173,7 +292,7 @@ _mean_ determines the center of the bell shape, while _standard deviation_ measu
 
 --
 
-&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-11-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-15-1.png" width="50%" style="display: block; margin: auto;" /&gt;
 
 --
 
@@ -188,7 +307,7 @@ _mean_ determines the center of the bell shape, while _standard deviation_ measu
 --
 
 .pull-left[
-&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-12-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-16-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 --
@@ -224,13 +343,13 @@ pnorm(13, mean = 13, sd = 1)
 - What is the probability that `\(11 \leq X \leq 14\)`?
 
 .pull-left[
-&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-14-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-18-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 --
 
 .pull-right[
-&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-15-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -244,11 +363,11 @@ pnorm(13, mean = 13, sd = 1)
 - Determine `\(z_{0.1}\)` such that the probability that `\(Z\leq z_{0.1}\)` equals 0.9 (_hint_: look up `qnorm()`). 
 
 .pull-left[
-&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-16-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-20-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 ]
 
 .pull-right[
-&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-17-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-21-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 ]
 
 ---
@@ -257,7 +376,7 @@ pnorm(13, mean = 13, sd = 1)
 
 - Class of bell-shaped distribution determined by a parameter called _degrees of freedom_.
 
-&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-18-1.png" width="90%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-22-1.png" width="90%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -266,7 +385,7 @@ pnorm(13, mean = 13, sd = 1)
 **Example**: suppose `\(X\)` follows `\(t\)`-distribution with `\(5\)` degrees of freedom. What is the probability that `\(X\leq 0\)`? `\(X\leq -1.5\)`? `\(-1 \leq X \leq 1.2\)`? `\(X \geq 1.6\)`?
 
 .pull-left[
-&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-19-1.png" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-23-1.png" style="display: block; margin: auto;" /&gt;
 ]
 
 --
@@ -312,7 +431,7 @@ pt(1.2, df = 5) - pt(-1, df = 5)
 
 **Exercise**: suppose `\(X\)` follows `\(t\)`-distribution with `\(5\)` degrees of freedom. Determine `\(t_{5, 0.2}\)` so that the probability that `\(X\geq t_{5, 0.2} = 0.2\)` (_Hint_: look up `qt()`).
 
-&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-21-1.png" width="55%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-25-1.png" width="55%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -320,7 +439,7 @@ pt(1.2, df = 5) - pt(-1, df = 5)
 
 **Exercise**: suppose `\(X\)` follows `\(t\)`-distribution with `\(4\)` degrees of freedom. Determine `\(t_{4, 0.025}\)` so that the probability that `\(-t_{4, 0.025} \leq X \leq t_{4, 0.025} = 0.95\)`.
 
-&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-22-1.png" width="55%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-26-1.png" width="55%" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -347,7 +466,7 @@ pt(1.2, df = 5) - pt(-1, df = 5)
 --
 
 .pull-left[
-&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-23-1.png" width="95%" style="display: block; margin: auto;" /&gt;
+&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-27-1.png" width="95%" style="display: block; margin: auto;" /&gt;
 ]
 
 --
@@ -507,23 +626,6 @@ Review of confidence interval:
 ## Exercises
 
 **Exercise**: based on the `heights.txt` data, find the 80%, 90% and 95% confidence interval of the mean of UK women's heights (mom's heights).
-
-**Exercise**: `starwars`, which comes with the package `dplyr`, is a data set that contains data related with characters in the movie Star Wars. 
-
-- Explorer the data set. Subset the data so that the resulting data set contains only human species with `height` data available (_Hint_: look up `is.na()`). How many observations?
-
----
-
-## Exercises, continued
-
-- Explore the data set and create the following plot showing the height distribution of Human species:
-&lt;img src="Drexel_2020_Lecture_4_files/figure-html/unnamed-chunk-30-1.png" width="50%" style="display: block; margin: auto;" /&gt;
-
-- Find the name of the tallest Human female character.
-
-
-
-- Find the 95% confidence interval of the mean of Human male heights.
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

@@ -1,5 +1,6 @@
 ---
 title: "Lecture 3"
+subtitle: "Data manipulation"
 author: "Jung-Jin Lee"
 date: "Jan 21, 2020"
 output:
@@ -16,7 +17,6 @@ editor_options:
  
 ```{r, message = F, echo = F, warning = F}
 library(tidyverse) 
-library(gridExtra)
 library(knitr) 
 opts_chunk$set(
   tidy = FALSE,
@@ -29,6 +29,7 @@ opts_chunk$set(
   fig.width = 4,
   fig.height = 4
   )
+filter <- dplyr::filter
 options(width = 70) # controls console (and slide) output width
 ```
 
@@ -73,11 +74,7 @@ g <- ggplot(d, aes(Sepal.Length)) + geom_histogram()
 print(g)
 ```
 
-One can export a plot as a separate file:
 
-```{r, eval = F}
-ggsave(filename = "histo.pdf", g) 
-```
 
 ---
 
@@ -85,7 +82,7 @@ ggsave(filename = "histo.pdf", g)
 
 Reshaping data is an essenstial part of data analysis. We will use a package called `dplyr`, which is a part of `tidyverse`.
 
-```{r}
+```{r, eval = F}
 library(dplyr) 
 # you could run library(tidyverse) instead
 ```
@@ -102,32 +99,12 @@ These verbs, when combined with the pipe operator `%>%`, become even more powerf
 
 ## Piping
 
-**Example**: compute $\sqrt{1} + \sqrt{2} + \sqrt{3} + \cdots + \sqrt{100}$.
-
-```{r}
-num <- 1:100
-sqrt.num <- sqrt(num) # sqrt() compute the square root
-sum(sqrt.num)
-```
-
-This can be done in the following way too:
-
-```{r}
-sum(sqrt(1:100)) # repeated application of functions
-```
-
---
-
-Piping `%>%` provides a better readability. For a function `f`, `x %>% f(y, z)` returns `f(x, y, z)`
+For a function `f`, the expression `x %>% f(y, z)` is the same as `f(x, y, z)`.
 
 ```{r}
 x.in <- c(1, 3, 6, 2, 5, 4) 
-x.in %>% sum()
+x.in %>% sum() # this is same as sum(x.in) #<<
 ```
-
----
-
-## Piping, continued
 
 ```{r}
 x.in %>% sort()
@@ -136,15 +113,35 @@ x.in %>% sort(decreasing = T)
 
 --
 
-**Example**: compute $\sqrt{1} + \sqrt{2} + \sqrt{3} + \cdots + \sqrt{100}$.
+Piping is even more useful when it is used as a chain.
+
+---
+
+## Piping, continued
+
+**Example**: compute $\sqrt{\log 1} + \sqrt{\log 2} + \sqrt{\log 3} + \cdots + \sqrt{\log 100}$.
+
+--
 
 ```{r}
-num %>% sqrt() %>% sum() # chain reaction!
+num <- 1:100
+log.num <- log(num) # log() computes the natural logarithm #<<
+sqrt.log.num <- sqrt(log.num) # sqrt() computes the square root #<<
+sum(sqrt.log.num)
 ```
 
+--
+
+This can be done in the following ways too:
+
 ```{r}
-sum.value <- num %>% sqrt() %>% sum() ; print(sum.value)
- num %>% sqrt() %>% sum() -> sum.value2; print(sum.value2)
+sum(sqrt(log(num))) # repeated application of functions
+```
+
+--
+
+```{r}
+num %>% log() %>% sqrt() %>% sum() # chain reaction!
 ```
 
 ---
@@ -154,7 +151,7 @@ sum.value <- num %>% sqrt() %>% sum() ; print(sum.value)
 **Example**: create a data set consisting only of `Sepal.Length` and `Sepal.Width`.
 
 ```{r}
-s1 <- select(d, Sepal.Length, Sepal.Width)
+s1 <- select(d, Sepal.Length, Sepal.Width) #<<
 dim(s1)
 head(s1)
 ```
@@ -177,8 +174,10 @@ head(s2)
 
 ## select(), continued
 
+One can specify columns to be excluded:
+
 ```{r}
-s3 <- select(d, -Species)
+s3 <- select(d, -Species) #<<
 head(s3)
 ```
 
@@ -189,7 +188,7 @@ head(s3)
 **Example**: create a data set consisting only of `setosa` species.
 
 ```{r}
-f1 <- filter(d, Species == "setosa") # note use of ==, not =
+f1 <- filter(d, Species == "setosa") # note use of ==, not = #<<
 dim(f1)
 head(f1)
 ```
@@ -203,16 +202,14 @@ head(f1)
 --
 
 ```{r}
-f2 <- filter(d, Species %in% c("setosa", "virginica")) # %in%
-dim(f2)
+f2 <- filter(d, Species %in% c("setosa", "virginica")); dim(f2)
 tail(f2)
 ```
 
 --
 
 ```{r}
-f3 <- filter(d, Species != "versicolor") # != means "not equal"
-dim(f3)
+f3 <- filter(d, Species != "versicolor"); dim(f3)
 ```
 
 ---
@@ -224,20 +221,25 @@ dim(f3)
 --
 
 ```{r}
-f4 <- filter(d, Sepal.Length < 6); dim(f4)
+f4 <- filter(d, Sepal.Length < 6)
+dim(f4)
 head(f4)
 ```
 
---
+---
 
-Multiple conditions can be supplied for `filter()`:
+## filter(), continued
+
+Multiple conditions can be supplied to `filter()`:
 
 **Exercise**: how many `virginica` species have `Sepal.Length` at least 5.7?
 
 --
 
 ```{r}
-f5 <- filter(d, Sepal.Length >= 5.7, Species == "virginica"); dim(f5)
+# multiple conditions (comma separated) can be used in filter()
+f5 <- filter(d, Sepal.Length >= 5.7, Species == "virginica")
+dim(f5)
 ```
 
 ---
@@ -247,8 +249,9 @@ f5 <- filter(d, Sepal.Length >= 5.7, Species == "virginica"); dim(f5)
 **Example**: create a new variable `Sepal.Sum` which is defined as `Sepal.Length` + `Sepal.Width`.
 
 ```{r}
-m1 <- mutate(d, Sepal.Sum = Sepal.Length + Sepal.Width); dim(m1)
-head(m1, n = 8) # showing 8 rows using "n = 8"
+m1 <- mutate(d, Sepal.Sum = Sepal.Length + Sepal.Width) #<<
+dim(m1)
+head(m1)
 ```
 
 ---
@@ -260,10 +263,23 @@ head(m1, n = 8) # showing 8 rows using "n = 8"
 --
 
 ```{r}
-m2 <- mutate(d, size = ifelse(Sepal.Length >= 5, "big", "small"))
+m2 <- mutate(d, size = ifelse(Sepal.Length >= 5, "big", "small")) #<<
 dim(m2)
 head(m2)
 ```
+
+---
+
+## mutate(), continued
+
+**Exercise**: create a new variable `ID` which gives the identifier for each observation such as `obs1`, `obs2`, $\ldots$, `obs150`.
+
+--
+
+```{r}
+m3 <- mutate(d, ID = paste0("obs", 1:nrow(d))); head(m3)
+```
+
 
 ---
 
@@ -272,7 +288,7 @@ head(m2)
 **Example**: sort `d` by `Sepal.Length` (ascending order)
 
 ```{r}
-a1 <- arrange(d, Sepal.Length)
+a1 <- arrange(d, Sepal.Length) #<<
 dim(a1)
 head(a1)
 ```
@@ -284,7 +300,7 @@ head(a1)
 **Example**: sort `d` by `Sepal.Length` (descending order) 
 
 ```{r}
-a2 <- arrange(d, desc(Sepal.Length))
+a2 <- arrange(d, desc(Sepal.Length)) #<<
 dim(a2)
 head(a2)
 ```
@@ -316,8 +332,7 @@ r3 <- select(r2, Sepal.Length, Sepal.Width, Diff)
 --
 
 ```{r}
-r4 <- arrange(r3, desc(Diff))
-head(r4)
+r4 <- arrange(r3, desc(Diff)); head(r4)
 ```
 
 ---
@@ -327,25 +342,82 @@ head(r4)
 Piping operator `%>%` enhances readability.
 
 ```{r}
-r <- d %>% 
+r5 <- d %>% 
   mutate(Diff = Sepal.Length - Sepal.Width) %>%
   filter(Diff > 1.5, Species == "setosa") %>%
   select(Sepal.Length, Sepal.Width, Diff) %>%
   arrange(desc(Diff))
-head(r)
+head(r5)
+```
+
+---
+
+## Dot(.) notation
+
+In a chain of piping, dot(.) represents the input for the current pipe operator:
+
+```{r}
+r6 <- d %>%
+  select(Species, Petal.Width) %>%
+  mutate(ID = paste0("obs", 1:nrow(.))) #<<
+head(r6)
+```
+
+---
+
+## Other useful functions
+
+- `count()`: gives a frequency table:
+
+```{r}
+d %>% count(Species) #<<
+```
+
+--
+
+- `pull()`: extract a column (acts like `$`):
+
+```{r}
+d %>% pull(Sepal.Length) %>% head() #<<
+```
+
+---
+
+## Other useful functions, continued
+
+- `slice()`: exctract selected rows:
+
+```{r}
+d %>% select(Species, Petal.Width) %>%
+  mutate(ID = paste0("obs", 1:nrow(.))) %>%
+  slice(5:8) # rows 5 through 8 #<<
+```
+
+--
+
+- `top_n()`: top `n` elements for a given `n` and a variable:
+
+```{r}
+d %>% top_n(3, Sepal.Width) #<<
 ```
 
 ---
 
 ## group_by() / summarize()
 
-**Exercise**: find the mean `Sepal.Length` for each `Species`.
+**Example**: find the mean `Sepal.Length` for each `Species`.
+
+--
 
 ```{r}
 setosa_df <- iris %>% 
   filter(Species == "setosa")
 mean(setosa_df$Sepal.Length)
+```
 
+--
+
+```{r}
 versi_df <- iris %>% 
   filter(Species == "versicolor")
 mean(versi_df$Sepal.Length)
@@ -361,16 +433,16 @@ mean(virgi_df$Sepal.Length)
 
 `group_by()` and `summarize()` combination: summary of data (e.g. mean, max, min, median) by each category of a categorical variable. 
 
-**Exercise**: find the mean `Sepal.Length` for each `Species`.
+**Example**: find the mean `Sepal.Length` for each `Species`.
 
 ```{r}
 # For each 'Species' category in the 'iris' data set
 # compute the mean of 'Sepal.Length'
-group_by(iris, Species) %>%
-  summarize(SL.mean = mean(Sepal.Length))
+group_by(iris, Species) %>% #<<
+  summarize(mean.Sepal.Length = mean(Sepal.Length)) #<<
 ```
 
-Note that the result is a data frame with two columns: `Species` and `SL.mean`.
+Note that the result is a data frame with two columns: `Species` and `mean.Sepal.Length`.
 
 ---
 
@@ -382,90 +454,37 @@ Note that the result is a data frame with two columns: `Species` and `SL.mean`.
 
 ```{r}
 iris %>% group_by(Species) %>%
-  summarize(SL.max = max(Sepal.Length), SL.min= min(Sepal.Length))
+  summarize(max.Sepal.Length = max(Sepal.Length), # max(): maximum #<<
+            min.Sepal.Length = min(Sepal.Length)) # min(): minimum #<<
 ```
 
 ---
 
 ## group_by() / summarize(), continued
 
-One can get summary data using multiple "group by" variables.
+One can get summary data using _multiple_ "group by" variables.
 
 ```{r}
 diamonds %>% 
-  group_by(color, cut) %>%
+  group_by(color, cut) %>% #<<
   summarize(avg.price = mean(price), top.price = max(price)) 
 ```
 
 ---
 
-## Wide and long form of data
+## Exercise
 
-Calories taken by four patients on a certain day:
+**Exercise**: `starwars`, which comes with the package `dplyr`, is a data set that contains data related with characters in the movie Star Wars. 
 
-```{r}
-cal_wide <- data.frame(subject = paste0("Patient", 1:4),
-                      breakfast = c(300, 350, 300, 250),
-                      lunch = c(500, 500, 500, 450),
-                      dinner = c(600, 650, 450, 500))
-print(cal_wide)
-```
+- Explorer the data set. Subset the data so that the resulting data set contains only _Human_ species with `height` data available (_Hint_: look up `is.na()`). How many observations?
 
----
+--
 
-## Wide and long form of data
+- Using the previous subset, compute the mean height for each gender. 
 
-At times, _long_ format of data is more convenient to deal with:
+--
 
-$$\begin{array}{c|c|c} \text{subject} & \text{meal} & \text{calorie} \\ \hline   
-\text{Patient1} & \text{breakfast} & 300   \\  
-\text{Patient1} & \text{lunch} & 500  \\
-\text{Patient1} & \text{dinner} & 600  \\
-\text{Patient2} & \text{breakfast} & 350   \\  
-\text{Patient2} & \text{lunch} & 500  \\
-\text{Patient2} & \text{dinner} & 650  \\
-\vdots & \vdots & \vdots
-\end{array}$$
+- Find the homeworld of the tallest Human male character.
 
----
 
-## Wide and long form of data
 
-`pivot_longer()` transforms wide format into long format:
-
-```{r}
-cal_long <- cal_wide %>%
-  pivot_longer(cols = c("breakfast", "lunch", "dinner"), 
-               names_to = "meal", 
-               values_to = "calorie") %>%
-  arrange(subject)
-head(cal_long)
-```
-
----
-
-## Wide and long form of data
-
-`pivot_longer()` can be used in a way excluding column(s) not to be transformed:
-
-```{r}
-cal_long_2 <- cal_wide %>%
-  pivot_longer(cols = -c("subject"), # note the use of -
-               names_to = "meal", 
-               values_to = "calorie") %>%
-  arrange(subject)
-head(cal_long_2)
-```
-
----
-
-## Wide and long form of data
-
-`pivot_wider()` transforms long format to wide format:
-
-```{r}
-cal_wide_2 <- cal_long %>%
-  pivot_wider(names_from = "meal", values_from = "calorie")
-
-head(cal_wide_2)
-```

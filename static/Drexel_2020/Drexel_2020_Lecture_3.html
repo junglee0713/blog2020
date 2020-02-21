@@ -13,6 +13,7 @@
 class: center, middle, inverse, title-slide
 
 # Lecture 3
+## Data manipulation
 ### Jung-Jin Lee
 ### Jan 21, 2020
 
@@ -88,12 +89,7 @@ print(g)
 
 &lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-5-1.png" width="45%" style="display: block; margin: auto;" /&gt;
 
-One can export a plot as a separate file:
 
-
-```r
-ggsave(filename = "histo.pdf", g) 
-```
 
 ---
 
@@ -119,47 +115,17 @@ These verbs, when combined with the pipe operator `%&gt;%`, become even more pow
 
 ## Piping
 
-**Example**: compute `\(\sqrt{1} + \sqrt{2} + \sqrt{3} + \cdots + \sqrt{100}\)`.
-
-
-```r
-num &lt;- 1:100
-sqrt.num &lt;- sqrt(num) # sqrt() compute the square root
-sum(sqrt.num)
-```
-
-```
-## [1] 671.4629
-```
-
-This can be done in the following way too:
-
-
-```r
-sum(sqrt(1:100)) # repeated application of functions
-```
-
-```
-## [1] 671.4629
-```
-
---
-
-Piping `%&gt;%` provides a better readability. For a function `f`, `x %&gt;% f(y, z)` returns `f(x, y, z)`
+For a function `f`, the expression `x %&gt;% f(y, z)` is the same as `f(x, y, z)`.
 
 
 ```r
 x.in &lt;- c(1, 3, 6, 2, 5, 4) 
-x.in %&gt;% sum()
+*x.in %&gt;% sum() # this is same as sum(x.in)
 ```
 
 ```
 ## [1] 21
 ```
-
----
-
-## Piping, continued
 
 
 ```r
@@ -180,32 +146,50 @@ x.in %&gt;% sort(decreasing = T)
 
 --
 
-**Example**: compute `\(\sqrt{1} + \sqrt{2} + \sqrt{3} + \cdots + \sqrt{100}\)`.
+Piping is even more useful when it is used as a chain.
+
+---
+
+## Piping, continued
+
+**Example**: compute `\(\sqrt{\log 1} + \sqrt{\log 2} + \sqrt{\log 3} + \cdots + \sqrt{\log 100}\)`.
+
+--
 
 
 ```r
-num %&gt;% sqrt() %&gt;% sum() # chain reaction!
+num &lt;- 1:100
+*log.num &lt;- log(num) # log() computes the natural logarithm
+*sqrt.log.num &lt;- sqrt(log.num) # sqrt() computes the square root
+sum(sqrt.log.num)
 ```
 
 ```
-## [1] 671.4629
+## [1] 188.104
 ```
+
+--
+
+This can be done in the following ways too:
 
 
 ```r
-sum.value &lt;- num %&gt;% sqrt() %&gt;% sum() ; print(sum.value)
+sum(sqrt(log(num))) # repeated application of functions
 ```
 
 ```
-## [1] 671.4629
+## [1] 188.104
 ```
+
+--
+
 
 ```r
- num %&gt;% sqrt() %&gt;% sum() -&gt; sum.value2; print(sum.value2)
+num %&gt;% log() %&gt;% sqrt() %&gt;% sum() # chain reaction!
 ```
 
 ```
-## [1] 671.4629
+## [1] 188.104
 ```
 
 ---
@@ -216,7 +200,7 @@ sum.value &lt;- num %&gt;% sqrt() %&gt;% sum() ; print(sum.value)
 
 
 ```r
-s1 &lt;- select(d, Sepal.Length, Sepal.Width)
+*s1 &lt;- select(d, Sepal.Length, Sepal.Width)
 dim(s1)
 ```
 
@@ -274,9 +258,11 @@ head(s2)
 
 ## select(), continued
 
+One can specify columns to be excluded:
+
 
 ```r
-s3 &lt;- select(d, -Species)
+*s3 &lt;- select(d, -Species)
 head(s3)
 ```
 
@@ -298,7 +284,7 @@ head(s3)
 
 
 ```r
-f1 &lt;- filter(d, Species == "setosa") # note use of ==, not =
+*f1 &lt;- filter(d, Species == "setosa") # note use of ==, not =
 dim(f1)
 ```
 
@@ -330,8 +316,7 @@ head(f1)
 
 
 ```r
-f2 &lt;- filter(d, Species %in% c("setosa", "virginica")) # %in%
-dim(f2)
+f2 &lt;- filter(d, Species %in% c("setosa", "virginica")); dim(f2)
 ```
 
 ```
@@ -356,8 +341,7 @@ tail(f2)
 
 
 ```r
-f3 &lt;- filter(d, Species != "versicolor") # != means "not equal"
-dim(f3)
+f3 &lt;- filter(d, Species != "versicolor"); dim(f3)
 ```
 
 ```
@@ -374,7 +358,8 @@ dim(f3)
 
 
 ```r
-f4 &lt;- filter(d, Sepal.Length &lt; 6); dim(f4)
+f4 &lt;- filter(d, Sepal.Length &lt; 6)
+dim(f4)
 ```
 
 ```
@@ -395,9 +380,11 @@ head(f4)
 ## 6          5.4         3.9          1.7         0.4  setosa
 ```
 
---
+---
 
-Multiple conditions can be supplied for `filter()`:
+## filter(), continued
+
+Multiple conditions can be supplied to `filter()`:
 
 **Exercise**: how many `virginica` species have `Sepal.Length` at least 5.7?
 
@@ -405,7 +392,9 @@ Multiple conditions can be supplied for `filter()`:
 
 
 ```r
-f5 &lt;- filter(d, Sepal.Length &gt;= 5.7, Species == "virginica"); dim(f5)
+# multiple conditions (comma separated) can be used in filter()
+f5 &lt;- filter(d, Sepal.Length &gt;= 5.7, Species == "virginica")
+dim(f5)
 ```
 
 ```
@@ -420,7 +409,8 @@ f5 &lt;- filter(d, Sepal.Length &gt;= 5.7, Species == "virginica"); dim(f5)
 
 
 ```r
-m1 &lt;- mutate(d, Sepal.Sum = Sepal.Length + Sepal.Width); dim(m1)
+*m1 &lt;- mutate(d, Sepal.Sum = Sepal.Length + Sepal.Width)
+dim(m1)
 ```
 
 ```
@@ -428,7 +418,7 @@ m1 &lt;- mutate(d, Sepal.Sum = Sepal.Length + Sepal.Width); dim(m1)
 ```
 
 ```r
-head(m1, n = 8) # showing 8 rows using "n = 8"
+head(m1)
 ```
 
 ```
@@ -439,8 +429,6 @@ head(m1, n = 8) # showing 8 rows using "n = 8"
 ## 4          4.6         3.1          1.5         0.2  setosa       7.7
 ## 5          5.0         3.6          1.4         0.2  setosa       8.6
 ## 6          5.4         3.9          1.7         0.4  setosa       9.3
-## 7          4.6         3.4          1.4         0.3  setosa       8.0
-## 8          5.0         3.4          1.5         0.2  setosa       8.4
 ```
 
 ---
@@ -453,7 +441,7 @@ head(m1, n = 8) # showing 8 rows using "n = 8"
 
 
 ```r
-m2 &lt;- mutate(d, size = ifelse(Sepal.Length &gt;= 5, "big", "small"))
+*m2 &lt;- mutate(d, size = ifelse(Sepal.Length &gt;= 5, "big", "small"))
 dim(m2)
 ```
 
@@ -477,13 +465,37 @@ head(m2)
 
 ---
 
+## mutate(), continued
+
+**Exercise**: create a new variable `ID` which gives the identifier for each observation such as `obs1`, `obs2`, `\(\ldots\)`, `obs150`.
+
+--
+
+
+```r
+m3 &lt;- mutate(d, ID = paste0("obs", 1:nrow(d))); head(m3)
+```
+
+```
+##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species   ID
+## 1          5.1         3.5          1.4         0.2  setosa obs1
+## 2          4.9         3.0          1.4         0.2  setosa obs2
+## 3          4.7         3.2          1.3         0.2  setosa obs3
+## 4          4.6         3.1          1.5         0.2  setosa obs4
+## 5          5.0         3.6          1.4         0.2  setosa obs5
+## 6          5.4         3.9          1.7         0.4  setosa obs6
+```
+
+
+---
+
 ## arrange()
 
 **Example**: sort `d` by `Sepal.Length` (ascending order)
 
 
 ```r
-a1 &lt;- arrange(d, Sepal.Length)
+*a1 &lt;- arrange(d, Sepal.Length)
 dim(a1)
 ```
 
@@ -513,7 +525,7 @@ head(a1)
 
 
 ```r
-a2 &lt;- arrange(d, desc(Sepal.Length))
+*a2 &lt;- arrange(d, desc(Sepal.Length))
 dim(a2)
 ```
 
@@ -566,8 +578,7 @@ r3 &lt;- select(r2, Sepal.Length, Sepal.Width, Diff)
 
 
 ```r
-r4 &lt;- arrange(r3, desc(Diff))
-head(r4)
+r4 &lt;- arrange(r3, desc(Diff)); head(r4)
 ```
 
 ```
@@ -588,12 +599,12 @@ Piping operator `%&gt;%` enhances readability.
 
 
 ```r
-r &lt;- d %&gt;% 
+r5 &lt;- d %&gt;% 
   mutate(Diff = Sepal.Length - Sepal.Width) %&gt;%
   filter(Diff &gt; 1.5, Species == "setosa") %&gt;%
   select(Sepal.Length, Sepal.Width, Diff) %&gt;%
   arrange(desc(Diff))
-head(r)
+head(r5)
 ```
 
 ```
@@ -608,9 +619,105 @@ head(r)
 
 ---
 
+## Dot(.) notation
+
+In a chain of piping, dot(.) represents the input for the current pipe operator:
+
+
+```r
+r6 &lt;- d %&gt;%
+  select(Species, Petal.Width) %&gt;%
+* mutate(ID = paste0("obs", 1:nrow(.)))
+head(r6)
+```
+
+```
+##   Species Petal.Width   ID
+## 1  setosa         0.2 obs1
+## 2  setosa         0.2 obs2
+## 3  setosa         0.2 obs3
+## 4  setosa         0.2 obs4
+## 5  setosa         0.2 obs5
+## 6  setosa         0.4 obs6
+```
+
+---
+
+## Other useful functions
+
+- `count()`: gives a frequency table:
+
+
+```r
+*d %&gt;% count(Species)
+```
+
+```
+## # A tibble: 3 x 2
+##   Species        n
+##   &lt;fct&gt;      &lt;int&gt;
+## 1 setosa        50
+## 2 versicolor    50
+## 3 virginica     50
+```
+
+--
+
+- `pull()`: extract a column (acts like `$`):
+
+
+```r
+*d %&gt;% pull(Sepal.Length) %&gt;% head()
+```
+
+```
+## [1] 5.1 4.9 4.7 4.6 5.0 5.4
+```
+
+---
+
+## Other useful functions, continued
+
+- `slice()`: exctract selected rows:
+
+
+```r
+d %&gt;% select(Species, Petal.Width) %&gt;%
+  mutate(ID = paste0("obs", 1:nrow(.))) %&gt;%
+* slice(5:8) # rows 5 through 8
+```
+
+```
+##   Species Petal.Width   ID
+## 1  setosa         0.2 obs5
+## 2  setosa         0.4 obs6
+## 3  setosa         0.3 obs7
+## 4  setosa         0.2 obs8
+```
+
+--
+
+- `top_n()`: top `n` elements for a given `n` and a variable:
+
+
+```r
+*d %&gt;% top_n(3, Sepal.Width)
+```
+
+```
+##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.7         4.4          1.5         0.4  setosa
+## 2          5.2         4.1          1.5         0.1  setosa
+## 3          5.5         4.2          1.4         0.2  setosa
+```
+
+---
+
 ## group_by() / summarize()
 
-**Exercise**: find the mean `Sepal.Length` for each `Species`.
+**Example**: find the mean `Sepal.Length` for each `Species`.
+
+--
 
 
 ```r
@@ -622,6 +729,9 @@ mean(setosa_df$Sepal.Length)
 ```
 ## [1] 5.006
 ```
+
+--
+
 
 ```r
 versi_df &lt;- iris %&gt;% 
@@ -649,26 +759,26 @@ mean(virgi_df$Sepal.Length)
 
 `group_by()` and `summarize()` combination: summary of data (e.g. mean, max, min, median) by each category of a categorical variable. 
 
-**Exercise**: find the mean `Sepal.Length` for each `Species`.
+**Example**: find the mean `Sepal.Length` for each `Species`.
 
 
 ```r
 # For each 'Species' category in the 'iris' data set
 # compute the mean of 'Sepal.Length'
-group_by(iris, Species) %&gt;%
-  summarize(SL.mean = mean(Sepal.Length))
+*group_by(iris, Species) %&gt;%
+* summarize(mean.Sepal.Length = mean(Sepal.Length))
 ```
 
 ```
 ## # A tibble: 3 x 2
-##   Species    SL.mean
-##   &lt;fct&gt;        &lt;dbl&gt;
-## 1 setosa        5.01
-## 2 versicolor    5.94
-## 3 virginica     6.59
+##   Species    mean.Sepal.Length
+##   &lt;fct&gt;                  &lt;dbl&gt;
+## 1 setosa                  5.01
+## 2 versicolor              5.94
+## 3 virginica               6.59
 ```
 
-Note that the result is a data frame with two columns: `Species` and `SL.mean`.
+Note that the result is a data frame with two columns: `Species` and `mean.Sepal.Length`.
 
 ---
 
@@ -681,28 +791,29 @@ Note that the result is a data frame with two columns: `Species` and `SL.mean`.
 
 ```r
 iris %&gt;% group_by(Species) %&gt;%
-  summarize(SL.max = max(Sepal.Length), SL.min= min(Sepal.Length))
+* summarize(max.Sepal.Length = max(Sepal.Length), # max(): maximum
+*           min.Sepal.Length = min(Sepal.Length)) # min(): minimum
 ```
 
 ```
 ## # A tibble: 3 x 3
-##   Species    SL.max SL.min
-##   &lt;fct&gt;       &lt;dbl&gt;  &lt;dbl&gt;
-## 1 setosa        5.8    4.3
-## 2 versicolor    7      4.9
-## 3 virginica     7.9    4.9
+##   Species    max.Sepal.Length min.Sepal.Length
+##   &lt;fct&gt;                 &lt;dbl&gt;            &lt;dbl&gt;
+## 1 setosa                  5.8              4.3
+## 2 versicolor              7                4.9
+## 3 virginica               7.9              4.9
 ```
 
 ---
 
 ## group_by() / summarize(), continued
 
-One can get summary data using multiple "group by" variables.
+One can get summary data using _multiple_ "group by" variables.
 
 
 ```r
 diamonds %&gt;% 
-  group_by(color, cut) %&gt;%
+* group_by(color, cut) %&gt;%
   summarize(avg.price = mean(price), top.price = max(price)) 
 ```
 
@@ -726,122 +837,19 @@ diamonds %&gt;%
 
 ---
 
-## Wide and long form of data
+## Exercise
 
-Calories taken by four patients on a certain day:
+**Exercise**: `starwars`, which comes with the package `dplyr`, is a data set that contains data related with characters in the movie Star Wars. 
 
+- Explorer the data set. Subset the data so that the resulting data set contains only _Human_ species with `height` data available (_Hint_: look up `is.na()`). How many observations?
 
-```r
-cal_wide &lt;- data.frame(subject = paste0("Patient", 1:4),
-                      breakfast = c(300, 350, 300, 250),
-                      lunch = c(500, 500, 500, 450),
-                      dinner = c(600, 650, 450, 500))
-print(cal_wide)
-```
+--
 
-```
-##    subject breakfast lunch dinner
-## 1 Patient1       300   500    600
-## 2 Patient2       350   500    650
-## 3 Patient3       300   500    450
-## 4 Patient4       250   450    500
-```
+- Using the previous subset, compute the mean height for each gender. 
 
----
+--
 
-## Wide and long form of data
-
-At times, _long_ format of data is more convenient to deal with:
-
-`$$\begin{array}{c|c|c} \text{subject} &amp; \text{meal} &amp; \text{calorie} \\ \hline   
-\text{Patient1} &amp; \text{breakfast} &amp; 300   \\  
-\text{Patient1} &amp; \text{lunch} &amp; 500  \\
-\text{Patient1} &amp; \text{dinner} &amp; 600  \\
-\text{Patient2} &amp; \text{breakfast} &amp; 350   \\  
-\text{Patient2} &amp; \text{lunch} &amp; 500  \\
-\text{Patient2} &amp; \text{dinner} &amp; 650  \\
-\vdots &amp; \vdots &amp; \vdots
-\end{array}$$`
-
----
-
-## Wide and long form of data
-
-`pivot_longer()` transforms wide format into long format:
-
-
-```r
-cal_long &lt;- cal_wide %&gt;%
-  pivot_longer(cols = c("breakfast", "lunch", "dinner"), 
-               names_to = "meal", 
-               values_to = "calorie") %&gt;%
-  arrange(subject)
-head(cal_long)
-```
-
-```
-## # A tibble: 6 x 3
-##   subject  meal      calorie
-##   &lt;fct&gt;    &lt;chr&gt;       &lt;dbl&gt;
-## 1 Patient1 breakfast     300
-## 2 Patient1 lunch         500
-## 3 Patient1 dinner        600
-## 4 Patient2 breakfast     350
-## 5 Patient2 lunch         500
-## 6 Patient2 dinner        650
-```
-
----
-
-## Wide and long form of data
-
-`pivot_longer()` can be used in a way excluding column(s) not to be transformed:
-
-
-```r
-cal_long_2 &lt;- cal_wide %&gt;%
-  pivot_longer(cols = -c("subject"), # note the use of -
-               names_to = "meal", 
-               values_to = "calorie") %&gt;%
-  arrange(subject)
-head(cal_long_2)
-```
-
-```
-## # A tibble: 6 x 3
-##   subject  meal      calorie
-##   &lt;fct&gt;    &lt;chr&gt;       &lt;dbl&gt;
-## 1 Patient1 breakfast     300
-## 2 Patient1 lunch         500
-## 3 Patient1 dinner        600
-## 4 Patient2 breakfast     350
-## 5 Patient2 lunch         500
-## 6 Patient2 dinner        650
-```
-
----
-
-## Wide and long form of data
-
-`pivot_wider()` transforms long format to wide format:
-
-
-```r
-cal_wide_2 &lt;- cal_long %&gt;%
-  pivot_wider(names_from = "meal", values_from = "calorie")
-
-head(cal_wide_2)
-```
-
-```
-## # A tibble: 4 x 4
-##   subject  breakfast lunch dinner
-##   &lt;fct&gt;        &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
-## 1 Patient1       300   500    600
-## 2 Patient2       350   500    650
-## 3 Patient3       300   500    450
-## 4 Patient4       250   450    500
-```
+- Find the homeworld of the tallest Human male character.
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
