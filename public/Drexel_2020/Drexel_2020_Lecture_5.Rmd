@@ -1,5 +1,6 @@
 ---
 title: "Lecture 5"
+subtitle: "Introduction to statistical tests"
 author: "Jung-Jin Lee"
 date: "Feb 4, 2020"
 output:
@@ -14,7 +15,6 @@ output:
  
 ```{r, message = F, echo = F, warning = F}
 library(tidyverse) 
-library(gridExtra)
 library(knitr) 
 opts_chunk$set(
   tidy = FALSE,
@@ -27,6 +27,7 @@ opts_chunk$set(
   fig.width = 4,
   fig.height = 4
   )
+filter <- dplyr::filter
 options(width = 70) # controls console (and slide) output width
 ```
 

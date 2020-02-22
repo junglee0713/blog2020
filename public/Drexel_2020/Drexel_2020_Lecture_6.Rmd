@@ -15,7 +15,6 @@ output:
  
 ```{r, message = F, echo = F, warning = F}
 library(tidyverse) 
-library(gridExtra)
 library(knitr) 
 opts_chunk$set(
   tidy = FALSE,
