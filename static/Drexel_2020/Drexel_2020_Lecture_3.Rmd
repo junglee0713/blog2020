@@ -403,88 +403,151 @@ d %>% top_n(3, Sepal.Width) #<<
 
 ---
 
-## group_by() / summarize()
+## Wide and long form of data
 
-**Example**: find the mean `Sepal.Length` for each `Species`.
-
---
+**Example**: calories taken by four patients on a certain day are given below:
 
 ```{r}
-setosa_df <- iris %>% 
-  filter(Species == "setosa")
-mean(setosa_df$Sepal.Length)
+cal_wide <- data.frame(subject = paste0("Patient", 1:4),
+                      breakfast = c(300, 350, 300, 250),
+                      lunch = c(500, 500, 500, 450),
+                      dinner = c(600, 650, 450, 500))
+print(cal_wide)
+```
+
+Make a box plot to compare breakfast/lunch/dinner in terms of calories taken by patients.
+
+---
+
+## Wide and long form of data, continued
+
+```{r, echo = F, out.width="50%"}
+cal_wide %>%
+  pivot_longer(cols = c("breakfast", "lunch", "dinner"), 
+               names_to = "meal", 
+               values_to = "calorie") %>%
+  ggplot(aes(meal, calorie)) +
+  geom_boxplot()
 ```
 
 --
 
-```{r}
-versi_df <- iris %>% 
-  filter(Species == "versicolor")
-mean(versi_df$Sepal.Length)
+Not quite straightforward to make the plot out of `cal_wide` data set. 
 
-virgi_df <- iris %>% 
-  filter(Species == "virginica")
-mean(virgi_df$Sepal.Length)
+---
+
+## Wide and long form of data, continued
+
+Recall how we created a box plot using `diamonds` data set:
+
+```{r, out.width = "45%"}
+ggplot(diamonds, aes(x = cut, y = carat)) + geom_boxplot() 
 ```
 
 ---
 
-## group_by() / summarize(), continued
-
-`group_by()` and `summarize()` combination: summary of data (e.g. mean, max, min, median) by each category of a categorical variable. 
-
-**Example**: find the mean `Sepal.Length` for each `Species`.
+## Wide and long form of data, continued
 
 ```{r}
-# For each 'Species' category in the 'iris' data set
-# compute the mean of 'Sepal.Length'
-group_by(iris, Species) %>% #<<
-  summarize(mean.Sepal.Length = mean(Sepal.Length)) #<<
+diamonds %>% select(cut, carat) %>% head()
 ```
 
-Note that the result is a data frame with two columns: `Species` and `mean.Sepal.Length`.
+We need a group variable `cut` that specifies the cut quality of each diamond.
 
 ---
 
-## group_by() / summarize(), continued
+## Wide and long form of data, continued
 
-**Exercise**: What is the maximum (and minimum) of `Sepal.Length` in each `Species`?
+To create a box plot, we need a _long_ format of data:
 
---
+$$\begin{array}{c|c|c} \text{subject} & \text{meal} & \text{calorie} \\ \hline   
+\text{Patient1} & \text{breakfast} & 300   \\  
+\text{Patient1} & \text{lunch} & 500  \\
+\text{Patient1} & \text{dinner} & 600  \\
+\text{Patient2} & \text{breakfast} & 350   \\  
+\text{Patient2} & \text{lunch} & 500  \\
+\text{Patient2} & \text{dinner} & 650  \\
+\vdots & \vdots & \vdots
+\end{array}$$
+
+This carries the same information as `cal_wide`, but it is more convenient to deal with at times. 
+
+---
+
+## Wide and long form of data, continued
+
+`pivot_longer()` transforms wide format into long format:
 
 ```{r}
-iris %>% group_by(Species) %>%
-  summarize(max.Sepal.Length = max(Sepal.Length), # max(): maximum #<<
-            min.Sepal.Length = min(Sepal.Length)) # min(): minimum #<<
+cal_long <- cal_wide %>%
+  pivot_longer(cols = c("breakfast", "lunch", "dinner"), #<<
+               names_to = "meal", #<<
+               values_to = "calorie") %>% #<<
+  arrange(subject)
+head(cal_long)
 ```
 
 ---
 
-## group_by() / summarize(), continued
+## Wide and long form of data, continued
 
-One can get summary data using _multiple_ "group by" variables.
+`pivot_longer()` can be used in a way excluding column(s) not to be transformed:
 
 ```{r}
-diamonds %>% 
-  group_by(color, cut) %>% #<<
-  summarize(avg.price = mean(price), top.price = max(price)) 
+cal_long_2 <- cal_wide %>%
+  pivot_longer(cols = -c("subject"), # note the use of - #<<
+               names_to = "meal", 
+               values_to = "calorie") %>%
+  arrange(subject)
+head(cal_long_2)
 ```
 
 ---
 
-## Exercise
+## Wide and long form of data, continued
 
-**Exercise**: `starwars`, which comes with the package `dplyr`, is a data set that contains data related with characters in the movie Star Wars. 
+A long form, however, is not suitable for certain tasks, such as
 
-- Explorer the data set. Subset the data so that the resulting data set contains only _Human_ species with `height` data available (_Hint_: look up `is.na()`). How many observations?
+- Scatter plot comparing calories taken at breakfast and dinner
+
+```{r, echo = F, out.width = "40%"}
+cal_wide %>% ggplot(aes(breakfast, dinner)) + geom_point()
+```
 
 --
 
-- Using the previous subset, compute the mean height for each gender. 
+- Calorie change from lunch to dinner for each patient
 
 --
 
-- Find the homeworld of the tallest Human male character.
+In these cases, a `wide` format is more convenient. 
 
+---
+
+## Wide and long form of data, continued
+
+`pivot_wider()` transforms long format to wide format:
+
+```{r}
+cal_wide_2 <- cal_long %>%
+  pivot_wider(names_from = "meal", values_from = "calorie") #<<
+head(cal_wide_2)
+```
+
+---
+
+## Wide and long form of data, continued
+
+```{r, out.width = "50%"}
+cal_wide_2 %>% ggplot(aes(breakfast, dinner)) + geom_point()
+```
+
+---
+
+## Wide and long form of data, continued
+
+```{r}
+cal_wide_2 %>% mutate(difference = dinner - lunch)
+```
 
 

@@ -713,143 +713,219 @@ d %&gt;% select(Species, Petal.Width) %&gt;%
 
 ---
 
-## group_by() / summarize()
+## Wide and long form of data
 
-**Example**: find the mean `Sepal.Length` for each `Species`.
+**Example**: calories taken by four patients on a certain day are given below:
+
+
+```r
+cal_wide &lt;- data.frame(subject = paste0("Patient", 1:4),
+                      breakfast = c(300, 350, 300, 250),
+                      lunch = c(500, 500, 500, 450),
+                      dinner = c(600, 650, 450, 500))
+print(cal_wide)
+```
+
+```
+##    subject breakfast lunch dinner
+## 1 Patient1       300   500    600
+## 2 Patient2       350   500    650
+## 3 Patient3       300   500    450
+## 4 Patient4       250   450    500
+```
+
+Make a box plot to compare breakfast/lunch/dinner in terms of calories taken by patients.
+
+---
+
+## Wide and long form of data, continued
+
+&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-36-1.png" width="50%" style="display: block; margin: auto;" /&gt;
 
 --
 
+Not quite straightforward to make the plot out of `cal_wide` data set. 
 
-```r
-setosa_df &lt;- iris %&gt;% 
-  filter(Species == "setosa")
-mean(setosa_df$Sepal.Length)
-```
+---
 
-```
-## [1] 5.006
-```
+## Wide and long form of data, continued
 
---
+Recall how we created a box plot using `diamonds` data set:
 
 
 ```r
-versi_df &lt;- iris %&gt;% 
-  filter(Species == "versicolor")
-mean(versi_df$Sepal.Length)
+ggplot(diamonds, aes(x = cut, y = carat)) + geom_boxplot() 
 ```
 
-```
-## [1] 5.936
-```
+&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-37-1.png" width="45%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Wide and long form of data, continued
+
 
 ```r
-virgi_df &lt;- iris %&gt;% 
-  filter(Species == "virginica")
-mean(virgi_df$Sepal.Length)
+diamonds %&gt;% select(cut, carat) %&gt;% head()
 ```
 
 ```
-## [1] 6.588
+## # A tibble: 6 x 2
+##   cut       carat
+##   &lt;ord&gt;     &lt;dbl&gt;
+## 1 Ideal     0.23 
+## 2 Premium   0.21 
+## 3 Good      0.23 
+## 4 Premium   0.290
+## 5 Good      0.31 
+## 6 Very Good 0.24
+```
+
+We need a group variable `cut` that specifies the cut quality of each diamond.
+
+---
+
+## Wide and long form of data, continued
+
+To create a box plot, we need a _long_ format of data:
+
+`$$\begin{array}{c|c|c} \text{subject} &amp; \text{meal} &amp; \text{calorie} \\ \hline   
+\text{Patient1} &amp; \text{breakfast} &amp; 300   \\  
+\text{Patient1} &amp; \text{lunch} &amp; 500  \\
+\text{Patient1} &amp; \text{dinner} &amp; 600  \\
+\text{Patient2} &amp; \text{breakfast} &amp; 350   \\  
+\text{Patient2} &amp; \text{lunch} &amp; 500  \\
+\text{Patient2} &amp; \text{dinner} &amp; 650  \\
+\vdots &amp; \vdots &amp; \vdots
+\end{array}$$`
+
+This carries the same information as `cal_wide`, but it is more convenient to deal with at times. 
+
+---
+
+## Wide and long form of data, continued
+
+`pivot_longer()` transforms wide format into long format:
+
+
+```r
+cal_long &lt;- cal_wide %&gt;%
+* pivot_longer(cols = c("breakfast", "lunch", "dinner"),
+*              names_to = "meal",
+*              values_to = "calorie") %&gt;%
+  arrange(subject)
+head(cal_long)
+```
+
+```
+## # A tibble: 6 x 3
+##   subject  meal      calorie
+##   &lt;fct&gt;    &lt;chr&gt;       &lt;dbl&gt;
+## 1 Patient1 breakfast     300
+## 2 Patient1 lunch         500
+## 3 Patient1 dinner        600
+## 4 Patient2 breakfast     350
+## 5 Patient2 lunch         500
+## 6 Patient2 dinner        650
 ```
 
 ---
 
-## group_by() / summarize(), continued
+## Wide and long form of data, continued
 
-`group_by()` and `summarize()` combination: summary of data (e.g. mean, max, min, median) by each category of a categorical variable. 
-
-**Example**: find the mean `Sepal.Length` for each `Species`.
+`pivot_longer()` can be used in a way excluding column(s) not to be transformed:
 
 
 ```r
-# For each 'Species' category in the 'iris' data set
-# compute the mean of 'Sepal.Length'
-*group_by(iris, Species) %&gt;%
-* summarize(mean.Sepal.Length = mean(Sepal.Length))
+cal_long_2 &lt;- cal_wide %&gt;%
+* pivot_longer(cols = -c("subject"), # note the use of -
+               names_to = "meal", 
+               values_to = "calorie") %&gt;%
+  arrange(subject)
+head(cal_long_2)
 ```
 
 ```
-## # A tibble: 3 x 2
-##   Species    mean.Sepal.Length
-##   &lt;fct&gt;                  &lt;dbl&gt;
-## 1 setosa                  5.01
-## 2 versicolor              5.94
-## 3 virginica               6.59
-```
-
-Note that the result is a data frame with two columns: `Species` and `mean.Sepal.Length`.
-
----
-
-## group_by() / summarize(), continued
-
-**Exercise**: What is the maximum (and minimum) of `Sepal.Length` in each `Species`?
-
---
-
-
-```r
-iris %&gt;% group_by(Species) %&gt;%
-* summarize(max.Sepal.Length = max(Sepal.Length), # max(): maximum
-*           min.Sepal.Length = min(Sepal.Length)) # min(): minimum
-```
-
-```
-## # A tibble: 3 x 3
-##   Species    max.Sepal.Length min.Sepal.Length
-##   &lt;fct&gt;                 &lt;dbl&gt;            &lt;dbl&gt;
-## 1 setosa                  5.8              4.3
-## 2 versicolor              7                4.9
-## 3 virginica               7.9              4.9
+## # A tibble: 6 x 3
+##   subject  meal      calorie
+##   &lt;fct&gt;    &lt;chr&gt;       &lt;dbl&gt;
+## 1 Patient1 breakfast     300
+## 2 Patient1 lunch         500
+## 3 Patient1 dinner        600
+## 4 Patient2 breakfast     350
+## 5 Patient2 lunch         500
+## 6 Patient2 dinner        650
 ```
 
 ---
 
-## group_by() / summarize(), continued
+## Wide and long form of data, continued
 
-One can get summary data using _multiple_ "group by" variables.
+A long form, however, is not suitable for certain tasks, such as
+
+- Scatter plot comparing calories taken at breakfast and dinner
+
+&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-41-1.png" width="40%" style="display: block; margin: auto;" /&gt;
+
+--
+
+- Calorie change from lunch to dinner for each patient
+
+--
+
+In these cases, a `wide` format is more convenient. 
+
+---
+
+## Wide and long form of data, continued
+
+`pivot_wider()` transforms long format to wide format:
 
 
 ```r
-diamonds %&gt;% 
-* group_by(color, cut) %&gt;%
-  summarize(avg.price = mean(price), top.price = max(price)) 
+cal_wide_2 &lt;- cal_long %&gt;%
+* pivot_wider(names_from = "meal", values_from = "calorie")
+head(cal_wide_2)
 ```
 
 ```
-## # A tibble: 35 x 4
-## # Groups:   color [7]
-##    color cut       avg.price top.price
-##    &lt;ord&gt; &lt;ord&gt;         &lt;dbl&gt;     &lt;int&gt;
-##  1 D     Fair          4291.     16386
-##  2 D     Good          3405.     18468
-##  3 D     Very Good     3470.     18542
-##  4 D     Premium       3631.     18575
-##  5 D     Ideal         2629.     18693
-##  6 E     Fair          3682.     15584
-##  7 E     Good          3424.     18236
-##  8 E     Very Good     3215.     18731
-##  9 E     Premium       3539.     18477
-## 10 E     Ideal         2598.     18729
-## # … with 25 more rows
+## # A tibble: 4 x 4
+##   subject  breakfast lunch dinner
+##   &lt;fct&gt;        &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+## 1 Patient1       300   500    600
+## 2 Patient2       350   500    650
+## 3 Patient3       300   500    450
+## 4 Patient4       250   450    500
 ```
 
 ---
 
-## Exercise
+## Wide and long form of data, continued
 
-**Exercise**: `starwars`, which comes with the package `dplyr`, is a data set that contains data related with characters in the movie Star Wars. 
 
-- Explorer the data set. Subset the data so that the resulting data set contains only _Human_ species with `height` data available (_Hint_: look up `is.na()`). How many observations?
+```r
+cal_wide_2 %&gt;% ggplot(aes(breakfast, dinner)) + geom_point()
+```
 
---
+&lt;img src="Drexel_2020_Lecture_3_files/figure-html/unnamed-chunk-43-1.png" width="50%" style="display: block; margin: auto;" /&gt;
 
-- Using the previous subset, compute the mean height for each gender. 
+---
 
---
+## Wide and long form of data, continued
 
-- Find the homeworld of the tallest Human male character.
+
+```r
+cal_wide_2 %&gt;% mutate(difference = dinner - lunch)
+```
+
+```
+## # A tibble: 4 x 5
+##   subject  breakfast lunch dinner difference
+##   &lt;fct&gt;        &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;      &lt;dbl&gt;
+## 1 Patient1       300   500    600        100
+## 2 Patient2       350   500    650        150
+## 3 Patient3       300   500    450        -50
+## 4 Patient4       250   450    500         50
+```
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

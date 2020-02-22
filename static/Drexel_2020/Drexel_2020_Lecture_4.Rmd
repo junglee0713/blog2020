@@ -1,5 +1,6 @@
 ---
 title: "Lecture 4"
+subtitle: "Getting basic statistics / Probability distributions"
 author: "Jung-Jin Lee"
 date: "Jan 28, 2020"
 output:
@@ -14,7 +15,6 @@ output:
  
 ```{r, message = F, echo = F, warning = F}
 library(tidyverse) 
-library(gridExtra)
 library(knitr) 
 opts_chunk$set(
   tidy = FALSE,
@@ -27,79 +27,92 @@ opts_chunk$set(
   fig.width = 4,
   fig.height = 4
   )
+filter <- dplyr::filter
 options(width = 70) # controls console (and slide) output width
 ```
 
-## Wide and long form of data
+## group_by() / summarize()
 
-Calories taken by four patients on a certain day:
+**Example**: find the mean `Sepal.Length` for each `Species`.
+
+--
 
 ```{r}
-cal_wide <- data.frame(subject = paste0("Patient", 1:4),
-                      breakfast = c(300, 350, 300, 250),
-                      lunch = c(500, 500, 500, 450),
-                      dinner = c(600, 650, 450, 500))
-print(cal_wide)
+setosa_df <- iris %>% 
+  filter(Species == "setosa")
+mean(setosa_df$Sepal.Length)
+```
+
+--
+
+```{r}
+versi_df <- iris %>% 
+  filter(Species == "versicolor")
+mean(versi_df$Sepal.Length)
+
+virgi_df <- iris %>% 
+  filter(Species == "virginica")
+mean(virgi_df$Sepal.Length)
 ```
 
 ---
 
-## Wide and long form of data
+## group_by() / summarize(), continued
 
-At times, _long_ format of data is more convenient to deal with:
+`group_by()` and `summarize()` combination: summary of data (e.g. mean, max, min, median) by each category of a categorical variable. 
 
-$$\begin{array}{c|c|c} \text{subject} & \text{meal} & \text{calorie} \\ \hline   
-\text{Patient1} & \text{breakfast} & 300   \\  
-\text{Patient1} & \text{lunch} & 500  \\
-\text{Patient1} & \text{dinner} & 600  \\
-\text{Patient2} & \text{breakfast} & 350   \\  
-\text{Patient2} & \text{lunch} & 500  \\
-\text{Patient2} & \text{dinner} & 650  \\
-\vdots & \vdots & \vdots
-\end{array}$$
+**Example**: find the mean `Sepal.Length` for each `Species`.
+
+```{r}
+# For each 'Species' category in the 'iris' data set
+# compute the mean of 'Sepal.Length'
+group_by(iris, Species) %>% #<<
+  summarize(mean.Sepal.Length = mean(Sepal.Length)) #<<
+```
+
+Note that the result is a data frame with two columns: `Species` and `mean.Sepal.Length`.
 
 ---
 
-## Wide and long form of data
+## group_by() / summarize(), continued
 
-`pivot_longer()` transforms wide format into long format:
+**Exercise**: What is the maximum (and minimum) of `Sepal.Length` in each `Species`?
+
+--
 
 ```{r}
-cal_long <- cal_wide %>%
-  pivot_longer(cols = c("breakfast", "lunch", "dinner"), 
-               names_to = "meal", 
-               values_to = "calorie") %>%
-  arrange(subject)
-head(cal_long)
+iris %>% group_by(Species) %>%
+  summarize(max.Sepal.Length = max(Sepal.Length), # max(): maximum #<<
+            min.Sepal.Length = min(Sepal.Length)) # min(): minimum #<<
 ```
 
 ---
 
-## Wide and long form of data
+## group_by() / summarize(), continued
 
-`pivot_longer()` can be used in a way excluding column(s) not to be transformed:
+One can get summary data using _multiple_ "group by" variables.
 
 ```{r}
-cal_long_2 <- cal_wide %>%
-  pivot_longer(cols = -c("subject"), # note the use of -
-               names_to = "meal", 
-               values_to = "calorie") %>%
-  arrange(subject)
-head(cal_long_2)
+diamonds %>% 
+  group_by(color, cut) %>% #<<
+  summarize(avg.price = mean(price), top.price = max(price)) 
 ```
 
 ---
 
-## Wide and long form of data
+## Exercise
 
-`pivot_wider()` transforms long format to wide format:
+**Exercise**: `starwars`, which comes with the package `dplyr`, is a data set that contains data related with characters in the movie Star Wars. 
 
-```{r}
-cal_wide_2 <- cal_long %>%
-  pivot_wider(names_from = "meal", values_from = "calorie")
+- Explorer the data set. Subset the data so that the resulting data set contains only _Human_ species with `height` data available (_Hint_: look up `is.na()`). How many observations?
 
-head(cal_wide_2)
-```
+--
+
+- Using the previous subset, compute the mean height for each gender. 
+
+--
+
+- Find the homeworld of the tallest Human male character.
 
 ---
 
@@ -563,16 +576,16 @@ c(sd(sample1), sd(sample2))
 
 ## Confidence interval, continued
 
-Suppose that a sample of size $n$, say $X_1, X_2, \ldots, X_n$, is taken from a population that follows $N(\mu, \sigma^2)$. The 100 $\times (1-\alpha)$ % confidence interval of $\mu$ is defined as
-$$\left(\bar{X} - t_{n-1, \alpha/2}\frac{S}{\sqrt{n}},~\bar{X} + t_{n-1, \alpha/2}\frac{S}{\sqrt{n}}\right),$$
-where, $\bar{X}$ and $S$ represent the sample mean and sample standard deviation, respectively and $t_{n-1, \alpha/2}$ is the quantile value of a $t$-distribution of $n-1$ degrees of freedom with tail probability $\alpha/2$.
-
---
-
-In particular, the 95% confidence interval (so $\alpha = 0.05$) of $\mu$ is given by 
+Suppose that a sample of size $n$, say $X_1, X_2, \ldots, X_n$, is taken from a population that follows $N(\mu, \sigma^2)$. The 95% confidence interval of $\mu$ is given by 
 $$\left(\bar{X} - t_{n-1, 0.025}\frac{S}{\sqrt{n}},~\bar{X} + t_{n-1, 0.025}\frac{S}{\sqrt{n}}\right),$$
 
 Interpretation of 95% confidence interval: when this procedure of creating 95% confidence intervals is repeated, about 95% of the intervals will contain the true population mean. In other words, <span style="color: red;">We are 95% confident that the true population mean is captured in the 95% confidence interval.</span>
+
+--
+
+In generral, the 100 $\times (1-\alpha)$ % confidence interval of $\mu$ is defined as
+$$\left(\bar{X} - t_{n-1, \alpha/2}\frac{S}{\sqrt{n}},~\bar{X} + t_{n-1, \alpha/2}\frac{S}{\sqrt{n}}\right),$$
+where, $\bar{X}$ and $S$ represent the sample mean and sample standard deviation, respectively and $t_{n-1, \alpha/2}$ is the quantile value of a $t$-distribution of $n-1$ degrees of freedom with tail probability $\alpha/2$.
 
 ---
 
@@ -621,10 +634,3 @@ $$\left(\bar{X} - t_{n-1, \alpha/2}\frac{S}{\sqrt{n}},~\bar{X} + t_{n-1, \alpha/
 - As $1-\alpha$ (called confidence level) increases, the confidence interval becomes wider. 
 
 - As $n$ (sample size) increases, the confidence interval becomes narrower. 
-
----
-
-## Exercises
-
-**Exercise**: based on the `heights.txt` data, find the 80%, 90% and 95% confidence interval of the mean of UK women's heights (mom's heights).
-

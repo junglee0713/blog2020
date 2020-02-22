@@ -306,7 +306,7 @@ c(mean(D_height), median(D_height), var(D_height))
 
 ## Box plot
 
-**Example**: using `diamonds` data set, describe the distribution of `carat` for each `cut`
+**Example**: using `diamonds` data set, describe the distribution of `carat` for each `cut`.
 
 ```{r, out.width = "45%"}
 g <- ggplot(dmd, aes(x = cut, y = carat)) +
@@ -326,7 +326,7 @@ print(g)
 
 ## Violin plot
 
-**Example**: using `diamonds` data set, describe the distribution of `carat` for each `cut`
+**Example**: using `diamonds` data set, describe the distribution of `carat` for each `cut`.
 
 ```{r, out.width = "45%"}
 g <- ggplot(dmd, aes(x = cut, y = carat)) +
