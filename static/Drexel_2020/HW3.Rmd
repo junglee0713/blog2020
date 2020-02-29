@@ -65,7 +65,7 @@ PLC
 
 ```{r, eval = T, fig.height = 3, fig.align = "center"}
 PLC_long <- PLC %>%
-  gather(key = exercise_mode, value = concentration, -id) 
+  pivot_longer(cols = -"id", names_to = "exercise_mode", values_to = "concentration") 
 ggplot(PLC_long, aes(exercise_mode, concentration)) +
   geom_boxplot() +
   theme(aspect.ratio = 1)

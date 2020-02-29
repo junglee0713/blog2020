@@ -26,3 +26,6 @@ tags: []
 [Homework 3](/Drexel_2020/HW3.pdf)
 
 [Lecture 7](/Drexel_2020/Drexel_2020_Lecture_7.html)
+
+[Lecture 8](/Drexel_2020/Drexel_2020_Lecture_8.html)
+
