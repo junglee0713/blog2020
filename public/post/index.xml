@@ -37,7 +37,8 @@ Lecture 8</description>
       
       <guid>/2019/10/25/distance-between-groups/</guid>
       <description>library(usedist) library(tidyverse) library(ggforce) library(ggsci) library(gt) library(ggrepel) library(ggdendro) First, we make a fake data set:
-set.seed(2019) n &amp;lt;- 6 ADf &amp;lt;- tibble(x = rnorm(n, sample(10, 1), sample(2, 1)), y = rnorm(n, sample(10, 1), sample(2, 1)), group = &amp;quot;A&amp;quot;) BDf &amp;lt;- tibble(x = rnorm(n, sample(10, 1), sample(2, 1)), y = rnorm(n, sample(10, 1), sample(2, 1)), group = &amp;quot;B&amp;quot;) CDf &amp;lt;- tibble(x = rnorm(n, sample(10, 1), sample(2, 1)), y = rnorm(n, sample(10, 1), sample(2, 1)), group = &amp;quot;C&amp;quot;) DDf &amp;lt;- tibble(x = rnorm(n, sample(10, 1), sample(2, 1)), y = rnorm(n, sample(10, 1), sample(2, 1)), group = &amp;quot;D&amp;quot;) EDf &amp;lt;- tibble(x = rnorm(n, sample(10, 1), sample(2, 1)), y = rnorm(n, sample(10, 1), sample(2, 1)), group = &amp;quot;E&amp;quot;) df &amp;lt;- bind_rows(ADf, BDf, CDf, DDf, EDf) %&amp;gt;% group_by(group) %&amp;gt;% mutate(SampleID = paste0(group, 1:n())) %&amp;gt;% ungroup() Visualization of the data:</description>
+make_fake &amp;lt;- function(group, n) { tibble(x = rnorm(n, sample(10, 1), sample(2, 1)), y = rnorm(n, sample(10, 1), sample(2, 1)), group = group) } set.seed(2019) df &amp;lt;- map(LETTERS[1:5], make_fake, n = 6) %&amp;gt;% bind_rows() %&amp;gt;% group_by(group) %&amp;gt;% mutate(SampleID = paste0(group, 1:n())) %&amp;gt;% ungroup() Visualization of the data:
+ggplot(df, aes(x, y)) + geom_point(aes(shape = group), show.legend = FALSE) + geom_mark_hull(aes(label = group, fill = group), show.</description>
     </item>
     
     <item>

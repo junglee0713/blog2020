@@ -1,10 +1,10 @@
 ---
-title: Distance between groups
-author: Jung-Jin Lee
+title: "Distance between groups"
+author: "Jung-Jin Lee"
 date: '2019-10-25'
 slug: distance-between-groups
-categories: []
 tags: []
+categories: []
 ---
 
 ```{r, message = FALSE}
@@ -20,24 +20,14 @@ library(ggdendro)
 First, we make a fake data set:
 
 ```{r}
+make_fake <- function(group, n) {
+  tibble(x = rnorm(n, sample(10, 1), sample(2, 1)),
+         y = rnorm(n, sample(10, 1), sample(2, 1)), 
+         group = group)
+}
 set.seed(2019)
-n <- 6
-ADf <- tibble(x = rnorm(n, sample(10, 1), sample(2, 1)),
-              y = rnorm(n, sample(10, 1), sample(2, 1)), 
-              group = "A")
-BDf <- tibble(x = rnorm(n, sample(10, 1), sample(2, 1)), 
-              y = rnorm(n, sample(10, 1), sample(2, 1)), 
-              group = "B")
-CDf <- tibble(x = rnorm(n, sample(10, 1), sample(2, 1)), 
-              y = rnorm(n, sample(10, 1), sample(2, 1)), 
-              group = "C")
-DDf <- tibble(x = rnorm(n, sample(10, 1), sample(2, 1)), 
-              y = rnorm(n, sample(10, 1), sample(2, 1)), 
-              group = "D")
-EDf <- tibble(x = rnorm(n, sample(10, 1), sample(2, 1)), 
-              y = rnorm(n, sample(10, 1), sample(2, 1)), 
-              group = "E")
-df <- bind_rows(ADf, BDf, CDf, DDf, EDf) %>%
+df <- map(LETTERS[1:5], make_fake, n = 6) %>%
+  bind_rows() %>%
   group_by(group) %>%
   mutate(SampleID = paste0(group, 1:n())) %>%
   ungroup()

@@ -79,24 +79,14 @@ library(gt)
 library(ggrepel)
 library(ggdendro)</code></pre>
 <p>First, we make a fake data set:</p>
-<pre class="r"><code>set.seed(2019)
-n &lt;- 6
-ADf &lt;- tibble(x = rnorm(n, sample(10, 1), sample(2, 1)),
-              y = rnorm(n, sample(10, 1), sample(2, 1)), 
-              group = &quot;A&quot;)
-BDf &lt;- tibble(x = rnorm(n, sample(10, 1), sample(2, 1)), 
-              y = rnorm(n, sample(10, 1), sample(2, 1)), 
-              group = &quot;B&quot;)
-CDf &lt;- tibble(x = rnorm(n, sample(10, 1), sample(2, 1)), 
-              y = rnorm(n, sample(10, 1), sample(2, 1)), 
-              group = &quot;C&quot;)
-DDf &lt;- tibble(x = rnorm(n, sample(10, 1), sample(2, 1)), 
-              y = rnorm(n, sample(10, 1), sample(2, 1)), 
-              group = &quot;D&quot;)
-EDf &lt;- tibble(x = rnorm(n, sample(10, 1), sample(2, 1)), 
-              y = rnorm(n, sample(10, 1), sample(2, 1)), 
-              group = &quot;E&quot;)
-df &lt;- bind_rows(ADf, BDf, CDf, DDf, EDf) %&gt;%
+<pre class="r"><code>make_fake &lt;- function(group, n) {
+  tibble(x = rnorm(n, sample(10, 1), sample(2, 1)),
+         y = rnorm(n, sample(10, 1), sample(2, 1)), 
+         group = group)
+}
+set.seed(2019)
+df &lt;- map(LETTERS[1:5], make_fake, n = 6) %&gt;%
+  bind_rows() %&gt;%
   group_by(group) %&gt;%
   mutate(SampleID = paste0(group, 1:n())) %&gt;%
   ungroup()</code></pre>
