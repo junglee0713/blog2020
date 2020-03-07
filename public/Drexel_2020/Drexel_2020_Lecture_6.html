@@ -373,7 +373,7 @@ tail(df)
 ```r
 ggplot(df, aes(group, weight)) + 
   geom_boxplot() +
-* geom_point(stat = "summary", fun.y = mean,
+* geom_point(stat = "summary", fun = mean,
 *            color = "red", size = 5)
 ```
 

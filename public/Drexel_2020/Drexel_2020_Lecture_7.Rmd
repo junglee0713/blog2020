@@ -338,7 +338,7 @@ df1 <- data.frame(Group1 = rnorm(n, mean = 6),
 
 g1 <- df1  %>%
   ggplot(aes(Group, Measure)) +
-  geom_point(stat = "summary", fun.y = mean, color = "red", size = 5) +
+  geom_point(stat = "summary", fun = mean, color = "red", size = 5) +
   geom_hline(yintercept = mean(df1$Measure), color = "blue", lty = "dashed") + 
   geom_point()
 
@@ -349,7 +349,7 @@ df2 <- data.frame(Group1 = rnorm(n, mean = 7),
 
 g2 <- df2  %>%
   ggplot(aes(Group, Measure)) +
-  geom_point(stat = "summary", fun.y = mean, color = "red", size = 5) +
+  geom_point(stat = "summary", fun = mean, color = "red", size = 5) +
   geom_hline(yintercept = mean(df2$Measure), color = "blue", lty = "dashed") + 
   geom_point()
 ```

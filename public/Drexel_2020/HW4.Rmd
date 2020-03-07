@@ -73,7 +73,7 @@ df25 <- data.frame(percent = "25%", intensity = egg_yolk_25_percent)
 df <- rbind(df1, df5, df25)
 ggplot(df, aes(percent, intensity)) + 
   geom_boxplot() +
-  geom_point(stat = "summary", fun.y = mean, color = "blue", size = 3) +
+  geom_point(stat = "summary", fun = mean, color = "blue", size = 3) +
   theme_bw() +
   theme(aspect.ratio = 1)
 ```

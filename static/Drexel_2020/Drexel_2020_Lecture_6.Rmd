@@ -277,7 +277,7 @@ tail(df)
 ```{r, out.width = "50%"}
 ggplot(df, aes(group, weight)) + 
   geom_boxplot() +
-  geom_point(stat = "summary", fun.y = mean, #<<
+  geom_point(stat = "summary", fun = mean, #<<
              color = "red", size = 5) #<<
 ```
 
@@ -444,7 +444,7 @@ head(ht_long)
 ht_long %>%
   ggplot(aes(member, height)) +
   geom_violin(draw_quantiles = c(0.25, 0.5, 0.75)) +
-  geom_point(stat = "summary", fun.y = mean, size = 5, color = "red")
+  geom_point(stat = "summary", fun = mean, size = 5, color = "red")
 ```
 
 - Can we say that there is a difference between mom's heights and daughter's heights?
