@@ -191,9 +191,9 @@ pairwise.t.test(iris$Sepal.Width, iris$Species, #<<
 Simulation of 20 unbiased coins, five tosses each
 
 ```{r} 
-set.seed(2019)  
-sam <- sample(c("H", "T"), size = 100, replace = T)  
-df <- matrix(sam, ncol = 5) %>%  
+set.seed(1234)  
+sam <- sample(c("H", "T"), size = 100, replace = T) #<< 
+df <- matrix(sam, ncol = 5) %>% #<< 
   as.data.frame() %>%  
   setNames(paste0("Toss", 1:5))
 
@@ -215,7 +215,7 @@ DT::datatable(
 
 ## Multiple comparisons
 
-- Coin 14 (and 19) should not be viewed as a biased coin!
+- Coin 4 (16 and 19 as well) should not be viewed as a biased coin!
 
   - https://xkcd.com/882/
 

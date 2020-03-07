@@ -31,3 +31,5 @@ tags: []
 
 [Homework 4](/Drexel_2020/HW4.pdf)
 
+[Lecture 9](/Drexel_2020/Drexel_2020_Lecture_9.html)
+

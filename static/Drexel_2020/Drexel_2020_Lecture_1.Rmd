@@ -601,3 +601,35 @@ names(ht) # variable(column) names
 head(ht) # first few rows (6 rows by default) #<<
 tail(ht) # last few rows #<<
 ```
+
+---
+
+## List
+
+A list is a collection of different types of elements:
+
+```{r}
+li <- list(num = 1.6, #<<
+           seq = 1:5, 
+           names = c("Bart", "Lisa", "Homer"), 
+           uk.heihgt = ht) 
+names(li)
+```
+
+--
+
+.pull-left[
+```{r}
+li$num
+li$names
+```
+]
+
+--
+
+.pull-right[
+```{r}
+head(li$uk.heihgt)
+```
+]
+

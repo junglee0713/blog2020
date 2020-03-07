@@ -296,9 +296,9 @@ Simulation of 20 unbiased coins, five tosses each
 
 
 ```r
-set.seed(2019)  
-sam &lt;- sample(c("H", "T"), size = 100, replace = T)  
-df &lt;- matrix(sam, ncol = 5) %&gt;%  
+set.seed(1234)  
+*sam &lt;- sample(c("H", "T"), size = 100, replace = T)
+*df &lt;- matrix(sam, ncol = 5) %&gt;%
   as.data.frame() %&gt;%  
   setNames(paste0("Toss", 1:5))
 
@@ -315,26 +315,26 @@ head(df)
 
 ```
 ##   Toss1 Toss2 Toss3 Toss4 Toss5
-## 1     H     T     T     T     H
-## 2     H     T     T     T     T
-## 3     T     H     T     H     T
-## 4     H     T     H     H     H
-## 5     H     H     H     T     T
-## 6     H     T     T     T     H
+## 1     T     T     T     T     H
+## 2     T     T     H     T     T
+## 3     T     T     T     H     H
+## 4     T     T     T     T     T
+## 5     H     T     T     H     H
+## 6     T     T     H     H     T
 ```
 
 ---
 
 ## Multiple comparisons
 
-<div id="htmlwidget-9a917b5360e6bd66b0b5" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-9a917b5360e6bd66b0b5">{"x":{"filter":"none","fillContainer":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"],["H","H","T","H","H","H","T","H","H","T","H","T","H","H","T","T","H","T","H","H"],["T","T","H","T","H","T","H","H","H","T","H","H","H","H","T","H","T","H","H","T"],["T","T","T","H","H","T","T","H","T","T","H","T","H","H","T","H","T","T","H","T"],["T","T","H","H","T","T","H","H","H","T","H","T","H","H","T","H","H","T","T","H"],["H","T","T","H","T","H","T","H","H","T","T","H","T","T","H","T","T","T","H","H"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Toss1<\/th>\n      <th>Toss2<\/th>\n      <th>Toss3<\/th>\n      <th>Toss4<\/th>\n      <th>Toss5<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":7,"order":[],"autoWidth":false,"orderClasses":false,"columnDefs":[{"orderable":false,"targets":0}],"lengthMenu":[7,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-553c72ddd55e5452c1fb" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-553c72ddd55e5452c1fb">{"x":{"filter":"none","fillContainer":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"],["T","T","T","T","H","T","H","H","H","T","T","T","T","H","T","T","T","H","T","T"],["T","T","T","T","T","T","H","T","T","T","H","T","H","H","H","T","H","T","T","H"],["T","H","T","T","T","H","H","H","H","T","T","T","T","T","H","T","H","H","T","H"],["T","T","H","T","H","H","T","H","H","T","T","H","H","H","T","T","T","H","T","H"],["H","T","H","T","H","T","H","T","T","H","H","H","H","T","H","T","T","H","T","T"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Toss1<\/th>\n      <th>Toss2<\/th>\n      <th>Toss3<\/th>\n      <th>Toss4<\/th>\n      <th>Toss5<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":7,"order":[],"autoWidth":false,"orderClasses":false,"columnDefs":[{"orderable":false,"targets":0}],"lengthMenu":[7,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 
 ---
 
 ## Multiple comparisons
 
-- Coin 14 (and 19) should not be viewed as a biased coin!
+- Coin 4 (16 and 19 as well) should not be viewed as a biased coin!
 
   - https://xkcd.com/882/
 

@@ -1018,6 +1018,65 @@ names(ht) # variable(column) names
 ## 1374    70.8    71.0
 ## 1375    63.0    73.1
 ```
+
+---
+
+## List
+
+A list is a collection of different types of elements:
+
+
+```r
+*li &lt;- list(num = 1.6,
+           seq = 1:5, 
+           names = c("Bart", "Lisa", "Homer"), 
+           uk.heihgt = ht) 
+names(li)
+```
+
+```
+## [1] "num"       "seq"       "names"     "uk.heihgt"
+```
+
+--
+
+.pull-left[
+
+```r
+li$num
+```
+
+```
+## [1] 1.6
+```
+
+```r
+li$names
+```
+
+```
+## [1] "Bart"  "Lisa"  "Homer"
+```
+]
+
+--
+
+.pull-right[
+
+```r
+head(li$uk.heihgt)
+```
+
+```
+##   Mheight Dheight
+## 1    59.7    55.1
+## 2    58.2    56.5
+## 3    60.6    56.0
+## 4    60.7    56.8
+## 5    61.8    56.0
+## 6    55.5    57.9
+```
+]
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
