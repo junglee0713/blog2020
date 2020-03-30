@@ -33,3 +33,5 @@ tags: []
 
 [Lecture 9](/Drexel_2020/Drexel_2020_Lecture_9.html)
 
+[Lecture 10](/Drexel_2020/Drexel_2020_Lecture_10.html)
+
