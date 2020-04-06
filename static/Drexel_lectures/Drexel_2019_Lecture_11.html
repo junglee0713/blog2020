@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>Lecture 11</title>
     <meta charset="utf-8" />
@@ -476,20 +476,20 @@ head(donkey)
 ```
 
 ```
-##   Donkey  Sex Age Bodywt Heartgirth Umbgirth Length Height Length2 Length3
-## 1     s1 male 3.5    128        111      126     95    106    9025  857375
-## 2     s2 male 2.0    102        106      120     75    101    5625  421875
-## 3     s3 male 3.0    100        103      125     76    101    5776  438976
-## 4     s4 male 3.0     92        102      121     73    101    5329  389017
-## 5     s5 male 3.0     98        105      121     70    101    4900  343000
-## 6     s6 male 4.0    110        101      126     80    101    6400  512000
-##    Length4
-## 1 81450625
-## 2 31640625
-## 3 33362176
-## 4 28398241
-## 5 24010000
-## 6 40960000
+##   Donkey  Sex Age Bodywt Heartgirth Umbgirth Length Height Length2
+## 1     s1 male 3.5    128        111      126     95    106    9025
+## 2     s2 male 2.0    102        106      120     75    101    5625
+## 3     s3 male 3.0    100        103      125     76    101    5776
+## 4     s4 male 3.0     92        102      121     73    101    5329
+## 5     s5 male 3.0     98        105      121     70    101    4900
+## 6     s6 male 4.0    110        101      126     80    101    6400
+##   Length3  Length4
+## 1  857375 81450625
+## 2  421875 31640625
+## 3  438976 33362176
+## 4  389017 28398241
+## 5  343000 24010000
+## 6  512000 40960000
 ```
 
 ---
@@ -855,7 +855,24 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
     deleted = true;
   });
-})();</script>
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
 
 <script>
 (function() {

@@ -1,0 +1,70 @@
+---
+title: "Homework 5"
+subtitle: "due Apr 7, 2020"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  fig.align = "center")
+library(tidyverse)
+```
+
+(For questions **1, 2, 3**) Consider the following paired data sets of length $20$:
+
+```{r, echo = T}
+x <- c(6.82, 1.44, 9.39,  8.51, 10.38,  4.59, 14.96,  9.68, 13.54,  6.42, 11.03,  
+       3.53, 16.91,  9.52,  8.16,  8.97,  8.32,  3.58, 13.57,  9.99)
+y <- c(36.69, 6.39, 49.59, 45.65, 52.18, 27.66, 79.35, 54.10, 71.01, 34.60, 61.17, 
+       22.79, 91.20, 50.57, 44.11, 53.51, 45.96, 22.20, 73.01, 55.70)
+```
+
+**1.** Create a scatter plot to visualize the data (_Hint_: you may want to start with making a data frame and then use `geom_point()`, `x` as $x$-axis and `y` as $y$-axis). 
+
+```{r, echo = F, eval = F}
+df <- data.frame(x, y)
+g <- ggplot(df, aes(x, y)) + geom_point()
+print(g)
+```
+
+**2.** Do you think there is a strong linear association between `x` and `y`? Compute the sample correlation coefficient between `x` and `y` to justify your claim. 
+
+```{r, echo = F, eval = F}
+cor(x, y)
+```
+
+**3.** Assume that `y` is an outcome in a certain experiment, and `x` is a predictor. Find the best fitting
+line describing the association between `x` and `y` by specifying its $y$-intercept ($\beta_0$) and slope ($\beta_1$). Overlay the best fitting line to the plot you obtained in **1.** above.
+
+```{r, echo = F, eval = F}
+fit <- lm(y ~ x)
+fit$coefficients
+```
+
+\bigskip
+
+(For questions **4, 5**) Consider the `crabs` data set -- you can read in the data using the following code:
+
+```{r, echo = T, eval = T}
+crabs <- read.table("crabs.tsv", header = T, sep = "\t")
+```
+
+**4.** Obtain the following scatter plot with the best fitting line:
+
+```{r, echo = F, eval = T, fig.height = 3}
+fit <- lm(weight ~ width, data = crabs)
+beta0 <- fit$coef[1]; beta1 <- fit$coef[2]
+ggplot(crabs, aes(width, weight)) + 
+  geom_point() + 
+  geom_abline(intercept = beta0, slope = beta1, color = "red") +
+  theme(aspect.ratio = 1)
+```
+
+**5.**. Compute $R^2$, the coefficient of determination. 
+
+
+
