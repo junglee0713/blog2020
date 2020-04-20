@@ -166,7 +166,7 @@ A simple linear regression does not work properly -- for example, what can be sa
 
 ## Logistic regression
 
-In logistic regession, we model 
+In logistic regression, we model 
 `$$\log(\text{Odds of survival}) = \beta_0 + \beta_1\texttt{Age},$$`
 --
 that is, 
@@ -210,9 +210,9 @@ In other words, the probability of survival is
 
 ---
 
-## Interpretation of `\(\beta_1\)`
+## Interpretation of coefficients
 
-Interpretation of `\(\beta_1\)` (-0.008774355 in the previous exxample):
+Interpretation of `\(\beta_1\)` (-0.008774355 in the previous example):
 --
 
 - Odds of survival at age `\(x\)`:
@@ -233,7 +233,7 @@ In general, `\(e^{\beta_1}\)` represents the ratio of two odds when there is a u
 
 ---
 
-## Interpretation of `\(\beta_1\)`
+## Interpretation of coefficients
 
 `$$\frac{\text{Odds}(x+1)}{\text{Odds}(x)}=e^{\beta_1}.$$`
 
@@ -366,7 +366,7 @@ titanic %&gt;%
 
 ---
 
-## Excercise
+## Exercise
 
 Recall the horseshoe crabs dataset. We want to model the existence of satellites of a female crab using the weight and spine condition of the  female crab.
 
@@ -379,12 +379,12 @@ crabs &lt;- read_tsv("crabs.tsv") %&gt;%
 ```
 --
 
-- What is the probability that a femaile crab with weight 4.1kg and spine condition 3 has at least one satellite?
-- What is the probability that a femaile crab with weight 2.8kg and spine condition 1 has at least one satellite?
+- What is the probability that a female crab with weight 4.1kg and spine condition 3 has at least one satellite?
+- What is the probability that a female crab with weight 2.8kg and spine condition 1 has at least one satellite?
 
 ---
 
-## Excercise
+## Exercise
 
 
 ```r
@@ -413,7 +413,7 @@ This implies that the probability of having a satellite is
 
 ---
 
-## Excercise
+## Exercise
 
 For female crabs with spine condition 1, the odds of having a satellite equals 
 `$$e^{-3.65268080 + 1.78814346\times\texttt{weight}}.$$`
@@ -428,7 +428,7 @@ This implies that the probability of having a satellite is
 
 ---
 
-## Excercise
+## Exercise
 
 
 ```r
@@ -442,7 +442,7 @@ crabs %&gt;%
 
 ---
 
-## Excercise
+## Exercise
 
 
 ```r
