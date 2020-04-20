@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Lecture 13</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jung-Jin Lee" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Drexel.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Lecture 13
+## Logistic regression
+### Jung-Jin Lee
+### Apr 21, 2020
+
+---
+
+ 
+
+
+## Odds
+
+As a measure of likelihood of an event, the **odds** of an event are the ratio of the probability that the event occurs to the probability that the event cannot occur. In other words, for an event `\(A\)`, the odds of `\(A\)`, denoted `\(\text{odds}(A)\)`, is defined to be 
+`$$\text{odds}(A) = \frac{P(A)}{1-P(A)}.$$`
+
+**Example**: when rolling a fair die, the odds of getting 1 are `\(\frac{1/6}{5/6} = \frac{1}{5}\)` (or 1:5). The odds of getting an even number are `\(\frac{1/2}{1/2} = 1\)` (or 1:1).
+
+--
+
+It is notable that `\(P(A)\)` can be recovered from `\(\text{odds}(A)\)`:
+`$$P(A)=\frac{\text{odds}(A)}{1+\text{odds}(A)}.$$`
+---
+
+## Titanic dataset
+
+.pull-left-code[
+- On April 15, 1912, the largest passenger liner ever made collided with an iceberg during her maiden voyage. 
+
+- When the Titanic sank it killed 1502 out of 2224 passengers and crew. 
+  - One of the reasons that the shipwreck resulted in such loss of life was that there were not enough lifeboats for the passengers and crew.
+  
+  - Although there was some element of luck involved in surviving the sinking, some groups of people were more likely to survive than others.
+]
+.pull-right-plot[
+&lt;p align = "center"&gt;
+  &lt;img src = Titanic.png width = "240"&gt;
+&lt;/p&gt;  
+]
+
+---
+
+## Titanic dataset
+
+Download a comma separated file [titanic.csv](titanic.csv). It consists of 887 observations and 8 variables. You can read in the dataset using `read_csv()`, a function that comes with `tidyverse`. 
+
+
+```r
+*titanic_ori &lt;- read_csv(file = "titanic.csv")
+head(titanic_ori)
+```
+
+```
+## # A tibble: 6 x 8
+##   Survived Pclass Name  Sex     Age `Siblings/Spous… `Parents/Childr…
+##      &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;
+## 1        0      3 Mr. … male     22                1                0
+## 2        1      1 Mrs.… fema…    38                1                0
+## 3        1      3 Miss… fema…    26                0                0
+## 4        1      1 Mrs.… fema…    35                1                0
+## 5        0      3 Mr. … male     35                0                0
+## 6        0      3 Mr. … male     27                0                0
+## # … with 1 more variable: Fare &lt;dbl&gt;
+```
+
+---
+
+## Titanic dataset
+
+
+```r
+names(titanic_ori)
+```
+
+```
+## [1] "Survived"                "Pclass"                 
+## [3] "Name"                    "Sex"                    
+## [5] "Age"                     "Siblings/Spouses Aboard"
+## [7] "Parents/Children Aboard" "Fare"
+```
+
+- `Survived`: did the passenger survive? (1 = survived)
+
+- `Pclass`: passenger-class
+
+- `Siblings/Spouses Aboard`: number of siblings/spouses aboard
+
+- `Parents/Children Aboard`: number of parents/children aboard
+
+- `Fare`: fare in UK pounds
+
+--
+
+
+```r
+titanic &lt;- titanic_ori %&gt;%
+  mutate(Pclass = factor(Pclass, levels = c(1, 2, 3))) %&gt;%
+  mutate(Sex = factor(Sex, levels = c("female", "male")))
+```
+
+---
+
+## Titanic dataset
+
+`Age` distribution by `Sex` and `Pclass`:
+
+.pull-left-40[
+
+```r
+titanic %&gt;% 
+  ggplot(aes(Sex, Age)) + 
+  geom_boxplot() + 
+  facet_wrap(~Pclass) 
+```
+]
+
+.pull-right-60[
+&lt;img src="Drexel_2020_Lecture_13_files/figure-html/unnamed-chunk-6-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## Logistic regression
+
+How does `Age` affect the `Survived`? 
+
+--
+
+.pull-left-55[
+
+```r
+fit.lm &lt;- lm(Survived ~ Age, 
+             data = titanic)
+beta0 &lt;- fit.lm$coefficients[1]
+beta1 &lt;- fit.lm$coefficients[2]
+ggplot(titanic, aes(Age, Survived)) +
+  geom_point() +
+  geom_abline(intercept = beta0, 
+              slope = beta1, 
+              color = "red")
+```
+]
+
+.pull-right-45[
+&lt;img src="Drexel_2020_Lecture_13_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+--
+
+A simple linear regression does not work properly -- for example, what can be said about the survival of a 40-year-old passenger?
+
+---
+
+## Logistic regression
+
+In logistic regession, we model 
+`$$\log(\text{Odds of survival}) = \beta_0 + \beta_1\texttt{Age},$$`
+--
+that is, 
+`$$\text{Odds of survival} = e^{\beta_0 + \beta_1\texttt{Age}},$$`
+or equivalently,
+`$$\frac{P(\text{Survival})}{1-P(\text{Survival})} = e^{\beta_0 + \beta_1\texttt{Age}}.$$`
+--
+This can be rewritten as 
+`$$P(\text{Survival}) = \frac{e^{\beta_0 + \beta_1\texttt{Age}}}{1+e^{\beta_0 + \beta_1\texttt{Age}}}.$$`
+--
+The coefficients `\(\beta_0\)` and `\(\beta_1\)` are estimated by the function `glm()`. 
+
+---
+
+## Logistic regression
+
+
+```r
+*fit.glm &lt;- glm(Survived ~ Age, family = binomial(link = "logit"),
+*              data = titanic)
+fit.glm$coefficients
+```
+
+```
+##  (Intercept)          Age 
+## -0.209188757 -0.008774355
+```
+
+
+
+From this output, we conclude that
+
+`$$\log(\text{Odds of survival}) = -0.209188757-0.008774355 \times \texttt{Age}$$`
+
+--
+
+For a 40-year-old passenger, the odds of survival is
+`$$e^{-0.209188757-0.008774355 \times 40 = 0.571116}.$$`
+In other words, the probability of survival is
+`$$\frac{e^{-0.209188757-0.008774355 \times 40}}{1+e^{-0.209188757-0.008774355 \times 40}}=36.35\%.$$`
+
+---
+
+## Interpretation of `\(\beta_1\)`
+
+Interpretation of `\(\beta_1\)` (-0.008774355 in the previous exxample):
+--
+
+- Odds of survival at age `\(x\)`:
+`$$\text{Odds}(x) = e^{\beta_0 +\beta_1x}.$$`
+--
+
+- Odds of survival at age `\(x+1\)` (a unit increase in age):
+`$$\text{Odds}(x+1) = e^{\beta_0 +\beta_1(x+1)}.$$`
+--
+
+- In other words, 
+`$$\text{Odds}(x+1) = e^{\beta_0 +\beta_1(x+1)} = e^{\beta_0 +\beta_1x+\beta_1}=e^{\beta_1}\times\text{Odds}(x),\quad\text{or}$$`
+`$$\frac{\text{Odds}(x+1)}{\text{Odds}(x)}=e^{\beta_1}.$$`
+--
+
+
+In general, `\(e^{\beta_1}\)` represents the ratio of two odds when there is a unit change in the predictor variable. 
+
+---
+
+## Interpretation of `\(\beta_1\)`
+
+`$$\frac{\text{Odds}(x+1)}{\text{Odds}(x)}=e^{\beta_1}.$$`
+
+--
+
+- `\(\beta_1 &gt; 0 \Leftrightarrow e^{\beta_1} &gt; 1 \Leftrightarrow \text{Odds}(x+1) &gt; \text{Odds}(x) \Leftrightarrow\)` increase in the predictor leads to increase in the odds.
+
+--
+
+- `\(\beta_1 &lt; 0 \Leftrightarrow e^{\beta_1} &lt; 1 \Leftrightarrow \text{Odds}(x+1) &lt; \text{Odds}(x) \Leftrightarrow\)` increase in the predictor leads to decrease in the odds.
+
+---
+
+## Logistic regression with a categorical predictor
+
+How does `Sex` affect the `Survived`? 
+
+
+```r
+fit.glm2 &lt;- glm(Survived ~ Sex, family = binomial(link = "logit"),
+                data = titanic)
+fit.glm2$coefficients
+```
+
+```
+## (Intercept)     Sexmale 
+##    1.056589   -2.505126
+```
+
+--
+
+Interpretation:
+
+- The odds of survival of female = `\(e^{\beta_0} = e^{1.056589} = 2.877\)`. This implies that the probability of survival of a female passenger equals `\(\frac{e^{1.056589}}{1+e^{1.056589}}=74.2\%\)`. 
+
+--
+
+- On the other hand, the odds of survival of male = `\(e^{\beta_0 + \beta_1} = e^{1.056589-2.505126} = 0.235\)`. This implies that the probability of survival of a female passenger equals `\(\frac{e^{1.056589-2.505126}}{1+e^{1.056589-2.505126}}=19.0\%\)`.
+
+---
+
+## Logistic regression with a categorical predictor
+
+
+```r
+titanic %&gt;%
+  mutate(Survival = ifelse(Survived == 1, "yes", "no")) %&gt;%
+  ggplot(aes(Sex, fill = Survival)) +
+  geom_bar()
+```
+
+&lt;img src="Drexel_2020_Lecture_13_files/figure-html/unnamed-chunk-12-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Logistic regression with a categorical predictor
+
+
+```r
+table(titanic$Survived, titanic$Sex)
+```
+
+```
+##    
+##     female male
+##   0     81  464
+##   1    233  109
+```
+
+```r
+female_survival_prob &lt;- 233/(81+233)
+male_survival_prob &lt;- 109/(464+109)
+female_survival_prob; male_survival_prob
+```
+
+```
+## [1] 0.7420382
+```
+
+```
+## [1] 0.1902269
+```
+
+---
+
+## Logistic regression with multiple predictors
+
+How do `Age` and `Pclass` affect the `Survived`? 
+
+
+```r
+fit.glm3 &lt;- glm(Survived ~ Age + Pclass, 
+                family = binomial(link = "logit"),
+                data = titanic)
+fit.glm3$coefficients
+```
+
+```
+## (Intercept)         Age     Pclass2     Pclass3 
+##  2.09929535 -0.03946933 -1.03811692 -2.28986274
+```
+
+--
+
+Interpretation:
+
+- When `Pclass` remains unchanged, the odds of survival of a patient with age `\(x+1\)` is `\(e^{-0.03946933}=0.9612994\)` times the odds of survival of a patient with age `\(x\)` (The older, the less likely to survive).
+
+--
+
+- When `Age` remains unchanged, the odds of survival of a patient in passenger-class `\(2\)` is `\(e^{-1.03811692}=0.3541209\)` times the odds of survival of a patient in passenger-class `\(1\)`.
+
+--
+
+- When `Age` remains unchanged, the odds of survival of a patient in passenger-class `\(3\)` is `\(e^{-2.28986274}=0.1012804\)` times the odds of survival of a patient in passenger-class `\(1\)`.
+
+---
+
+## Logistic regression with multiple predictors
+
+
+```r
+titanic %&gt;%
+  mutate(Survival = ifelse(Survived == 1, "yes", "no")) %&gt;%
+  ggplot(aes(Pclass, fill = Survival)) +
+  geom_bar()
+```
+
+&lt;img src="Drexel_2020_Lecture_13_files/figure-html/unnamed-chunk-15-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Excercise
+
+Recall the horseshoe crabs dataset. We want to model the existence of satellites of a female crab using the weight and spine condition of the  female crab.
+
+
+```r
+crabs &lt;- read_tsv("crabs.tsv") %&gt;%
+  mutate(has.satell = ifelse(satell &gt; 0, 1, 0)) %&gt;%
+  mutate(spine = factor(spine, levels = c("1", "2", "3"))) %&gt;%
+  mutate(weight = weight/1000) # weight in grams to kilograms
+```
+--
+
+- What is the probability that a femaile crab with weight 4.1kg and spine condition 3 has at least one satellite?
+- What is the probability that a femaile crab with weight 2.8kg and spine condition 1 has at least one satellite?
+
+---
+
+## Excercise
+
+
+```r
+fit.crab &lt;- glm(has.satell ~ weight + spine,
+                family = binomial(link = "logit"),
+                data = crabs)
+fit.crab$coefficients
+```
+
+```
+## (Intercept)      weight      spine2      spine3 
+## -3.65268080  1.78814346 -0.29967472  0.07082751
+```
+--
+
+For female crabs with spine condition 3, the odds of having a satellite equals 
+`$$e^{-3.65268080 + 1.78814346\times\texttt{weight}+0.07082751}.$$`
+--
+
+In particular if the weight is `\(4.1\)`, then the odds become
+`$$e^{-3.65268080 + 1.78814346\times4.1+0.07082751}=42.50.$$`
+--
+
+This implies that the probability of having a satellite is 
+`$$\frac{e^{-3.65268080 + 1.78814346\times4.1+0.07082751}}{1+e^{-3.65268080 + 1.78814346\times4.1+0.07082751}}=97.7\%.$$`
+
+---
+
+## Excercise
+
+For female crabs with spine condition 1, the odds of having a satellite equals 
+`$$e^{-3.65268080 + 1.78814346\times\texttt{weight}}.$$`
+--
+
+In particular if the weight is `\(2.8\)`, then the odds become
+`$$e^{-3.65268080 + 1.78814346\times2.8}=3.87.$$`
+--
+
+This implies that the probability of having a satellite is 
+`$$\frac{e^{-3.65268080 + 1.78814346\times2.8}}{1+e^{-3.65268080 + 1.78814346\times2.8}}=79.5\%.$$`
+
+---
+
+## Excercise
+
+
+```r
+crabs %&gt;%
+  mutate(has.satell = ifelse(has.satell == 1, "yes", "no")) %&gt;%
+  ggplot(aes(spine, fill = has.satell)) +
+  geom_bar()
+```
+
+&lt;img src="Drexel_2020_Lecture_13_files/figure-html/unnamed-chunk-18-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Excercise
+
+
+```r
+crabs %&gt;%
+  mutate(has.satell = ifelse(has.satell == 1, "yes", "no")) %&gt;%
+  ggplot(aes(has.satell, weight)) +
+  geom_boxplot()
+```
+
+&lt;img src="Drexel_2020_Lecture_13_files/figure-html/unnamed-chunk-19-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Final exam
+
+- Tuesday, April 28. 5:30pm ~ 10:00pm
+
+- Online (PDF/Word)
+
+- Cumulative (more than 70% from material after Exam 2)
+
+--
+
+
+```r
+num1 &lt;- c(20, 8, 1, 14, 11)
+num2 &lt;- c(25, 15, 21)
+char1 &lt;- LETTERS[num1]
+char2 &lt;- LETTERS[num2]
+IWannaSay &lt;- paste(paste(char1, collapse = ""),
+                   paste(char2, collapse = ""))
+print(IWannaSay)
+```
+
+```
+## [1] "THANK YOU"
+```
+
+
+```
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

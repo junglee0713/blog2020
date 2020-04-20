@@ -42,4 +42,23 @@
   width: 17%;
 }
 
+.pull-left-40 {
+  float: left;
+  width: 38%;
+}
+
+.pull-right-60 {
+  float: left;
+  width: 58%;
+}
+
+.pull-left-55 {
+  float: left;
+  width: 55%;
+}
+
+.pull-right-45 {
+  float: left;
+  width: 45%;
+}
 
