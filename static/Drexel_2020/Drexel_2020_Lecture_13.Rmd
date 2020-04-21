@@ -202,7 +202,7 @@ $$\log(\text{Odds of survival}) = -0.209188757-0.008774355 \times \texttt{Age}$$
 --
 
 For a 40-year-old passenger, the odds of survival is
-$$e^{-0.209188757-0.008774355 \times 40 = 0.571116}.$$
+$$e^{-0.209188757-0.008774355 \times 40} = 0.571116.$$
 In other words, the probability of survival is
 $$\frac{e^{-0.209188757-0.008774355 \times 40}}{1+e^{-0.209188757-0.008774355 \times 40}}=36.35\%.$$
 
