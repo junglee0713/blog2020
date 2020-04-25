@@ -5,7 +5,7 @@ date: '2020-04-24'
 slug: fdr-adjusted-p-values
 ---
 
-In this post, we look into the so-called FDR-adjusted $p$-values implemented by `p.adjust()` with `method = "BH"`. To this end, we create a list of $n=20$ norminal $p$-values and rank them in increasing order:
+In this post, we look into the so-called FDR-adjusted $p$-values implemented by `p.adjust()` with `method = "BH"`. To this end, we create a list of $n=20$ nominal $p$-values and rank them in increasing order:
 
 ```{r, message = FALSE}
 library(tidyverse)
