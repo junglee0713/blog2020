@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.62.2" />
+
+
+<title>FDR-adjusted p-values - Jung-Jin Lee&#39;s blog</title>
+<meta property="og:title" content="FDR-adjusted p-values - Jung-Jin Lee&#39;s blog">
+
+
+  <link href='/bday.png' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/home.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="https://github.com/junglee0713">GitHub</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">2 min read</span>
+    
+
+    <h1 class="article-title">FDR-adjusted p-values</h1>
+
+    
+    <span class="article-date">2020-04-24</span>
+    
+
+    <div class="article-content">
+      
+
+
+<p>In this post, we look into the so-called FDR-adjusted <span class="math inline">\(p\)</span>-values implemented by <code>p.adjust()</code> with <code>method = &quot;BH&quot;</code>. To this end, we create a list of <span class="math inline">\(n=20\)</span> norminal <span class="math inline">\(p\)</span>-values and rank them in increasing order:</p>
+<pre class="r"><code>library(tidyverse)
+library(ggrepel)
+library(ggsci)
+
+nom_pval &lt;- c(0.01600000, 0.05865014, 0.08350898, 0.08783160, 0.06777848,
+              0.08206850, 0.01800000, 0.09725057, 0.00200000, 0.00010000,
+              0.04862445, 0.00300000, 0.01500000, 0.07574901, 0.05959104,
+              0.01900000, 0.01700000, 0.00400000, 0.02000000, 0.06827007)
+n &lt;- length(nom_pval)
+d &lt;- tibble(sorted_pval = sort(nom_pval), rank = 1:n)</code></pre>
+<p>Set the significance level <span class="math inline">\(\alpha=0.05\)</span>, and consider the following plot, where the red line represents
+<span class="math display">\[y = \frac{\alpha}{n}\times\text{rank}.\]</span></p>
+<pre class="r"><code>alpha = 0.05
+d &lt;- d %&gt;%
+  mutate(is.under = sorted_pval &lt;= alpha/n*rank) %&gt;%
+  mutate(is.last = ifelse(rank == which(.$is.under) %&gt;% max(), &quot;last rank\nunder the line&quot;, &quot;&quot;)) %&gt;%
+  mutate(sig = ifelse(rank &lt;= which(.$is.under) %&gt;% max(), &quot;sig.&quot;, &quot;non-sig.&quot;))
+
+d %&gt;%
+  ggplot(aes(rank, sorted_pval)) + 
+  geom_point(aes(color = sig)) +
+  scale_color_d3() +
+  geom_text_repel(aes(label = is.last), nudge_x = 1) +
+  ylim(c(0, NA)) +
+  geom_abline(intercept = 0, slope = alpha/n, color = &quot;red&quot;) +
+  theme_classic() +
+  theme(aspect.ratio = 1) </code></pre>
+<p><img src="/post/2020-04-24-fdr-adjusted-p-values_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>According to <a href="https://www.jstor.org/stable/2346101?seq=1#metadata_info_tab_contents">Benjamini-Hochberg</a>, declaring all <span class="math inline">\(p\)</span>-values less than or equal to the largest <span class="math inline">\(p\)</span>-value under the line to be significant controls the false discovery rate, in the sense that the expected proportion of false discoveries <span class="math inline">\(\leq \alpha=0.05\)</span>.</p>
+<p>In practice, it would be convenient to adjust the nominal <span class="math inline">\(p\)</span>-values and determine the significance by comparing the adjusted <span class="math inline">\(p\)</span>-values to <span class="math inline">\(\alpha=0.05\)</span>. From the condition that
+<span class="math display">\[p \leq \frac{\alpha}{n}\times\text{rank},\]</span>
+it is tempting to revise the <span class="math inline">\(p\)</span>-value by multiplying it by <span class="math inline">\(\displaystyle{\frac{n}{\text{rank}}}\)</span> (and declare significance if this revised value is less than <span class="math inline">\(\alpha=0.05\)</span>). It is not quite simple though, as can be seen below:</p>
+<pre class="r"><code>d &lt;- d %&gt;%
+  mutate(rev_pval = sorted_pval*n/rank) %&gt;%
+  mutate(is.problem = ifelse(sig == &quot;sig.&quot; &amp; rev_pval &gt; alpha, &quot;problem&quot;, &quot;&quot;))
+
+d %&gt;%
+  ggplot(aes(rank, rev_pval)) + 
+  geom_point(aes(color = sig)) +
+  scale_color_d3() +
+  geom_text_repel(aes(label = is.problem), nudge_x = 1) +
+  ylim(c(0, NA)) +
+  geom_hline(yintercept = alpha, color = &quot;blue&quot;) +
+  theme_classic() +
+  theme(aspect.ratio = 1)</code></pre>
+<p><img src="/post/2020-04-24-fdr-adjusted-p-values_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Notice that there are a couple of problematic points that are above <span class="math inline">\(\alpha=0.05\)</span>. If we declare significance based on these revised <span class="math inline">\(p\)</span>-values, we would lose these potential discoveries. To fix this, we need to adjust the original nominal <span class="math inline">\(p\)</span>-values in a way keeping these points under <span class="math inline">\(\alpha=0.05\)</span>. This is accomplished in <code>p.adjust()</code> with <code>method = &quot;BH&quot;</code> option (using <code>cummin</code> function).</p>
+<pre class="r"><code>d &lt;- d %&gt;%
+  mutate(adj_pval = p.adjust(sorted_pval, method = &quot;BH&quot;)) 
+
+d %&gt;%
+  ggplot(aes(rank, adj_pval)) + 
+  geom_point(aes(y = rev_pval, shape = &quot;previous adjustment&quot;)) +
+  geom_point(aes(color = sig, shape = &quot;correct adjustment&quot;)) +
+  scale_color_d3() +
+  ylim(c(0, NA)) +
+  geom_hline(yintercept = alpha, color = &quot;blue&quot;) +
+  theme_classic() +
+  theme(aspect.ratio = 1)</code></pre>
+<p><img src="/post/2020-04-24-fdr-adjusted-p-values_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+
+    </div>
+  </article>
+
+  
+<section id="comments">
+  <div id="disqus_thread"></div>
+  <script>
+  var disqus_config = function () {
+  
+  };
+  (function() {
+    var inIFrame = function() {
+      var iframe = true;
+      try { iframe = window.self !== window.top; } catch (e) {}
+      return iframe;
+    };
+    if (inIFrame()) return;
+    var d = document, s = d.createElement('script');
+    s.src = '//junglee0713-netlify.disqus.com/embed.js'; s.async = true;
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</section>
+
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-129677462-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+  </body>
+</html>
+

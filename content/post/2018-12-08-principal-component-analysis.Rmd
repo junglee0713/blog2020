@@ -64,13 +64,13 @@ plot_ly(X, x = ~x, y = ~y, z = ~z, color = ~colored,
 By a good two dimensional representation, we mean finding a projection $P$ such that $\frac{1}{n-1}\|Y\|_{HS}^2$ is maximized, where $Y=XP$. As $P$ is a projection matrix, $P=P^t=P^2$ and it follows that 
 $$\|Y\|_{HS}^2=tr((XP)^t(XP))=tr(P^tX^tXP)=tr(X^tXPP^t)=tr(X^tY)$$ and that
 
-\begin{aligned}
+\begin{align}
 \|X-Y\|_{HS}^2&=tr((X-Y)^t(X-Y))\\
 &=tr(X^tX)-tr(X^tY)-tr(Y^tX)+tr(Y^tY)\\
 &=tr(X^tX)-tr(X^tY)-tr((Y^tX)^t)+tr(Y^tY)\\
 &=tr(X^tX)-2tr(X^tY)+tr(Y^tY)\\
 &=\|X\|_{HS}^2-\|Y\|_{HS}^2,
-\end{aligned}
+\end{align}
 
 which implies that $\|Y\|_{HS}^2$ is maximized when $\|X-Y\|_{HS}^2$ is minimized. 
 

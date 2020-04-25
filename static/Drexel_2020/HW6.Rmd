@@ -67,9 +67,19 @@ crabs <- read_tsv("crabs.tsv")
 fit1 <- lm(satell ~ width, data = crabs)
 fit2 <- lm(satell ~ weight, data = crabs)
 fit3 <- lm(satell ~ width + weight, data = crabs)
+
+summary(fit1)$r.squared
+summary(fit2)$r.squared
+summary(fit3)$r.squared
 ```
 
 **4.** Compute $R^2$ for the models. 
+
+```{r, echo = F, eval = F}
+AIC(fit1, fit2, fit3)
+anova(fit1, fit3)
+anova(fit2, fit3)
+```
 
 \bigskip
 
