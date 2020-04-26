@@ -62,7 +62,11 @@ d %&gt;%
   ggplot(aes(rank, adj_pval)) + 
   geom_point(aes(y = rev_pval, shape = &quot;previous adjustment&quot;)) +
   geom_point(aes(color = sig, shape = &quot;correct adjustment&quot;)) +
+  geom_segment(data = d %&gt;% filter(rev_pval &gt; adj_pval),
+               aes(x = rank, y = rev_pval, xend = rank, yend = adj_pval),
+               arrow = arrow(length = unit(0.15, &quot;cm&quot;))) +
   scale_color_d3() +
+  scale_shape_manual(values = c(19, 1)) +
   ylim(c(0, NA)) +
   geom_hline(yintercept = alpha, color = &quot;blue&quot;) +
   theme_classic() +
