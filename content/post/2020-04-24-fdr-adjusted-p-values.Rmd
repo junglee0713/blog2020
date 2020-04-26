@@ -1,7 +1,7 @@
 ---
 title: FDR-adjusted p-values
 author: Jung-Jin Lee
-date: '2020-04-24'
+date: '2020-04-25'
 slug: fdr-adjusted-p-values
 ---
 
