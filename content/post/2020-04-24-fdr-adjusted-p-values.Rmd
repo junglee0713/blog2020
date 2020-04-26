@@ -41,7 +41,7 @@ d %>%
   theme(aspect.ratio = 1) 
 ```
 
-According to [Benjamini-Hochberg](https://www.jstor.org/stable/2346101?seq=1#metadata_info_tab_contents), declaring all $p$-values less than or equal to the largest $p$-value under the line to be significant controls the false discovery rate, in the sense that the expected proportion of false discoveries $\leq \alpha=0.05$. 
+According to [Benjamini-Hochberg](https://www.jstor.org/stable/2346101?seq=1#metadata_info_tab_contents), declaring discoveries for all $p$-values less than or equal to the largest $p$-value under the line controls the false discovery rate, in the sense that the expected proportion of false discoveries would be less than or equal to $\alpha=0.05$. 
 
 In practice, it would be convenient to adjust the nominal $p$-values and determine the significance by comparing the adjusted $p$-values to $\alpha=0.05$. From the condition that 
 $$p \leq \frac{\alpha}{n}\times\text{rank},$$
