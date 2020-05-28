@@ -440,6 +440,28 @@ age_Simpsons[names(age_Simpsons) %in% male]
 
 ---
 
+## Vector manipulation, continued
+
+Modifying a vector:
+
+```{r}
+m1 <- c("Apple", "Bananana", "Cherry")
+m1[2] <- "Banana"
+print(m1)
+```
+
+--
+
+Joining vectors:
+
+```{r}
+m2 <- c("Pear", "Watermelon")
+m3 <- c(m1, m2)
+print(m3)
+```
+
+---
+
 ## Special vectors -- part I
 
 **Exercise**: compute the sum $1 + 2 + 3 + \cdots + 10$.
@@ -508,6 +530,36 @@ print(vec7)
 vec8 <- 5 + 2*c(-1, 1)
 print(vec8)
 ```
+
+---
+
+## Recycling in R, continued
+
+**Exercise**: Change "Female" to "F" for consistency.
+
+```{r}
+gender <- c("M", "F", "Female", "M", "Female")
+```
+
+--
+
+```{r}
+# solution using hardcoding
+sol1 <- gender
+sol1[c(3, 5)] <- "F"
+print(sol1)
+```
+
+--
+
+```{r}
+# solution without using hardcoding
+sol2 <- gender
+sol2[sol2 == "Female"] <- "F"
+print(sol2)
+```
+
+
 
 ---
 

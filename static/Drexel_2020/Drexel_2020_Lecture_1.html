@@ -697,6 +697,38 @@ age_Simpsons[names(age_Simpsons) %in% male]
 
 ---
 
+## Vector manipulation, continued
+
+Modifying a vector:
+
+
+```r
+m1 &lt;- c("Apple", "Bananana", "Cherry")
+m1[2] &lt;- "Banana"
+print(m1)
+```
+
+```
+## [1] "Apple"  "Banana" "Cherry"
+```
+
+--
+
+Joining vectors:
+
+
+```r
+m2 &lt;- c("Pear", "Watermelon")
+m3 &lt;- c(m1, m2)
+print(m3)
+```
+
+```
+## [1] "Apple"      "Banana"     "Cherry"     "Pear"       "Watermelon"
+```
+
+---
+
 ## Special vectors -- part I
 
 **Exercise**: compute the sum `\(1 + 2 + 3 + \cdots + 10\)`.
@@ -814,6 +846,47 @@ print(vec8)
 ```
 ## [1] 3 7
 ```
+
+---
+
+## Recycling in R, continued
+
+**Exercise**: Change "Female" to "F" for consistency.
+
+
+```r
+gender &lt;- c("M", "F", "Female", "M", "Female")
+```
+
+--
+
+
+```r
+# solution using hardcoding
+sol1 &lt;- gender
+sol1[c(3, 5)] &lt;- "F"
+print(sol1)
+```
+
+```
+## [1] "M" "F" "F" "M" "F"
+```
+
+--
+
+
+```r
+# solution without using hardcoding
+sol2 &lt;- gender
+sol2[sol2 == "Female"] &lt;- "F"
+print(sol2)
+```
+
+```
+## [1] "M" "F" "F" "M" "F"
+```
+
+
 
 ---
 
@@ -1124,6 +1197,32 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
 // adds .remark-code-has-line-highlighted class to <pre> parent elements
 // of code chunks containing highlighted lines with class .remark-code-line-highlighted
 (function(d) {
@@ -1141,17 +1240,6 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
-
-<script>
-(function() {
-  var links = document.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
-      links[i].target = '_blank';
-    }
-  }
-})();
-</script>
 
 <script>
 slideshow._releaseMath = function(el) {
