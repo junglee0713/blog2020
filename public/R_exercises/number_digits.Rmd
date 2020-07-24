@@ -1,0 +1,10 @@
+---
+title: "Number of digits"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+How many digits does $N=1234567891011121314...9998999910000$ have, where $N$ is formed by concatenating $1,2,3,\ldots,9999,10000$? (_Hint_: you might want to look up the functions `paste()` and `nchar()`)
