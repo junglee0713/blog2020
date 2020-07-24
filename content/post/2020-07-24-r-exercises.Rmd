@@ -1,0 +1,10 @@
+---
+title: R exercises
+author: ''
+date: '2020-07-24'
+slug: r-exercises
+categories: []
+tags: []
+---
+
+[Sum of squares](/R_exercises/sum_sq.html)

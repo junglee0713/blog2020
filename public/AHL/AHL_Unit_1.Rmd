@@ -1,0 +1,59 @@
+---
+title: "Unit 1"
+author: "for 이하진"
+date: "Last modified: `r format(Sys.Date(), '%b %d, %Y')`"
+output:
+  xaringan::moon_reader:
+    css: ["default", "default-fonts", "AHL.css"] 
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r, message = F, echo = F, warning = F}
+library(knitr) 
+opts_chunk$set(
+  tidy = FALSE,
+  cache = FALSE,
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  dpi = 300,
+  fig.align = "center",
+  fig.width = 3,
+  fig.height = 3
+  )
+library(tidyverse)
+```
+
+## Getting started
+
+- Open RStudio 
+
+- Click on **File** $\rightarrow$ **New Project...** and create a new project.
+
+- Click on **File** $\rightarrow$ **New File** $\rightarrow$ **R Markdown...** Fill title and author. Check PDF.
+
+- Keep lines 1-10 only, deleting everyting after the first chunk. 
+
+- Save the file e.g. `AHL_06112020.Rmd`.
+
+---
+
+## R as a calculator
+
+```{r}
+a <- 5
+b <- 4
+a + b
+a * b
+```
+
+**Exercise**
+
+
+
+
+

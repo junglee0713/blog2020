@@ -6,10 +6,19 @@
     <description>Recent content on Jung-Jin Lee&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 25 Apr 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 24 Jul 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>R exercises</title>
+      <link>/2020/07/24/r-exercises/</link>
+      <pubDate>Fri, 24 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/2020/07/24/r-exercises/</guid>
+      <description>Sum of squares</description>
+    </item>
     
     <item>
       <title>FDR-adjusted p-values</title>
