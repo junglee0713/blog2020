@@ -5,9 +5,14 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
 ```
 
 - Compute $1^2 + 2^2 + 3^2 + \cdots + 1000^2$.
 
 - Compute $2^2 + 4^2 + 6^2 + \cdots + 1000^2$.
 
+```{r, eval = F, echo = F}
+(1:1000)^2 %>% sum()
+(2*(1:500))^2 %>% sum()
+```

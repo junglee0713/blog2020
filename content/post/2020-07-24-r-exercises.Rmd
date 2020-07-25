@@ -10,3 +10,5 @@ tags: []
 [Sum of squares](/R_exercises/sum_sq.html)
 
 [Number of digits](/R_exercises/number_digits.html)
+
+[Vector filtering](/R_exercises/filter_vec.html)
