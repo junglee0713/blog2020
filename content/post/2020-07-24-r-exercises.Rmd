@@ -16,3 +16,5 @@ tags: []
 [Maximum sepal length](/R_exercises/max_sepal.html)
 
 [Central polygonal numbers](/R_exercises/central_polygonal.html)
+
+[Taxi fare](/R_exercises/taxi_fare.html)

@@ -8,8 +8,8 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 ```
 
-Consider the _central polygonal numbers_
-$$1, 2, 4, 7, 11, 16, 22, 29, 37, 46, 56, \ldots$$
+Consider the _central polygonal numbers_:
+$$1, 2, 4, 7, 11, 16, 22, 29, 37, 46, 56, \ldots .$$
 
 Find the 100$^\text{th}$ term.
 

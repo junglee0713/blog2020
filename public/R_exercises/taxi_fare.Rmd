@@ -1,0 +1,18 @@
+---
+title: "Taxi fare"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+Write a function that calculates the fare of a taxi ride. Its input is $x$ (distance in km) and the fare is calculated as follows:
+
+- $x$ is rounded up to the nearest integer
+- the first kilometer is $5
+- every additional kilometer is $2
+
+For example, the fare for a ride of 5.2km is
+$$\$5 + 5\times \$2$$
