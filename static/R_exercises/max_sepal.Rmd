@@ -1,0 +1,17 @@
+---
+title: "Maximum sepal length"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+`iris` is a dataset that consists of 150 observations of iris flowers. 
+
+- What is the maximum `Sepal.Length`? Which species is it?
+
+- What is the minimum `Petal.Length` of `setosa` species?
+
+- Find the mean `Petal.Width` for each species

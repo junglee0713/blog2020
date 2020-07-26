@@ -12,3 +12,5 @@ tags: []
 [Number of digits](/R_exercises/number_digits.html)
 
 [Vector filtering](/R_exercises/filter_vec.html)
+
+[Maximum sepal length](/R_exercises/max_sepal.html)
