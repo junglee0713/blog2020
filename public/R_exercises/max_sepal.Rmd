@@ -14,4 +14,15 @@ library(tidyverse)
 
 - What is the minimum `Petal.Length` of `setosa` species?
 
-- Find the mean `Petal.Width` for each species
+- Find the mean `Petal.Width` for each species.
+
+```{r, eval = F, echo = F}
+max(iris$Sepal.Length)
+iris %>% filter(Species == "setosa") %>%
+  pull(Petal.Length) %>%
+  min()
+iris %>%
+  group_by(Species) %>%
+  summarize(mean.PW = mean(Petal.Width))
+```
+
