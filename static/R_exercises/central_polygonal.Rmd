@@ -1,0 +1,25 @@
+---
+title: "Central polygonal numbers"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+Consider the _central polygonal numbers_
+$$1, 2, 4, 7, 11, 16, 22, 29, 37, 46, 56, \ldots$$
+
+Find the 100$^\text{th}$ term.
+
+```{r, eval = F, echo = F}
+s <- 1
+collect <- s
+for(i in 1:99) {
+  s <- s + i
+  collect <- c(collect, s)
+}
+collect
+```
+

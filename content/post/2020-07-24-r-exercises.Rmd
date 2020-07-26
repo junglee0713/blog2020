@@ -14,3 +14,5 @@ tags: []
 [Vector filtering](/R_exercises/filter_vec.html)
 
 [Maximum sepal length](/R_exercises/max_sepal.html)
+
+[Central polygonal numbers](/R_exercises/central_polygonal.html)
