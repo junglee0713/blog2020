@@ -18,3 +18,5 @@ tags: []
 [Central polygonal numbers](/R_exercises/central_polygonal.html)
 
 [Taxi fare](/R_exercises/taxi_fare.html)
+
+[Collatz sequence](/R_exercises/collatz.html)
