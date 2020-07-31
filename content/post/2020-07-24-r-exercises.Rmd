@@ -22,3 +22,6 @@ tags: []
 [Collatz sequence](/R_exercises/collatz.html)
 
 [Iris scatter plot](/R_exercises/iris_scatter.html)
+
+[Tallest human character in Starwars](/R_exercises/tallest_starwars.html)
+

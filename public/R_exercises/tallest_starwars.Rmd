@@ -1,0 +1,27 @@
+---
+title: "Tallest human character in Starwars"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+`starwars` is a dataset from the `dplyr` package that has 87 rows and 13 variables.
+
+- How many `Human` species are there?
+
+- How many values are missing for the variable `height`?
+
+- What is the name of the tallest `Human` character?
+
+```{r, eval = F, echo = F}
+table(starwars$species, useNA = "ifany")["Human"]
+sum(is.na(starwars$height))
+starwars %>%
+  filter(species == "Human") %>%
+  select(name, height, species) %>%
+  arrange(desc(height))
+```
+
