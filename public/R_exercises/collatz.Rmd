@@ -14,3 +14,14 @@ $$f(n) = \begin{cases} \frac{n}{2}, &\text{if }n \text{ is even}, \\
 Now form a sequence by repeatedly applying the function, starting with $27$. The first few terms are
 $$27, 82, 41, 124, 62, 31, 94, 47, \ldots,$$
 How many steps does it take for this sequence to reach $1$? In other words, find the smallest $i$ such that $a_i = 1$, where $a_1 = 27, a_2 = 82, a_3 = 41, \ldots.$ 
+
+```{r, eval = F, echo = F}
+collect <- c()
+n <- 27
+while(n != 1) {
+  collect <- c(collect, n)
+  n <- ifelse(n %% 2 == 0, n/2, 3*n+1)
+}
+# i = 112
+```
+

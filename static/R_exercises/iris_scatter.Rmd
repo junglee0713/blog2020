@@ -1,0 +1,61 @@
+---
+title: "Iris scatter plot"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+Create the following series of scatter plots:
+
+**Basic**
+
+```{r, echo = F}
+g1 <- iris %>%
+  ggplot(aes(Sepal.Length, Sepal.Width)) +
+  geom_point(aes(color = Species)) 
+print(g1)
+```
+
+**Change of background**
+
+```{r, echo = F}
+g2 <- g1 + 
+  theme_bw()
+print(g2)
+```
+
+**Change of $x,y$ ratio**
+
+```{r, echo = F}
+g3 <- g2 + 
+  theme(aspect.ratio = 1)
+print(g3)
+```
+
+**Title and labels**
+
+```{r, echo = F}
+g4 <- g3 + 
+  ggtitle("Iris flowers") +
+  labs(x = "Lengths of sepal", 
+       y = "Widths of sepal",
+       color = "Iris species")
+print(g4)
+```
+
+**Change of colors**
+
+```{r, echo = F}
+g5 <- g4 + 
+  ggtitle("Iris flowers") +
+  labs(x = "Lengths of sepal", 
+       y = "Widths of sepal",
+       color = "Iris species") +
+  scale_color_manual(values = c("setosa" = "red",
+                                "versicolor" = "brown",
+                                "virginica" = "gold"))
+print(g5)
+```

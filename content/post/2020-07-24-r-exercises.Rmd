@@ -20,3 +20,5 @@ tags: []
 [Taxi fare](/R_exercises/taxi_fare.html)
 
 [Collatz sequence](/R_exercises/collatz.html)
+
+[Iris scatter plot](/R_exercises/iris_scatter.html)
