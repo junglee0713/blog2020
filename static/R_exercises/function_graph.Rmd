@@ -1,0 +1,31 @@
+---
+title: "Function graph"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(grid)
+```
+
+Create the following graph $y=(x-1)^2-1$.
+
+```{r, echo = F}
+fct <- function(x) {
+  y <- (x-1)^2 - 1
+  return(y)
+  }
+ggplot(data.frame(x = 1), aes(x)) +
+  stat_function(fun = fct) +
+  xlim(c(-1, 4)) +
+  geom_hline(yintercept = 0, color = "red") +
+  geom_vline(xintercept = 0, color = "red") +
+  theme_classic() +
+  #theme(axis.title = element_blank(),
+  #      axis.line = element_blank(),
+  #      axis.text = element_blank(),
+  #      axis.ticks = element_blank()) +
+  theme(aspect.ratio = 1) 
+```
+

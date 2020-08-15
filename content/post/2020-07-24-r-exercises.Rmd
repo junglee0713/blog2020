@@ -25,3 +25,5 @@ tags: []
 
 [Tallest human character in Starwars](/R_exercises/tallest_starwars.html)
 
+[Function graph](/R_exercises/function_graph.html)
+
