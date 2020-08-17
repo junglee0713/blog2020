@@ -1,0 +1,41 @@
+---
+title: "Philadelphia temperature"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+Download a [file](2249105.csv) which contains Philadelphia International Airport daily temperature data from Jan 1, 2020 through Aug 13, 2020.
+
+```{r, echo = F}
+d <- read.csv("2249105.csv") %>%
+  select(NAME, DATE, TMAX, TMIN) %>%
+  filter(NAME == "PHILADELPHIA INTERNATIONAL AIRPORT, PA US") %>%
+  mutate(DATE = as.Date(DATE))
+```
+
+- Read in the data file and select only `NAME`, `DATE`, `TMAX` (high temperature), and `TMIN` (low temperature). Only leave Philadelphia data. Make sure that `DATE` is a date variable. 
+
+- Create the following graph.
+
+```{r, echo = F}
+d %>% 
+  ggplot(aes(x = DATE)) +
+  geom_line(aes(y = TMAX), color = "red") +
+  geom_line(aes(y = TMIN), color = "blue") +
+  theme_bw()
+```
+
+- Modify the graph above to get the following graph with a legend. 
+
+```{r, echo = F}
+d %>% 
+  pivot_longer(cols = c("TMAX", "TMIN"), names_to= "low_high", values_to = "Temperature") %>%
+  ggplot(aes(x = DATE, y = Temperature, color = low_high)) +
+  geom_line() +
+  theme_bw()
+```
+
