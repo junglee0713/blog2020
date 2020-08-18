@@ -29,3 +29,9 @@ tags: []
 
 [Philadelphia International Airport daily temperature](/R_exercises/phila_temperature.html)
 
+[Linear equation solver](/R_exercises/lin_sol.html)
+
+[Quadratic equation solver](/R_exercises/quad_sol.html)
+
+
+

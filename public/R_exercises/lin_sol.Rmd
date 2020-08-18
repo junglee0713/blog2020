@@ -1,0 +1,37 @@
+---
+title: "Linear equation solver"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+Make a function `lin_sol()` that solves a given linear equation. For example, to solve
+$$5x-3=0,$$
+the function takes two coefficients $5$ and $-3$ and `lin_sol(5, -3)` should return the root $0.6$. Make sure that `lin_sol(a, b)` can take care of the case when $a = 0$, where the solution could be either `Infinitely many solutions` or `No solutions`, depending on $b$. Some examples follow:
+
+```{r, echo = F}
+lin_sol <- function(a, b) {
+  if (a == 0) {
+    if (b == 0) {
+      print("Infinitely many solutions")
+    } else {
+      print("No solutions")
+    }
+  } else {
+    y <- -b/a
+    re <- paste0("It has a single root ", y)
+    print(re)
+  }
+}
+```
+
+```{r}
+lin_sol(3, 12)
+lin_sol(0, 1)
+lin_sol(0, 0)
+lin_sol(2, 0)
+```
+
