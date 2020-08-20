@@ -7,31 +7,31 @@ categories: []
 tags: []
 ---
 
-[Sum of squares](/R_exercises/sum_sq.html)
+[Sum of squares](/R_exercises/sum_sq.html) $\blacksquare \square \square \square \square$ 
 
-[Number of digits](/R_exercises/number_digits.html)
+[Number of digits](/R_exercises/number_digits.html) $\blacksquare \square \square \square \square$ 
 
-[Vector filtering](/R_exercises/filter_vec.html)
+[Vector filtering](/R_exercises/filter_vec.html) $\blacksquare \square \square \square \square$ 
 
-[Maximum sepal length](/R_exercises/max_sepal.html)
+[Maximum sepal length](/R_exercises/max_sepal.html) $\blacksquare \blacksquare \square \square \square$ 
 
-[Central polygonal numbers](/R_exercises/central_polygonal.html)
+[Central polygonal numbers](/R_exercises/central_polygonal.html) $\blacksquare \blacksquare \blacksquare \square \square$ 
 
-[Taxi fare](/R_exercises/taxi_fare.html)
+[Taxi fare](/R_exercises/taxi_fare.html) $\blacksquare \blacksquare \square \square \square$ 
 
-[Collatz sequence](/R_exercises/collatz.html)
+[Collatz sequence](/R_exercises/collatz.html) $\blacksquare \blacksquare \blacksquare \square \square$ 
 
-[Iris scatter plot](/R_exercises/iris_scatter.html)
+[Iris scatter plot](/R_exercises/iris_scatter.html) $\blacksquare \blacksquare \square \square \square$ 
 
-[Tallest human character in Starwars](/R_exercises/tallest_starwars.html)
+[Tallest human character in Starwars](/R_exercises/tallest_starwars.html) $\blacksquare \blacksquare \square \square \square$ 
 
-[Function graph](/R_exercises/function_graph.html)
+[Function graph](/R_exercises/function_graph.html) $\blacksquare \blacksquare \square \square \square$ 
 
-[Philadelphia International Airport daily temperature](/R_exercises/phila_temperature.html)
+[Philadelphia International Airport daily temperature](/R_exercises/phila_temperature.html) $\blacksquare \blacksquare \blacksquare \square \square$ 
 
-[Linear equation solver](/R_exercises/lin_sol.html)
+[Linear equation solver](/R_exercises/lin_sol.html) $\blacksquare \blacksquare \square \square \square$ 
 
-[Quadratic equation solver](/R_exercises/quad_sol.html)
+[Quadratic equation solver](/R_exercises/quad_sol.html) $\blacksquare \blacksquare \blacksquare \square \square$ 
 
 
 
