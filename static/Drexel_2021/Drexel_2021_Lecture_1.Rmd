@@ -1,0 +1,685 @@
+---
+title: "Lecture 1"
+subtitle: "R/RStudio basics"
+author: "Jung-Jin Lee"
+date: "Jan 5, 2021"
+output:
+  xaringan::moon_reader:
+    css: ["default", "default-fonts", "Drexel.css"] 
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r, message = F, echo = F, warning = F}
+library(tidyverse) 
+library(knitr) 
+opts_chunk$set(
+  tidy = FALSE,
+  cache = FALSE,
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  dpi = 300,
+  fig.align = "center",
+  fig.width = 3,
+  fig.height = 3
+  )
+```
+
+## Help on slides
+
+At any time, press `h` to open `Help`.
+
+---
+
+## What is statistics?
+
+- Statistics is the science of learning from data
+
+- The goal of statistics is to summarize data in a way that allows for
+easy descriptions or inferences of the data
+  - Data visualization and computing are important parts of statistics
+
+- R, a language and environment for statistical computing and graphics, will be used as a main tool throughout the course
+
+---
+
+## Why R? 
+
+- Specialized for data analysis
+
+- Many packages have been developed and are available
+
+- Excellent support for data visualization
+
+- Free!
+
+---
+
+## Installing R/RStudio
+
+- To install R, go to https://www.r-project.org/ and follow instruction there
+    - Click on CRAN under Download on the left
+    - Choose the closest mirror site (e.g. http://lib.stat.cmu.edu/R/CRAN/)
+    - Download R for your platform (Windows/Mac/Linux)
+    
+- To install RStudio (an integrated development environment for R), go to https://www.rstudio.com/ and follow instruction
+
+- Also, RStudio Cloud is available at https://rstudio.cloud/
+
+---
+
+## RStudio IDE overview
+
+<p align = "center"> 
+  <img src = rstudio.png>
+</p>
+
+---
+
+## Additional software and libraries
+
+- (Not essential) If at all possible, install $\TeX$ using one of the following options:
+    - MiKTeX (http://miktex.org): recommended for Windows users
+    - MacTeX (http://tug.org/mactex): recommended for Mac users
+    
+- Open RStudio, and go to Tools $\rightarrow$ Install Packages... and install the following libraries using default options:
+    - `tidyverse`
+    - `tinytex` (unnecessary if you installed $\TeX$)
+
+---
+
+## Using R console as a calculator
+
+```{r}
+5 + 3
+```
+
+```{r}
+# everything after # (pound sign) is ignored
+# useful for comments
+2 * 5 # product of 2 and 5
+```
+
+```{r}
+3^2
+```
+
+```{r}
+3**2
+```
+
+---
+
+## R project setup
+
+- Make a directory that will be used for the class (e.g. C:/Users/jungl/MLAS_530S_2021)
+  - For easy access, all the data files and scripts used in the class are assumed to be saved in this directory
+
+- File $\rightarrow$ New Project $\rightarrow$ Existing Directory $\rightarrow$ Create Project from Existing Directory $\rightarrow$ Choose C:/Users/jungl/MLAS_530S_2021
+
+- You can start RStudio by opening the .Rproj file
+  - Running `getwd()` in console shows the current working directory, which should be the class directory you made previously.
+
+- If you have not installed $\TeX$, run following (it may take some time) in console - this is necessary to generate pdf output:
+
+```{r, eval = FALSE}
+tinytex::install_tinytex()
+```
+
+---
+
+## R scripts / R Markdown / Others
+
+- File $\rightarrow$ New File $\rightarrow$ R Script for a plain R script
+
+  - A part of an R script is copied into the R console and run
+  - Can be saved for future use
+
+- File $\rightarrow$ New File $\rightarrow$ R Markdown for an R markdown files
+
+  - Mixture of plain text and R codes (called *chunks*)
+  - Great for generating report (preferred for **homework submission!**)
+  - Can be rendered into (HTML/PDF/Word
+  - Useful chunk options: `message = F, echo = F, eval = F`
+  - Inline coding can be done using a pair of backticks and `r`: ` `r "\x60r 2+3\x60"`\`
+
+- R script and R markdown files can also be developed into presentation (`xaringan`), web application (`Shiny`), blog (`blogdown`), and book (`bookdown`)
+
+  - Not covered in this course
+
+---
+
+## Inline/Console output control
+
+<p align = "center"> 
+  <img src = chunk_output_inline.png width = "400">
+</p>
+
+---
+
+## Variables
+
+Variables can be used to store numerical values. 
+
+- A variable can be a combination of letters (case sensitive), digits, period (.) and underscore (_).
+- It must start with a letter or a period. If it starts with a period, it cannot be followed by a digit.
+- Reserved words in R, such as `TRUE`, cannot be used as variables.
+
+```{r}
+Num1 <- 5 
+Num2 <- 3 
+sum_num <- Num1 + Num2
+prod.num <- Num1 * Num2
+print(sum_num) #<<
+print(prod.num)
+```
+
+---
+
+## Characters
+
+Variables can also be used to store character values.
+
+```{r}
+first_name <- "John" # use quotation marks for character strings
+last_name <- 'Smith' # single quotation also works
+print(first_name) # print() can be omitted, but encouraged
+print(last_name)
+```
+
+---
+
+## Logical values
+
+```{r}
+TF1 <- T # upper case T, not t
+TF2 <- F # upper case F, not f
+print(TF1)
+print(TF2)
+```
+
+```{r}
+TF3 <- TRUE # can use TRUE instead of T
+TF4 <- FALSE # can use FALSE instead of F
+print(TF3)
+print(TF4)
+```
+
+---
+
+## Logical values, continued
+
+```{r}
+p <- 4; q <- 6 # semicolon (;) can be used to separate lines
+call1 <- p > 5
+call2 <- q > 5
+call3 <- q > 6
+call4 <- q >= 6
+print(call1)
+print(call2)
+print(call3)
+print(call4)
+```
+
+---
+
+## Combination of logical values
+
+```{r}
+p <- 4; q <- 6 
+print(p < 5 & q < 7) # & means "and": TRUE only if both are TRUE #<<
+print(p < 5 & q < 5) 
+print(p < 5 | q < 5) # | means "or": FALSE only if both are FALSE #<<
+print(!(p < 5)) # ! means "not" #<<
+``` 
+
+---
+
+## Functions
+
+One or more values can produce new one using R functions.
+
+```{r}
+a <- 1; b <- 3 
+s <- sum(a, b) # sum() is a function that computes the sum #<<
+print(s)
+```
+
+```{r}
+first_name <- "John" 
+last_name <- "Smith"
+# paste() puts together multiple character strings
+full_name <- paste(first_name, last_name) #<<
+print(full_name)
+```
+
+For detailed usage of a function, type `help(function_name)`, e.g. `help(paste)` or `?function_name`, e.g. `?paste`.
+
+---
+
+## Vectors
+
+Multiple numerical values or characters can be saved as a single variable using an R function `c()`.
+
+```{r}
+vec1 <- c(2, 3, 5, 7, 1, 4) #<<
+print(vec1)
+```
+
+```{r}
+vec2 <- c("Joe", "waited", "for", "the", "train")
+print(vec2)
+```
+
+```{r}
+vec3 <- vec2 %in% c("Joe", "for") # %in% determines membership
+print(vec3)
+```
+
+---
+
+## Functions applied to a vector -- part I
+
+```{r}
+length(vec1) # number of components of a vector #<<
+sum(vec1)
+```
+
+--
+
+**Exercise**: sort the numbers 2, 3, 5, 7, 1, 4 from the smallest to the largest and vice versa. 
+
+--
+
+```{r}
+sort(vec1) #<<
+```
+
+--
+
+```{r}
+sort(vec1, decreasing = T)
+```
+
+---
+
+## Functions applied to a vector -- part II
+
+```{r}
+collapse1 <- paste(vec2, collapse = " "); print(collapse1)
+```
+
+```{r}
+collapse2 <- paste(vec2, collapse = "_"); print(collapse2)
+```
+
+--
+
+**Exercise**: produce the following output
+
+```{r, echo = F}
+paste(vec2, collapse = "")
+```
+
+--
+
+```{r}
+collapse3 <- paste(vec2, collapse = ""); print(collapse3)
+```
+
+---
+
+## Functions applied to a vector -- part III
+
+```{r}
+print(vec1)
+```
+
+Which elements are greater than 3?
+
+```{r}
+vec4 <- vec1 > 3
+print(vec4)
+```
+
+--
+
+How many elements of `vec1` are greater than 3?
+
+```{r}
+sum(vec4) # in R, TRUE is 1, FALSE is 0
+```
+
+---
+
+## Named vector
+
+Each member of a vector can be given a name: 
+
+```{r}
+age_Simpsons <- c(36, 34, 10, 8, 1)
+print(age_Simpsons)
+names(age_Simpsons) # currently no names are given to each component #<<
+# Now assign names to each member of the vector
+names(age_Simpsons) <- c("Homer", "Marge", "Bart", "Lisa", "Maggie")
+print(age_Simpsons)
+```
+
+---
+
+## Vector manipulation
+
+Use brackets `[]` to extract components of a vector.
+
+```{r}
+a <- vec1[3] #<<
+print(a)
+```
+
+```{r}
+b <- vec2[c(1, 5)]
+print(b)
+```
+
+--
+
+**Exercise**: extract the last element of `vec1` without viewing its elements.
+
+--
+
+```{r}
+vec1[length(vec1)]
+```
+
+---
+
+## Vector manipulation, continued
+
+Recall the named vector, `age_Simpsons`:
+
+```{r}
+print(age_Simpsons)
+```
+
+What are the ages of the kids?
+
+--
+
+```{r}
+age_Simpsons[c(3, 4, 5)]
+```
+
+--
+
+```{r}
+age_Simpsons[c("Bart", "Lisa", "Maggie")]
+```
+
+---
+
+## Vector manipulation, continued
+
+Components of a vector can be extracted using logical values:
+
+```{r}
+age_Simpsons[c(TRUE, TRUE, FALSE, TRUE, FALSE)]
+```
+
+--
+
+```{r}
+male <- c("Homer", "Bart")
+age_Simpsons[names(age_Simpsons) %in% male]
+```
+
+---
+
+## Vector manipulation, continued
+
+Modifying a vector:
+
+```{r}
+m1 <- c("Apple", "Bananana", "Cherry")
+m1[2] <- "Banana"
+print(m1)
+```
+
+--
+
+Joining vectors:
+
+```{r}
+m2 <- c("Pear", "Watermelon")
+m3 <- c(m1, m2)
+print(m3)
+```
+
+---
+
+## Special vectors -- part I
+
+**Exercise**: compute the sum $1 + 2 + 3 + \cdots + 10$.
+
+--
+
+```{r}
+w1 <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+sum(w1)
+```
+
+--
+
+Colon (:) can be used to generate a vector consisting of consecutive numbers.
+
+```{r}
+w2 <- 1:10
+print(w2)
+sum(w2) 
+```
+
+---
+
+## Special vectors -- part II
+
+**Exercise**: compute the sum $2 + 4 + 6 +\cdots + 20$.
+
+--
+
+```{r}
+# one can use a function seq()
+# type ?seq to get help
+w3 <- seq(2, 20, by = 2) #<<
+sum(w3)
+```
+
+--
+
+Alternatively, one can use the previous vector:
+
+```{r}
+w4 <- 2*w1 # product of a single number and a vector
+print(w4)
+sum(w4)
+```
+
+---
+
+## Recycling in R
+
+Operation between a single value and a vector.
+
+```{r}
+num3 <- 3
+vec5 <- 1:5
+vec6 <- vec5 + num3
+print(vec6)
+```
+
+```{r}
+vec7 <- paste0("Visitor_", vec5) #<<
+print(vec7)
+```
+
+```{r}
+vec8 <- 5 + 2*c(-1, 1)
+print(vec8)
+```
+
+---
+
+## Recycling in R, continued
+
+**Exercise**: Change "Female" to "F" for consistency.
+
+```{r}
+gender <- c("M", "F", "Female", "M", "Female")
+```
+
+--
+
+```{r}
+# solution using hardcoding
+sol1 <- gender
+sol1[c(3, 5)] <- "F"
+print(sol1)
+```
+
+--
+
+```{r}
+# solution without using hardcoding
+sol2 <- gender
+sol2[sol2 == "Female"] <- "F"
+print(sol2)
+```
+
+
+
+---
+
+## Data frame
+
+Vectors of an equal length can be combined to form a data frame.
+
+```{r}
+# use of the function data.frame()
+first_name <- c("Lisa", "John", "Chuck", "Matt")
+last_name <- c("Simpson", "Smith", "Williams", "June")
+age_yrs <- c(8, 42, 81, 23)
+book <- data.frame(first = first_name, #<<
+                   last = last_name,   #<<
+                   age = age_yrs)      #<<
+print(book)
+dim(book) # dimensions of a data frame: dim() #<<
+```
+
+---
+
+## Handling data frames
+
+```{r}
+# extract a single element from a data frame
+book[2, 3]
+# extract a column: use $
+age_extracted <- book$age #<<
+print(age_extracted)
+# extract a row
+book[4, ]
+```
+
+---
+
+## Retrieving a column from a data frame
+
+```{r}
+# use column number
+method1 <- book[,1]
+print(method1)
+```
+
+```{r}
+# use "$" to extract a column
+method2 <- book$first
+print(method2)
+```
+
+---
+
+## Adding a variable in a data frame
+
+```{r}
+gender <- c("Female", "Male", "Male", "Unknown")
+book$sex <- gender
+print(book)
+```
+
+Recycling applies to a data frame:
+
+```{r}
+book$remark <- "friend"
+print(book)
+```
+
+---
+
+## Reading a data file 
+
+Download a [file](heights.txt) (Chrome users: Menu $\rightarrow$ More Tools $\rightarrow$ Save Page As) and move it to the class directory.
+
+```{r}
+# "heights.txt" is a space-separated file with a header
+# 1375 observations of UK mom/daughter age height pairs
+ht <- read.table(file = "heights.txt", header = TRUE, sep = " ") #<<
+```
+
+A glance at a data frame:
+
+```{r}
+dim(ht); nrow(ht); ncol(ht) # dimension, number of rows/columns #<<
+names(ht) # variable(column) names
+```
+
+---
+
+## Inspecting a data frame
+
+```{r}
+head(ht) # first few rows (6 rows by default) #<<
+tail(ht) # last few rows #<<
+```
+
+---
+
+## List
+
+A list is a collection of different types of elements:
+
+```{r}
+li <- list(num = 1.6, #<<
+           seq = 1:5, 
+           names = c("Bart", "Lisa", "Homer"), 
+           uk.heihgt = ht) 
+names(li)
+```
+
+--
+
+.pull-left[
+```{r}
+li$num
+li$names
+```
+]
+
+--
+
+.pull-right[
+```{r}
+head(li$uk.heihgt)
+```
+]
+
