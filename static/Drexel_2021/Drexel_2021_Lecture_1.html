@@ -1,1271 +1,568 @@
-<!DOCTYPE html>
-<html lang="" xml:lang="">
-  <head>
-    <title>Lecture 1</title>
-    <meta charset="utf-8" />
-    <meta name="author" content="Jung-Jin Lee" />
-    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
-    <link rel="stylesheet" href="Drexel.css" type="text/css" />
-  </head>
-  <body>
-    <textarea id="source">
-class: center, middle, inverse, title-slide
-
-# Lecture 1
-## R/RStudio basics
-### Jung-Jin Lee
-### Jan 5, 2021
-
+---
+title: "Lecture 1"
+subtitle: "R/RStudio basics"
+author: "Jung-Jin Lee"
+date: "Jan 5, 2021"
+output:
+  xaringan::moon_reader:
+    css: ["default", "default-fonts", "Drexel.css"] 
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
 ---
 
 
 
-
-## Help on slides
-
-At any time, press `h` to open `Help`.
-
----
-
-## What is statistics?
-
-- Statistics is the science of learning from data
-
-- The goal of statistics is to summarize data in a way that allows for
-easy descriptions or inferences of the data
-  - Data visualization and computing are important parts of statistics
-
-- R, a language and environment for statistical computing and graphics, will be used as a main tool throughout the course
-
----
-
-## Why R? 
-
-- Specialized for data analysis
-
-- Many packages have been developed and are available
-
-- Excellent support for data visualization
-
-- Free!
-
----
-
-## Installing R/RStudio
-
-- To install R, go to https://www.r-project.org/ and follow instruction there
-    - Click on CRAN under Download on the left
-    - Choose the closest mirror site (e.g. http://lib.stat.cmu.edu/R/CRAN/)
-    - Download R for your platform (Windows/Mac/Linux)
-    
-- To install RStudio (an integrated development environment for R), go to https://www.rstudio.com/ and follow instruction
-
-- Also, RStudio Cloud is available at https://rstudio.cloud/
-
----
-
-## RStudio IDE overview
-
-&lt;p align = "center"&gt; 
-  &lt;img src = rstudio.png&gt;
-&lt;/p&gt;
-
----
-
-## Additional software and libraries
-
-- (Not essential) If at all possible, install `\(\TeX\)` using one of the following options:
-    - MiKTeX (http://miktex.org): recommended for Windows users
-    - MacTeX (http://tug.org/mactex): recommended for Mac users
-    
-- Open RStudio, and go to Tools `\(\rightarrow\)` Install Packages... and install the following libraries using default options:
-    - `tidyverse`
-    - `tinytex` (unnecessary if you installed `\(\TeX\)`)
-
----
-
-## Using R console as a calculator
-
-
-```r
-5 + 3
-```
-
-```
-## [1] 8
-```
-
-
-```r
-# everything after # (pound sign) is ignored
+<div id="help-on-slides" class="section level2">
+<h2>Help on slides</h2>
+<p>At any time, press <code>h</code> to open <code>Help</code>.</p>
+<hr />
+</div>
+<div id="what-is-statistics" class="section level2">
+<h2>What is statistics?</h2>
+<ul>
+<li><p>Statistics is the science of learning from data</p></li>
+<li><p>The goal of statistics is to summarize data in a way that allows for
+easy descriptions or inferences of the data</p>
+<ul>
+<li>Data visualization and computing are important parts of statistics</li>
+</ul></li>
+<li><p>R, a language and environment for statistical computing and graphics, will be used as a main tool throughout the course</p></li>
+</ul>
+<hr />
+</div>
+<div id="why-r" class="section level2">
+<h2>Why R?</h2>
+<ul>
+<li><p>Specialized for data analysis</p></li>
+<li><p>Many packages have been developed and are available</p></li>
+<li><p>Excellent support for data visualization</p></li>
+<li><p>Free!</p></li>
+</ul>
+<hr />
+</div>
+<div id="installing-rrstudio" class="section level2">
+<h2>Installing R/RStudio</h2>
+<ul>
+<li><p>To install R, go to <a href="https://www.r-project.org/" class="uri">https://www.r-project.org/</a> and follow instruction there</p>
+<ul>
+<li>Click on CRAN under Download on the left</li>
+<li>Choose the closest mirror site (e.g. <a href="http://lib.stat.cmu.edu/R/CRAN/" class="uri">http://lib.stat.cmu.edu/R/CRAN/</a>)</li>
+<li>Download R for your platform (Windows/Mac/Linux)</li>
+</ul></li>
+<li><p>To install RStudio (an integrated development environment for R), go to <a href="https://www.rstudio.com/" class="uri">https://www.rstudio.com/</a> and follow instruction</p></li>
+<li><p>Also, RStudio Cloud is available at <a href="https://rstudio.cloud/" class="uri">https://rstudio.cloud/</a></p></li>
+</ul>
+<hr />
+</div>
+<div id="rstudio-ide-overview" class="section level2">
+<h2>RStudio IDE overview</h2>
+<p align="center">
+<img src = rstudio.png>
+</p>
+<hr />
+</div>
+<div id="additional-software-and-libraries" class="section level2">
+<h2>Additional software and libraries</h2>
+<ul>
+<li>(Not essential) If at all possible, install <span class="math inline">\(\TeX\)</span> using one of the following options:
+<ul>
+<li>MiKTeX (<a href="http://miktex.org" class="uri">http://miktex.org</a>): recommended for Windows users</li>
+<li>MacTeX (<a href="http://tug.org/mactex" class="uri">http://tug.org/mactex</a>): recommended for Mac users</li>
+</ul></li>
+<li>Open RStudio, and go to Tools <span class="math inline">\(\rightarrow\)</span> Install Packages… and install the following libraries using default options:
+<ul>
+<li><code>tidyverse</code></li>
+<li><code>tinytex</code> (unnecessary if you installed <span class="math inline">\(\TeX\)</span>)</li>
+</ul></li>
+</ul>
+<hr />
+</div>
+<div id="using-r-console-as-a-calculator" class="section level2">
+<h2>Using R console as a calculator</h2>
+<pre class="r"><code>5 + 3</code></pre>
+<pre><code>## [1] 8</code></pre>
+<pre class="r"><code># everything after # (pound sign) is ignored
 # useful for comments
-2 * 5 # product of 2 and 5
-```
-
-```
-## [1] 10
-```
-
-
-```r
-3^2
-```
-
-```
-## [1] 9
-```
-
-
-```r
-3**2
-```
-
-```
-## [1] 9
-```
-
----
-
-## R project setup
-
-- Make a directory that will be used for the class (e.g. C:/Users/jungl/MLAS_530S_2021)
-  - For easy access, all the data files and scripts used in the class are assumed to be saved in this directory
-
-- File `\(\rightarrow\)` New Project `\(\rightarrow\)` Existing Directory `\(\rightarrow\)` Create Project from Existing Directory `\(\rightarrow\)` Choose C:/Users/jungl/MLAS_530S_2021
-
-- You can start RStudio by opening the .Rproj file
-  - Running `getwd()` in console shows the current working directory, which should be the class directory you made previously.
-
-- If you have not installed `\(\TeX\)`, run following (it may take some time) in console - this is necessary to generate pdf output:
-
-
-```r
-tinytex::install_tinytex()
-```
-
----
-
-## R scripts / R Markdown / Others
-
-- File `\(\rightarrow\)` New File `\(\rightarrow\)` R Script for a plain R script
-
-  - A part of an R script is copied into the R console and run
-  - Can be saved for future use
-
-- File `\(\rightarrow\)` New File `\(\rightarrow\)` R Markdown for an R markdown files
-
-  - Mixture of plain text and R codes (called *chunks*)
-  - Great for generating report (preferred for **homework submission!**)
-  - Can be rendered into (HTML/PDF/Word
-  - Useful chunk options: `message = F, echo = F, eval = F`
-  - Inline coding can be done using a pair of backticks and `r`: ` `r 2+3`\`
-
-- R script and R markdown files can also be developed into presentation (`xaringan`), web application (`Shiny`), blog (`blogdown`), and book (`bookdown`)
-
-  - Not covered in this course
-
----
-
-## Inline/Console output control
-
-&lt;p align = "center"&gt; 
-  &lt;img src = chunk_output_inline.png width = "400"&gt;
-&lt;/p&gt;
-
----
-
-## Variables
-
-Variables can be used to store numerical values. 
-
-- A variable can be a combination of letters (case sensitive), digits, period (.) and underscore (_).
-- It must start with a letter or a period. If it starts with a period, it cannot be followed by a digit.
-- Reserved words in R, such as `TRUE`, cannot be used as variables.
-
-
-```r
-Num1 &lt;- 5 
+2 * 5 # product of 2 and 5</code></pre>
+<pre><code>## [1] 10</code></pre>
+<pre class="r"><code>3^2</code></pre>
+<pre><code>## [1] 9</code></pre>
+<pre class="r"><code>3**2</code></pre>
+<pre><code>## [1] 9</code></pre>
+<hr />
+</div>
+<div id="r-project-setup" class="section level2">
+<h2>R project setup</h2>
+<ul>
+<li><p>Make a directory that will be used for the class (e.g. C:/Users/jungl/MLAS_530S_2021)</p>
+<ul>
+<li>For easy access, all the data files and scripts used in the class are assumed to be saved in this directory</li>
+</ul></li>
+<li><p>File <span class="math inline">\(\rightarrow\)</span> New Project <span class="math inline">\(\rightarrow\)</span> Existing Directory <span class="math inline">\(\rightarrow\)</span> Create Project from Existing Directory <span class="math inline">\(\rightarrow\)</span> Choose C:/Users/jungl/MLAS_530S_2021</p></li>
+<li><p>You can start RStudio by opening the .Rproj file</p>
+<ul>
+<li>Running <code>getwd()</code> in console shows the current working directory, which should be the class directory you made previously.</li>
+</ul></li>
+<li><p>If you have not installed <span class="math inline">\(\TeX\)</span>, run following (it may take some time) in console - this is necessary to generate pdf output:</p></li>
+</ul>
+<pre class="r"><code>tinytex::install_tinytex()</code></pre>
+<hr />
+</div>
+<div id="r-scripts-r-markdown-others" class="section level2">
+<h2>R scripts / R Markdown / Others</h2>
+<ul>
+<li><p>File <span class="math inline">\(\rightarrow\)</span> New File <span class="math inline">\(\rightarrow\)</span> R Script for a plain R script</p>
+<ul>
+<li>A part of an R script is copied into the R console and run</li>
+<li>Can be saved for future use</li>
+</ul></li>
+<li><p>File <span class="math inline">\(\rightarrow\)</span> New File <span class="math inline">\(\rightarrow\)</span> R Markdown for an R markdown files</p>
+<ul>
+<li>Mixture of plain text and R codes (called <em>chunks</em>)</li>
+<li>Great for generating report (preferred for <strong>homework submission!</strong>)</li>
+<li>Can be rendered into (HTML/PDF/Word</li>
+<li>Useful chunk options: <code>message = F, echo = F, eval = F</code></li>
+<li>Inline coding can be done using a pair of backticks and <code>r</code>: <code></code>r 2+3<code>\</code></li>
+</ul></li>
+<li><p>R script and R markdown files can also be developed into presentation (<code>xaringan</code>), web application (<code>Shiny</code>), blog (<code>blogdown</code>), and book (<code>bookdown</code>)</p>
+<ul>
+<li>Not covered in this course</li>
+</ul></li>
+</ul>
+<hr />
+</div>
+<div id="inlineconsole-output-control" class="section level2">
+<h2>Inline/Console output control</h2>
+<p align="center">
+<img src = chunk_output_inline.png width = "400">
+</p>
+<hr />
+</div>
+<div id="variables" class="section level2">
+<h2>Variables</h2>
+<p>Variables can be used to store numerical values.</p>
+<ul>
+<li>A variable can be a combination of letters (case sensitive), digits, period (.) and underscore (_).</li>
+<li>It must start with a letter or a period. If it starts with a period, it cannot be followed by a digit.</li>
+<li>Reserved words in R, such as <code>TRUE</code>, cannot be used as variables.</li>
+</ul>
+<pre class="r"><code>Num1 &lt;- 5 
 Num2 &lt;- 3 
 sum_num &lt;- Num1 + Num2
 prod.num &lt;- Num1 * Num2
-*print(sum_num)
-```
-
-```
-## [1] 8
-```
-
-```r
-print(prod.num)
-```
-
-```
-## [1] 15
-```
-
----
-
-## Characters
-
-Variables can also be used to store character values.
-
-
-```r
-first_name &lt;- "John" # use quotation marks for character strings
-last_name &lt;- 'Smith' # single quotation also works
-print(first_name) # print() can be omitted, but encouraged
-```
-
-```
-## [1] "John"
-```
-
-```r
-print(last_name)
-```
-
-```
-## [1] "Smith"
-```
-
----
-
-## Logical values
-
-
-```r
-TF1 &lt;- T # upper case T, not t
+print(sum_num) #&lt;&lt;</code></pre>
+<pre><code>## [1] 8</code></pre>
+<pre class="r"><code>print(prod.num)</code></pre>
+<pre><code>## [1] 15</code></pre>
+<hr />
+</div>
+<div id="characters" class="section level2">
+<h2>Characters</h2>
+<p>Variables can also be used to store character values.</p>
+<pre class="r"><code>first_name &lt;- &quot;John&quot; # use quotation marks for character strings
+last_name &lt;- &#39;Smith&#39; # single quotation also works
+print(first_name) # print() can be omitted, but encouraged</code></pre>
+<pre><code>## [1] &quot;John&quot;</code></pre>
+<pre class="r"><code>print(last_name)</code></pre>
+<pre><code>## [1] &quot;Smith&quot;</code></pre>
+<hr />
+</div>
+<div id="logical-values" class="section level2">
+<h2>Logical values</h2>
+<pre class="r"><code>TF1 &lt;- T # upper case T, not t
 TF2 &lt;- F # upper case F, not f
-print(TF1)
-```
-
-```
-## [1] TRUE
-```
-
-```r
-print(TF2)
-```
-
-```
-## [1] FALSE
-```
-
-
-```r
-TF3 &lt;- TRUE # can use TRUE instead of T
+print(TF1)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>print(TF2)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>TF3 &lt;- TRUE # can use TRUE instead of T
 TF4 &lt;- FALSE # can use FALSE instead of F
-print(TF3)
-```
-
-```
-## [1] TRUE
-```
-
-```r
-print(TF4)
-```
-
-```
-## [1] FALSE
-```
-
----
-
-## Logical values, continued
-
-
-```r
-p &lt;- 4; q &lt;- 6 # semicolon (;) can be used to separate lines
+print(TF3)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>print(TF4)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<hr />
+</div>
+<div id="logical-values-continued" class="section level2">
+<h2>Logical values, continued</h2>
+<pre class="r"><code>p &lt;- 4; q &lt;- 6 # semicolon (;) can be used to separate lines
 call1 &lt;- p &gt; 5
 call2 &lt;- q &gt; 5
 call3 &lt;- q &gt; 6
 call4 &lt;- q &gt;= 6
-print(call1)
-```
-
-```
-## [1] FALSE
-```
-
-```r
-print(call2)
-```
-
-```
-## [1] TRUE
-```
-
-```r
-print(call3)
-```
-
-```
-## [1] FALSE
-```
-
-```r
-print(call4)
-```
-
-```
-## [1] TRUE
-```
-
----
-
-## Combination of logical values
-
-
-```r
-p &lt;- 4; q &lt;- 6 
-*print(p &lt; 5 &amp; q &lt; 7) # &amp; means "and": TRUE only if both are TRUE
-```
-
-```
-## [1] TRUE
-```
-
-```r
-print(p &lt; 5 &amp; q &lt; 5) 
-```
-
-```
-## [1] FALSE
-```
-
-```r
-*print(p &lt; 5 | q &lt; 5) # | means "or": FALSE only if both are FALSE
-```
-
-```
-## [1] TRUE
-```
-
-```r
-*print(!(p &lt; 5)) # ! means "not"
-```
-
-```
-## [1] FALSE
-```
-
----
-
-## Functions
-
-One or more values can produce new one using R functions.
-
-
-```r
-a &lt;- 1; b &lt;- 3 
-*s &lt;- sum(a, b) # sum() is a function that computes the sum
-print(s)
-```
-
-```
-## [1] 4
-```
-
-
-```r
-first_name &lt;- "John" 
-last_name &lt;- "Smith"
+print(call1)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>print(call2)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>print(call3)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>print(call4)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<hr />
+</div>
+<div id="combination-of-logical-values" class="section level2">
+<h2>Combination of logical values</h2>
+<pre class="r"><code>p &lt;- 4; q &lt;- 6 
+print(p &lt; 5 &amp; q &lt; 7) # &amp; means &quot;and&quot;: TRUE only if both are TRUE #&lt;&lt;</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>print(p &lt; 5 &amp; q &lt; 5) </code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<pre class="r"><code>print(p &lt; 5 | q &lt; 5) # | means &quot;or&quot;: FALSE only if both are FALSE #&lt;&lt;</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>print(!(p &lt; 5)) # ! means &quot;not&quot; #&lt;&lt;</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<hr />
+</div>
+<div id="functions" class="section level2">
+<h2>Functions</h2>
+<p>One or more values can produce new one using R functions.</p>
+<pre class="r"><code>a &lt;- 1; b &lt;- 3 
+s &lt;- sum(a, b) # sum() is a function that computes the sum #&lt;&lt;
+print(s)</code></pre>
+<pre><code>## [1] 4</code></pre>
+<pre class="r"><code>first_name &lt;- &quot;John&quot; 
+last_name &lt;- &quot;Smith&quot;
 # paste() puts together multiple character strings
-*full_name &lt;- paste(first_name, last_name)
-print(full_name)
-```
-
-```
-## [1] "John Smith"
-```
-
-For detailed usage of a function, type `help(function_name)`, e.g. `help(paste)` or `?function_name`, e.g. `?paste`.
-
----
-
-## Vectors
-
-Multiple numerical values or characters can be saved as a single variable using an R function `c()`.
-
-
-```r
-*vec1 &lt;- c(2, 3, 5, 7, 1, 4)
-print(vec1)
-```
-
-```
-## [1] 2 3 5 7 1 4
-```
-
-
-```r
-vec2 &lt;- c("Joe", "waited", "for", "the", "train")
-print(vec2)
-```
-
-```
-## [1] "Joe"    "waited" "for"    "the"    "train"
-```
-
-
-```r
-vec3 &lt;- vec2 %in% c("Joe", "for") # %in% determines membership
-print(vec3)
-```
-
-```
-## [1]  TRUE FALSE  TRUE FALSE FALSE
-```
-
----
-
-## Functions applied to a vector -- part I
-
-
-```r
-*length(vec1) # number of components of a vector
-```
-
-```
-## [1] 6
-```
-
-```r
-sum(vec1)
-```
-
-```
-## [1] 22
-```
-
---
-
-**Exercise**: sort the numbers 2, 3, 5, 7, 1, 4 from the smallest to the largest and vice versa. 
-
---
-
-
-```r
-*sort(vec1)
-```
-
-```
-## [1] 1 2 3 4 5 7
-```
-
---
-
-
-```r
-sort(vec1, decreasing = T)
-```
-
-```
-## [1] 7 5 4 3 2 1
-```
-
----
-
-## Functions applied to a vector -- part II
-
-
-```r
-collapse1 &lt;- paste(vec2, collapse = " "); print(collapse1)
-```
-
-```
-## [1] "Joe waited for the train"
-```
-
-
-```r
-collapse2 &lt;- paste(vec2, collapse = "_"); print(collapse2)
-```
-
-```
-## [1] "Joe_waited_for_the_train"
-```
-
---
-
-**Exercise**: produce the following output
-
-
-```
-## [1] "Joewaitedforthetrain"
-```
-
---
-
-
-```r
-collapse3 &lt;- paste(vec2, collapse = ""); print(collapse3)
-```
-
-```
-## [1] "Joewaitedforthetrain"
-```
-
----
-
-## Functions applied to a vector -- part III
-
-
-```r
-print(vec1)
-```
-
-```
-## [1] 2 3 5 7 1 4
-```
-
-Which elements are greater than 3?
-
-
-```r
-vec4 &lt;- vec1 &gt; 3
-print(vec4)
-```
-
-```
-## [1] FALSE FALSE  TRUE  TRUE FALSE  TRUE
-```
-
---
-
-How many elements of `vec1` are greater than 3?
-
-
-```r
-sum(vec4) # in R, TRUE is 1, FALSE is 0
-```
-
-```
-## [1] 3
-```
-
----
-
-## Named vector
-
-Each member of a vector can be given a name: 
-
-
-```r
-age_Simpsons &lt;- c(36, 34, 10, 8, 1)
-print(age_Simpsons)
-```
-
-```
-## [1] 36 34 10  8  1
-```
-
-```r
-*names(age_Simpsons) # currently no names are given to each component
-```
-
-```
-## NULL
-```
-
-```r
-# Now assign names to each member of the vector
-names(age_Simpsons) &lt;- c("Homer", "Marge", "Bart", "Lisa", "Maggie")
-print(age_Simpsons)
-```
-
-```
-##  Homer  Marge   Bart   Lisa Maggie 
-##     36     34     10      8      1
-```
-
----
-
-## Vector manipulation
-
-Use brackets `[]` to extract components of a vector.
-
-
-```r
-*a &lt;- vec1[3]
-print(a)
-```
-
-```
-## [1] 5
-```
-
-
-```r
-b &lt;- vec2[c(1, 5)]
-print(b)
-```
-
-```
-## [1] "Joe"   "train"
-```
-
---
-
-**Exercise**: extract the last element of `vec1` without viewing its elements.
-
---
-
-
-```r
-vec1[length(vec1)]
-```
-
-```
-## [1] 4
-```
-
----
-
-## Vector manipulation, continued
-
-Recall the named vector, `age_Simpsons`:
-
-
-```r
-print(age_Simpsons)
-```
-
-```
-##  Homer  Marge   Bart   Lisa Maggie 
-##     36     34     10      8      1
-```
-
-What are the ages of the kids?
-
---
-
-
-```r
-age_Simpsons[c(3, 4, 5)]
-```
-
-```
-##   Bart   Lisa Maggie 
-##     10      8      1
-```
-
---
-
-
-```r
-age_Simpsons[c("Bart", "Lisa", "Maggie")]
-```
-
-```
-##   Bart   Lisa Maggie 
-##     10      8      1
-```
-
----
-
-## Vector manipulation, continued
-
-Components of a vector can be extracted using logical values:
-
-
-```r
-age_Simpsons[c(TRUE, TRUE, FALSE, TRUE, FALSE)]
-```
-
-```
-## Homer Marge  Lisa 
-##    36    34     8
-```
-
---
-
-
-```r
-male &lt;- c("Homer", "Bart")
-age_Simpsons[names(age_Simpsons) %in% male]
-```
-
-```
-## Homer  Bart 
-##    36    10
-```
-
----
-
-## Vector manipulation, continued
-
-Modifying a vector:
-
-
-```r
-m1 &lt;- c("Apple", "Bananana", "Cherry")
-m1[2] &lt;- "Banana"
-print(m1)
-```
-
-```
-## [1] "Apple"  "Banana" "Cherry"
-```
-
---
-
-Joining vectors:
-
-
-```r
-m2 &lt;- c("Pear", "Watermelon")
+full_name &lt;- paste(first_name, last_name) #&lt;&lt;
+print(full_name)</code></pre>
+<pre><code>## [1] &quot;John Smith&quot;</code></pre>
+<p>For detailed usage of a function, type <code>help(function_name)</code>, e.g. <code>help(paste)</code> or <code>?function_name</code>, e.g. <code>?paste</code>.</p>
+<hr />
+</div>
+<div id="vectors" class="section level2">
+<h2>Vectors</h2>
+<p>Multiple numerical values or characters can be saved as a single variable using an R function <code>c()</code>.</p>
+<pre class="r"><code>vec1 &lt;- c(2, 3, 5, 7, 1, 4) #&lt;&lt;
+print(vec1)</code></pre>
+<pre><code>## [1] 2 3 5 7 1 4</code></pre>
+<pre class="r"><code>vec2 &lt;- c(&quot;Joe&quot;, &quot;waited&quot;, &quot;for&quot;, &quot;the&quot;, &quot;train&quot;)
+print(vec2)</code></pre>
+<pre><code>## [1] &quot;Joe&quot;    &quot;waited&quot; &quot;for&quot;    &quot;the&quot;    &quot;train&quot;</code></pre>
+<pre class="r"><code>vec3 &lt;- vec2 %in% c(&quot;Joe&quot;, &quot;for&quot;) # %in% determines membership #&lt;&lt;
+print(vec3)</code></pre>
+<pre><code>## [1]  TRUE FALSE  TRUE FALSE FALSE</code></pre>
+<hr />
+</div>
+<div id="functions-applied-to-a-vector-part-i" class="section level2">
+<h2>Functions applied to a vector – part I</h2>
+<pre class="r"><code>length(vec1) # number of components of a vector #&lt;&lt;</code></pre>
+<pre><code>## [1] 6</code></pre>
+<pre class="r"><code>sum(vec1)</code></pre>
+<pre><code>## [1] 22</code></pre>
+<p>–</p>
+<p><strong>Exercise</strong>: sort the numbers 2, 3, 5, 7, 1, 4 from the smallest to the largest and vice versa.</p>
+<p>–</p>
+<pre class="r"><code>sort(vec1) #&lt;&lt;</code></pre>
+<pre><code>## [1] 1 2 3 4 5 7</code></pre>
+<p>–</p>
+<pre class="r"><code>sort(vec1, decreasing = T)</code></pre>
+<pre><code>## [1] 7 5 4 3 2 1</code></pre>
+<hr />
+</div>
+<div id="functions-applied-to-a-vector-part-ii" class="section level2">
+<h2>Functions applied to a vector – part II</h2>
+<pre class="r"><code>collapse1 &lt;- paste(vec2, collapse = &quot; &quot;); print(collapse1)</code></pre>
+<pre><code>## [1] &quot;Joe waited for the train&quot;</code></pre>
+<pre class="r"><code>collapse2 &lt;- paste(vec2, collapse = &quot;_&quot;); print(collapse2)</code></pre>
+<pre><code>## [1] &quot;Joe_waited_for_the_train&quot;</code></pre>
+<p>–</p>
+<p><strong>Exercise</strong>: produce the following output</p>
+<pre><code>## [1] &quot;Joewaitedforthetrain&quot;</code></pre>
+<p>–</p>
+<pre class="r"><code>collapse3 &lt;- paste(vec2, collapse = &quot;&quot;); print(collapse3)</code></pre>
+<pre><code>## [1] &quot;Joewaitedforthetrain&quot;</code></pre>
+<hr />
+</div>
+<div id="functions-applied-to-a-vector-part-iii" class="section level2">
+<h2>Functions applied to a vector – part III</h2>
+<pre class="r"><code>print(vec1)</code></pre>
+<pre><code>## [1] 2 3 5 7 1 4</code></pre>
+<p>Which elements are greater than 3?</p>
+<p>–</p>
+<pre class="r"><code>vec4 &lt;- vec1 &gt; 3
+print(vec4)</code></pre>
+<pre><code>## [1] FALSE FALSE  TRUE  TRUE FALSE  TRUE</code></pre>
+<p>–</p>
+<p>How many elements of <code>vec1</code> are greater than 3?</p>
+<p>–</p>
+<pre class="r"><code>sum(vec4) # in R, TRUE is 1, FALSE is 0</code></pre>
+<pre><code>## [1] 3</code></pre>
+<hr />
+</div>
+<div id="named-vector" class="section level2">
+<h2>Named vector</h2>
+<p>Each member of a vector can be given a name:</p>
+<pre class="r"><code>age_Simpsons &lt;- c(36, 34, 10, 8, 1)
+print(age_Simpsons)</code></pre>
+<pre><code>## [1] 36 34 10  8  1</code></pre>
+<pre class="r"><code>names(age_Simpsons) # currently no names are given to each component #&lt;&lt;</code></pre>
+<pre><code>## NULL</code></pre>
+<pre class="r"><code># Now assign names to each member of the vector
+names(age_Simpsons) &lt;- c(&quot;Homer&quot;, &quot;Marge&quot;, &quot;Bart&quot;, &quot;Lisa&quot;, &quot;Maggie&quot;)
+print(age_Simpsons)</code></pre>
+<pre><code>##  Homer  Marge   Bart   Lisa Maggie 
+##     36     34     10      8      1</code></pre>
+<hr />
+</div>
+<div id="vector-manipulation" class="section level2">
+<h2>Vector manipulation</h2>
+<p>Use brackets <code>[]</code> to extract components of a vector.</p>
+<pre class="r"><code>a &lt;- vec1[3] #&lt;&lt;
+print(a)</code></pre>
+<pre><code>## [1] 5</code></pre>
+<pre class="r"><code>b &lt;- vec2[c(1, 5)]
+print(b)</code></pre>
+<pre><code>## [1] &quot;Joe&quot;   &quot;train&quot;</code></pre>
+<p>–</p>
+<p><strong>Exercise</strong>: extract the last element of <code>vec1</code> without viewing its elements.</p>
+<p>–</p>
+<pre class="r"><code>vec1[length(vec1)]</code></pre>
+<pre><code>## [1] 4</code></pre>
+<hr />
+</div>
+<div id="vector-manipulation-continued" class="section level2">
+<h2>Vector manipulation, continued</h2>
+<p>Recall the named vector, <code>age_Simpsons</code>:</p>
+<pre class="r"><code>print(age_Simpsons)</code></pre>
+<pre><code>##  Homer  Marge   Bart   Lisa Maggie 
+##     36     34     10      8      1</code></pre>
+<p>What are the ages of the kids?</p>
+<p>–</p>
+<pre class="r"><code>age_Simpsons[c(3, 4, 5)]</code></pre>
+<pre><code>##   Bart   Lisa Maggie 
+##     10      8      1</code></pre>
+<p>–</p>
+<pre class="r"><code>age_Simpsons[c(&quot;Bart&quot;, &quot;Lisa&quot;, &quot;Maggie&quot;)]</code></pre>
+<pre><code>##   Bart   Lisa Maggie 
+##     10      8      1</code></pre>
+<hr />
+</div>
+<div id="vector-manipulation-continued-1" class="section level2">
+<h2>Vector manipulation, continued</h2>
+<p>Components of a vector can be extracted using logical values:</p>
+<pre class="r"><code>age_Simpsons[c(TRUE, TRUE, FALSE, TRUE, FALSE)]</code></pre>
+<pre><code>## Homer Marge  Lisa 
+##    36    34     8</code></pre>
+<p>–</p>
+<pre class="r"><code>male &lt;- c(&quot;Homer&quot;, &quot;Bart&quot;)
+age_Simpsons[names(age_Simpsons) %in% male]</code></pre>
+<pre><code>## Homer  Bart 
+##    36    10</code></pre>
+<hr />
+</div>
+<div id="vector-manipulation-continued-2" class="section level2">
+<h2>Vector manipulation, continued</h2>
+<p>Modifying a vector:</p>
+<pre class="r"><code>m1 &lt;- c(&quot;Apple&quot;, &quot;Bananana&quot;, &quot;Cherry&quot;)
+m1[2] &lt;- &quot;Banana&quot;
+print(m1)</code></pre>
+<pre><code>## [1] &quot;Apple&quot;  &quot;Banana&quot; &quot;Cherry&quot;</code></pre>
+<p>–</p>
+<p>Joining vectors:</p>
+<pre class="r"><code>m2 &lt;- c(&quot;Pear&quot;, &quot;Watermelon&quot;)
 m3 &lt;- c(m1, m2)
-print(m3)
-```
-
-```
-## [1] "Apple"      "Banana"     "Cherry"     "Pear"       "Watermelon"
-```
-
----
-
-## Special vectors -- part I
-
-**Exercise**: compute the sum `\(1 + 2 + 3 + \cdots + 10\)`.
-
---
-
-
-```r
-w1 &lt;- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-sum(w1)
-```
-
-```
-## [1] 55
-```
-
---
-
-Colon (:) can be used to generate a vector consisting of consecutive numbers.
-
-
-```r
-w2 &lt;- 1:10
-print(w2)
-```
-
-```
-##  [1]  1  2  3  4  5  6  7  8  9 10
-```
-
-```r
-sum(w2) 
-```
-
-```
-## [1] 55
-```
-
----
-
-## Special vectors -- part II
-
-**Exercise**: compute the sum `\(2 + 4 + 6 +\cdots + 20\)`.
-
---
-
-
-```r
-# one can use a function seq()
+print(m3)</code></pre>
+<pre><code>## [1] &quot;Apple&quot;      &quot;Banana&quot;     &quot;Cherry&quot;     &quot;Pear&quot;       &quot;Watermelon&quot;</code></pre>
+<hr />
+</div>
+<div id="special-vectors-part-i" class="section level2">
+<h2>Special vectors – part I</h2>
+<p><strong>Exercise</strong>: compute the sum <span class="math inline">\(1 + 2 + 3 + \cdots + 10\)</span>.</p>
+<p>–</p>
+<pre class="r"><code>w1 &lt;- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+sum(w1)</code></pre>
+<pre><code>## [1] 55</code></pre>
+<p>–</p>
+<p>Colon (:) can be used to generate a vector consisting of consecutive numbers.</p>
+<pre class="r"><code>w2 &lt;- 1:10
+print(w2)</code></pre>
+<pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
+<pre class="r"><code>sum(w2) </code></pre>
+<pre><code>## [1] 55</code></pre>
+<hr />
+</div>
+<div id="special-vectors-part-ii" class="section level2">
+<h2>Special vectors – part II</h2>
+<p><strong>Exercise</strong>: compute the sum <span class="math inline">\(2 + 4 + 6 +\cdots + 20\)</span>.</p>
+<p>–</p>
+<pre class="r"><code># one can use a function seq()
 # type ?seq to get help
-*w3 &lt;- seq(2, 20, by = 2)
-sum(w3)
-```
-
-```
-## [1] 110
-```
-
---
-
-Alternatively, one can use the previous vector:
-
-
-```r
-w4 &lt;- 2*w1 # product of a single number and a vector
-print(w4)
-```
-
-```
-##  [1]  2  4  6  8 10 12 14 16 18 20
-```
-
-```r
-sum(w4)
-```
-
-```
-## [1] 110
-```
-
----
-
-## Recycling in R
-
-Operation between a single value and a vector.
-
-
-```r
-num3 &lt;- 3
+w3 &lt;- seq(2, 20, by = 2) #&lt;&lt;
+sum(w3)</code></pre>
+<pre><code>## [1] 110</code></pre>
+<p>–</p>
+<p>Alternatively, one can use the previous vector:</p>
+<pre class="r"><code>w4 &lt;- 2*w1 # product of a single number and a vector
+print(w4)</code></pre>
+<pre><code>##  [1]  2  4  6  8 10 12 14 16 18 20</code></pre>
+<pre class="r"><code>sum(w4)</code></pre>
+<pre><code>## [1] 110</code></pre>
+<hr />
+</div>
+<div id="recycling-in-r" class="section level2">
+<h2>Recycling in R</h2>
+<p>Operation between a single value and a vector.</p>
+<pre class="r"><code>num3 &lt;- 3
 vec5 &lt;- 1:5
 vec6 &lt;- vec5 + num3
-print(vec6)
-```
-
-```
-## [1] 4 5 6 7 8
-```
-
-
-```r
-*vec7 &lt;- paste0("Visitor_", vec5)
-print(vec7)
-```
-
-```
-## [1] "Visitor_1" "Visitor_2" "Visitor_3" "Visitor_4" "Visitor_5"
-```
-
-
-```r
-vec8 &lt;- 5 + 2*c(-1, 1)
-print(vec8)
-```
-
-```
-## [1] 3 7
-```
-
----
-
-## Recycling in R, continued
-
-**Exercise**: Change "Female" to "F" for consistency.
-
-
-```r
-gender &lt;- c("M", "F", "Female", "M", "Female")
-```
-
---
-
-
-```r
-# solution using hardcoding
+print(vec6)</code></pre>
+<pre><code>## [1] 4 5 6 7 8</code></pre>
+<pre class="r"><code>vec7 &lt;- paste0(&quot;Visitor_&quot;, vec5) #&lt;&lt;
+print(vec7)</code></pre>
+<pre><code>## [1] &quot;Visitor_1&quot; &quot;Visitor_2&quot; &quot;Visitor_3&quot; &quot;Visitor_4&quot; &quot;Visitor_5&quot;</code></pre>
+<pre class="r"><code>vec8 &lt;- 5 + 2*c(-1, 1)
+print(vec8)</code></pre>
+<pre><code>## [1] 3 7</code></pre>
+<hr />
+</div>
+<div id="recycling-in-r-continued" class="section level2">
+<h2>Recycling in R, continued</h2>
+<p><strong>Exercise</strong>: Change “Female” to “F” for consistency.</p>
+<pre class="r"><code>gender &lt;- c(&quot;M&quot;, &quot;F&quot;, &quot;Female&quot;, &quot;M&quot;, &quot;Female&quot;)</code></pre>
+<p>–</p>
+<pre class="r"><code># solution using hardcoding
 sol1 &lt;- gender
-sol1[c(3, 5)] &lt;- "F"
-print(sol1)
-```
-
-```
-## [1] "M" "F" "F" "M" "F"
-```
-
---
-
-
-```r
-# solution without using hardcoding
+sol1[c(3, 5)] &lt;- &quot;F&quot;
+print(sol1)</code></pre>
+<pre><code>## [1] &quot;M&quot; &quot;F&quot; &quot;F&quot; &quot;M&quot; &quot;F&quot;</code></pre>
+<p>–</p>
+<pre class="r"><code># solution without using hardcoding
 sol2 &lt;- gender
-sol2[sol2 == "Female"] &lt;- "F"
-print(sol2)
-```
-
-```
-## [1] "M" "F" "F" "M" "F"
-```
-
-
-
----
-
-## Data frame
-
-Vectors of an equal length can be combined to form a data frame.
-
-
-```r
-# use of the function data.frame()
-first_name &lt;- c("Lisa", "John", "Chuck", "Matt")
-last_name &lt;- c("Simpson", "Smith", "Williams", "June")
+sol2[sol2 == &quot;Female&quot;] &lt;- &quot;F&quot;
+print(sol2)</code></pre>
+<pre><code>## [1] &quot;M&quot; &quot;F&quot; &quot;F&quot; &quot;M&quot; &quot;F&quot;</code></pre>
+<hr />
+</div>
+<div id="data-frame" class="section level2">
+<h2>Data frame</h2>
+<p>Vectors of an equal length can be combined to form a data frame.</p>
+<pre class="r"><code># use of the function data.frame()
+first_name &lt;- c(&quot;Lisa&quot;, &quot;John&quot;, &quot;Chuck&quot;, &quot;Matt&quot;)
+last_name &lt;- c(&quot;Simpson&quot;, &quot;Smith&quot;, &quot;Williams&quot;, &quot;June&quot;)
 age_yrs &lt;- c(8, 42, 81, 23)
-*book &lt;- data.frame(first = first_name,
-*                  last = last_name,
-*                  age = age_yrs)
-print(book)
-```
-
-```
-##   first     last age
+book &lt;- data.frame(first = first_name, #&lt;&lt;
+                   last = last_name,   #&lt;&lt;
+                   age = age_yrs)      #&lt;&lt;
+print(book)</code></pre>
+<pre><code>##   first     last age
 ## 1  Lisa  Simpson   8
 ## 2  John    Smith  42
 ## 3 Chuck Williams  81
-## 4  Matt     June  23
-```
-
-```r
-*dim(book) # dimensions of a data frame: dim()
-```
-
-```
-## [1] 4 3
-```
-
----
-
-## Handling data frames
-
-
-```r
-# extract a single element from a data frame
-book[2, 3]
-```
-
-```
-## [1] 42
-```
-
-```r
-# extract a column: use $
-*age_extracted &lt;- book$age
-print(age_extracted)
-```
-
-```
-## [1]  8 42 81 23
-```
-
-```r
-# extract a row
-book[4, ]
-```
-
-```
-##   first last age
-## 4  Matt June  23
-```
-
----
-
-## Retrieving a column from a data frame
-
-
-```r
-# use column number
+## 4  Matt     June  23</code></pre>
+<pre class="r"><code>dim(book) # dimensions of a data frame: dim() #&lt;&lt;</code></pre>
+<pre><code>## [1] 4 3</code></pre>
+<hr />
+</div>
+<div id="handling-data-frames" class="section level2">
+<h2>Handling data frames</h2>
+<pre class="r"><code># extract a single element from a data frame
+book[2, 3]</code></pre>
+<pre><code>## [1] 42</code></pre>
+<pre class="r"><code># extract a column: use $
+age_extracted &lt;- book$age #&lt;&lt;
+print(age_extracted)</code></pre>
+<pre><code>## [1]  8 42 81 23</code></pre>
+<pre class="r"><code># extract a row
+book[4, ]</code></pre>
+<pre><code>##   first last age
+## 4  Matt June  23</code></pre>
+<hr />
+</div>
+<div id="retrieving-a-column-from-a-data-frame" class="section level2">
+<h2>Retrieving a column from a data frame</h2>
+<pre class="r"><code># use column number
 method1 &lt;- book[,1]
-print(method1)
-```
-
-```
-## [1] "Lisa"  "John"  "Chuck" "Matt"
-```
-
-
-```r
-# use "$" to extract a column
+print(method1)</code></pre>
+<pre><code>## [1] &quot;Lisa&quot;  &quot;John&quot;  &quot;Chuck&quot; &quot;Matt&quot;</code></pre>
+<pre class="r"><code># use &quot;$&quot; to extract a column
 method2 &lt;- book$first
-print(method2)
-```
-
-```
-## [1] "Lisa"  "John"  "Chuck" "Matt"
-```
-
----
-
-## Adding a variable in a data frame
-
-
-```r
-gender &lt;- c("Female", "Male", "Male", "Unknown")
+print(method2)</code></pre>
+<pre><code>## [1] &quot;Lisa&quot;  &quot;John&quot;  &quot;Chuck&quot; &quot;Matt&quot;</code></pre>
+<hr />
+</div>
+<div id="adding-a-variable-in-a-data-frame" class="section level2">
+<h2>Adding a variable in a data frame</h2>
+<pre class="r"><code>gender &lt;- c(&quot;Female&quot;, &quot;Male&quot;, &quot;Male&quot;, &quot;Unknown&quot;)
 book$sex &lt;- gender
-print(book)
-```
-
-```
-##   first     last age     sex
+print(book)</code></pre>
+<pre><code>##   first     last age     sex
 ## 1  Lisa  Simpson   8  Female
 ## 2  John    Smith  42    Male
 ## 3 Chuck Williams  81    Male
-## 4  Matt     June  23 Unknown
-```
-
-Recycling applies to a data frame:
-
-
-```r
-book$remark &lt;- "friend"
-print(book)
-```
-
-```
-##   first     last age     sex remark
+## 4  Matt     June  23 Unknown</code></pre>
+<p>Recycling applies to a data frame:</p>
+<pre class="r"><code>book$remark &lt;- &quot;friend&quot;
+print(book)</code></pre>
+<pre><code>##   first     last age     sex remark
 ## 1  Lisa  Simpson   8  Female friend
 ## 2  John    Smith  42    Male friend
 ## 3 Chuck Williams  81    Male friend
-## 4  Matt     June  23 Unknown friend
-```
-
----
-
-## Reading a data file 
-
-Download a [file](heights.txt) (Chrome users: Menu `\(\rightarrow\)` More Tools `\(\rightarrow\)` Save Page As) and move it to the class directory.
-
-
-```r
-# "heights.txt" is a space-separated file with a header
+## 4  Matt     June  23 Unknown friend</code></pre>
+<hr />
+</div>
+<div id="reading-a-data-file" class="section level2">
+<h2>Reading a data file</h2>
+<p>Download a <a href="heights.txt">file</a> (Chrome users: Menu <span class="math inline">\(\rightarrow\)</span> More Tools <span class="math inline">\(\rightarrow\)</span> Save Page As) and move it to the class directory.</p>
+<pre class="r"><code># &quot;heights.txt&quot; is a space-separated file with a header
 # 1375 observations of UK mom/daughter age height pairs
-*ht &lt;- read.table(file = "heights.txt", header = TRUE, sep = " ")
-```
-
-A glance at a data frame:
-
-
-```r
-*dim(ht); nrow(ht); ncol(ht) # dimension, number of rows/columns
-```
-
-```
-## [1] 1375    2
-```
-
-```
-## [1] 1375
-```
-
-```
-## [1] 2
-```
-
-```r
-names(ht) # variable(column) names
-```
-
-```
-## [1] "Mheight" "Dheight"
-```
-
----
-
-## Inspecting a data frame
-
-
-```r
-*head(ht) # first few rows (6 rows by default)
-```
-
-```
-##   Mheight Dheight
+ht &lt;- read.table(file = &quot;heights.txt&quot;, header = TRUE, sep = &quot; &quot;) #&lt;&lt;</code></pre>
+<p>A glance at a data frame:</p>
+<pre class="r"><code>dim(ht); nrow(ht); ncol(ht) # dimension, number of rows/columns #&lt;&lt;</code></pre>
+<pre><code>## [1] 1375    2</code></pre>
+<pre><code>## [1] 1375</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code>names(ht) # variable(column) names</code></pre>
+<pre><code>## [1] &quot;Mheight&quot; &quot;Dheight&quot;</code></pre>
+<hr />
+</div>
+<div id="inspecting-a-data-frame" class="section level2">
+<h2>Inspecting a data frame</h2>
+<pre class="r"><code>head(ht) # first few rows (6 rows by default) #&lt;&lt;</code></pre>
+<pre><code>##   Mheight Dheight
 ## 1    59.7    55.1
 ## 2    58.2    56.5
 ## 3    60.6    56.0
 ## 4    60.7    56.8
 ## 5    61.8    56.0
-## 6    55.5    57.9
-```
-
-```r
-*tail(ht) # last few rows
-```
-
-```
-##      Mheight Dheight
+## 6    55.5    57.9</code></pre>
+<pre class="r"><code>tail(ht) # last few rows #&lt;&lt;</code></pre>
+<pre><code>##      Mheight Dheight
 ## 1370    69.5    70.4
 ## 1371    69.1    70.1
 ## 1372    65.0    71.6
 ## 1373    66.3    71.4
 ## 1374    70.8    71.0
-## 1375    63.0    73.1
-```
-
----
-
-## List
-
-A list is a collection of different types of elements:
-
-
-```r
-*li &lt;- list(num = 1.6,
+## 1375    63.0    73.1</code></pre>
+<hr />
+</div>
+<div id="list" class="section level2">
+<h2>List</h2>
+<p>A list is a collection of different types of elements:</p>
+<pre class="r"><code>li &lt;- list(num = 1.6, #&lt;&lt;
            seq = 1:5, 
-           names = c("Bart", "Lisa", "Homer"), 
+           names = c(&quot;Bart&quot;, &quot;Lisa&quot;, &quot;Homer&quot;), 
            uk.heihgt = ht) 
-names(li)
-```
-
-```
-## [1] "num"       "seq"       "names"     "uk.heihgt"
-```
-
---
-
-.pull-left[
-
-```r
-li$num
-```
-
-```
-## [1] 1.6
-```
-
-```r
-li$names
-```
-
-```
-## [1] "Bart"  "Lisa"  "Homer"
-```
-]
-
---
-
-.pull-right[
-
-```r
-head(li$uk.heihgt)
-```
-
-```
-##   Mheight Dheight
+names(li)</code></pre>
+<pre><code>## [1] &quot;num&quot;       &quot;seq&quot;       &quot;names&quot;     &quot;uk.heihgt&quot;</code></pre>
+<p>–</p>
+<p>.pull-left[</p>
+<pre class="r"><code>li$num</code></pre>
+<pre><code>## [1] 1.6</code></pre>
+<pre class="r"><code>li$names</code></pre>
+<pre><code>## [1] &quot;Bart&quot;  &quot;Lisa&quot;  &quot;Homer&quot;</code></pre>
+<p>]</p>
+<p>–</p>
+<p>.pull-right[</p>
+<pre class="r"><code>head(li$uk.heihgt)</code></pre>
+<pre><code>##   Mheight Dheight
 ## 1    59.7    55.1
 ## 2    58.2    56.5
 ## 3    60.6    56.0
 ## 4    60.7    56.8
 ## 5    61.8    56.0
-## 6    55.5    57.9
-```
-]
-    </textarea>
-<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
-<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
-<script>var slideshow = remark.create({
-"highlightStyle": "github",
-"highlightLines": true,
-"countIncrementalSlides": false
-});
-if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
-  window.dispatchEvent(new Event('resize'));
-});
-(function(d) {
-  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
-  if (!r) return;
-  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
-  d.head.appendChild(s);
-})(document);
-
-(function(d) {
-  var el = d.getElementsByClassName("remark-slides-area");
-  if (!el) return;
-  var slide, slides = slideshow.getSlides(), els = el[0].children;
-  for (var i = 1; i < slides.length; i++) {
-    slide = slides[i];
-    if (slide.properties.continued === "true" || slide.properties.count === "false") {
-      els[i - 1].className += ' has-continuation';
-    }
-  }
-  var s = d.createElement("style");
-  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
-  d.head.appendChild(s);
-})(document);
-// delete the temporary CSS (for displaying all slides initially) when the user
-// starts to view slides
-(function() {
-  var deleted = false;
-  slideshow.on('beforeShowSlide', function(slide) {
-    if (deleted) return;
-    var sheets = document.styleSheets, node;
-    for (var i = 0; i < sheets.length; i++) {
-      node = sheets[i].ownerNode;
-      if (node.dataset["target"] !== "print-only") continue;
-      node.parentNode.removeChild(node);
-    }
-    deleted = true;
-  });
-})();
-(function() {
-  "use strict"
-  // Replace <script> tags in slides area to make them executable
-  var scripts = document.querySelectorAll(
-    '.remark-slides-area .remark-slide-container script'
-  );
-  if (!scripts.length) return;
-  for (var i = 0; i < scripts.length; i++) {
-    var s = document.createElement('script');
-    var code = document.createTextNode(scripts[i].textContent);
-    s.appendChild(code);
-    var scriptAttrs = scripts[i].attributes;
-    for (var j = 0; j < scriptAttrs.length; j++) {
-      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
-    }
-    scripts[i].parentElement.replaceChild(s, scripts[i]);
-  }
-})();
-(function() {
-  var links = document.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
-      links[i].target = '_blank';
-    }
-  }
-})();
-// adds .remark-code-has-line-highlighted class to <pre> parent elements
-// of code chunks containing highlighted lines with class .remark-code-line-highlighted
-(function(d) {
-  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
-  const preParents = [];
-  const findPreParent = function(line, p = 0) {
-    if (p > 1) return null; // traverse up no further than grandparent
-    const el = line.parentElement;
-    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
-  };
-
-  for (let line of hlines) {
-    let pre = findPreParent(line);
-    if (pre && !preParents.includes(pre)) preParents.push(pre);
-  }
-  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
-})(document);</script>
-
-<script>
-slideshow._releaseMath = function(el) {
-  var i, text, code, codes = el.getElementsByTagName('code');
-  for (i = 0; i < codes.length;) {
-    code = codes[i];
-    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
-      text = code.textContent;
-      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
-          /^\$\$(.|\s)+\$\$$/.test(text) ||
-          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
-        code.outerHTML = code.innerHTML;  // remove <code></code>
-        continue;
-      }
-    }
-    i++;
-  }
-};
-slideshow._releaseMath(document);
-</script>
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-(function () {
-  var script = document.createElement('script');
-  script.type = 'text/javascript';
-  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
-  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
-    script.src  = script.src.replace(/^https?:/, '');
-  document.getElementsByTagName('head')[0].appendChild(script);
-})();
-</script>
-  </body>
-</html>
+## 6    55.5    57.9</code></pre>
+<p>]</p>
+</div>
