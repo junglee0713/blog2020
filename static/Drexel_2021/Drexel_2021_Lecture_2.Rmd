@@ -2,7 +2,7 @@
 title: "Lecture 2"
 subtitle: "Exploring data through visualization"
 author: "Jung-Jin Lee"
-date: "Jan 12, 2021"
+date: "Jan 19, 2021"
 output:
   xaringan::moon_reader:
     css: ["default", "default-fonts", "Drexel.css"] 
