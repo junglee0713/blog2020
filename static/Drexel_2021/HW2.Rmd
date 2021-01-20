@@ -1,0 +1,59 @@
+---
+title: "Homework 2"
+subtitle: "due Jan 26, 2021"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  fig.align = "center")
+library(tidyverse)
+```
+
+(Problems 1 and 2) Using the `iris` data set: 
+
+1. Create the following plot.
+
+```{r}
+iris %>% 
+  ggplot(aes(Petal.Length, Petal.Width, color = Species)) +
+  theme(aspect.ratio = 1) +
+  geom_point()
+```
+
+\newpage
+
+2. Create the following plot (note the title).
+
+```{r, message=F}
+iris %>% 
+  ggplot(aes(Sepal.Length)) +
+  geom_histogram() +
+  facet_wrap(~Species) +
+  ggtitle("Histogram of sepal length by each species")
+```
+
+\newpage
+
+(Problems 3, 4 and 5) Using the `diamonds` data set:
+
+3. How many diamonds are with clarity `SI2` and color `H`? 
+
+4. Compute the sample mean, median, and sample variance of `price`.
+
+5. Create the following plot.
+
+```{r}
+ggplot(diamonds, aes(color, price)) +
+  geom_boxplot() +
+  facet_wrap(~cut)
+```
+
+
+
+
+
