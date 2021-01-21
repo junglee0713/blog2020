@@ -15,3 +15,4 @@ tags: []
 
 [Homework 2](/Drexel_2021/HW2.pdf)
 
+[Lecture 3](/Drexel_2021/Drexel_2021_Lecture_3.html)
