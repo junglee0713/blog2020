@@ -4,7 +4,7 @@ title = "Jung-Jin Lee's blog"
 theme = "hugo-lithium"
 googleAnalytics = "UA-129677462-1"
 disqusShortname = "junglee0713-netlify"
-ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_cache$", "\\.knit\\.md$", "\\.utf8\\.md$"]
 
 [permalinks]
     post = "/:year/:month/:day/:slug/"
