@@ -1,6 +1,6 @@
 ---
-title: Drexel lectures Spring 2021
-author: 'Jung-Jin Lee'
+title: "Drexel lectures Spring 2021"
+author: "Jung-Jin Lee"
 date: '2021-01-01'
 slug: drexel-lectures-spring-2021
 categories: []
@@ -16,3 +16,5 @@ tags: []
 [Homework 2](/Drexel_2021/HW2.pdf)
 
 [Lecture 3](/Drexel_2021/Drexel_2021_Lecture_3.html)
+
+[Homework 3](/Drexel_2021/HW3.pdf)
