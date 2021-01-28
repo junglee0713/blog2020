@@ -34,7 +34,7 @@ iris %>% filter(Species != "setosa") %>%
   geom_point()
 ```
 
-(Problems **3**, **4**) Recall the `heights.txt` data we used in class with 1375 mother/daughter height pairs. The following code reads in the data set as `ht`.
+(Problems **3**, **4**, **5**) Recall the `heights.txt` data we used in class with 1375 mother/daughter height pairs. The following code reads in the data set as `ht`.
 
 ```{r, echo = T}
 ht <- read.table(file = "heights.txt", header = T, sep = " ")
