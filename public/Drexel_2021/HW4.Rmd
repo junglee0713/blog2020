@@ -1,0 +1,33 @@
+---
+title: "Homework 4"
+subtitle: "due Feb 9, 2021"
+output:
+  pdf_document: default
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  fig.align = "center")
+library(tidyverse)
+```
+
+\bigskip
+
+(Problems **1**, **2**) Recall the `diamonds` data set we used in class.
+
+**1.** Note that the `diamonds` data set has eight distinct `clarity` values. For each of these values, compute the median diamond `price`.
+
+**2.** Verify your answer in **1.** above by drawing the plot below:
+
+```{r, echo = F, fig.width = 3.3, fig.height = 3}
+diamonds %>%
+  ggplot(aes(clarity, price)) +
+  geom_boxplot()
+```
+
+**3.** Recall the `starwars` data set we used in class. Which human female character has the shortest height with brown hair color?
+
+**4.** Assume that $X$ follows a normal distribution with mean 5 and standard deviation 2, say $N(3,2^2)$. Compute the probability that $3\leq X \leq 5$.
+
+**5.** Determine $c$ so that the probability $0\leq Z \leq c$ is $0.45$, where $Z$ follows the standard normal distribution $N(0,1^2)$.

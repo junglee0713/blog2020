@@ -1,0 +1,63 @@
+---
+title: "Homework 3"
+subtitle: "due Feb 2, 2021"
+output:
+  pdf_document: default
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  fig.align = "center")
+library(tidyverse)
+```
+
+\bigskip
+
+(Problems **1**, **2**) Recall `iris` data set.
+
+**1.** Find the maximum value of the sum `Sepal.Length` $+$ `Sepal.Width`. To which species does the sample with the maximum value you found above belong? _Hint_: you might want to start with defining a new variable `Sepal.Sum` using `mutate()`, for example. 
+
+```{r, eval = F}
+iris %>%
+  mutate(Sepal.Sum = Sepal.Length + Sepal.Width) %>%
+  arrange(desc(Sepal.Sum)) %>%
+  slice(1) %>%
+  select(Sepal.Sum, Species)
+```
+
+**2.** Create the following plot. Note that `setosa` species do *not* show up. You do not need to adjust size or width/height ratio of the plot.
+
+```{r, fig.width = 4.2, fig.height = 3}
+iris %>% filter(Species != "setosa") %>%
+  ggplot(aes(Petal.Length, Petal.Width, color = Species)) +
+  geom_point()
+```
+
+(Problems **3**, **4**, **5**) Recall the `heights.txt` data we used in class with 1375 mother/daughter height pairs. The following code reads in the data set as `ht`.
+
+```{r, echo = T}
+ht <- read.table(file = "heights.txt", header = T, sep = " ")
+```
+
+**3.** Define an extra variable `FamilyID` for each family, like `Fam_1`, `Fam_2`, $\ldots$, `Fam_1375`, so that `head(ht)` and `tail(ht)` return the following, respectively.
+
+```{r, echo = F}
+ht2 <- ht %>% mutate(FamilyID = paste0("Fam_", 1:nrow(.)))
+head(ht2); tail(ht2)
+```
+
+
+**4.** In how many families, is mother taller than daughter?
+
+**5.** Create the following box plot. _Hint_: you might want to start with transforming `ht` into a long form.
+
+```{r, fig.width = 3, fig.height = 3}
+g <- ht %>%
+  pivot_longer(cols = c("Mheight", "Dheight"), names_to = "Member", values_to = "Height" ) %>%
+  ggplot(aes(Member, Height)) + geom_boxplot()
+print(g)
+```
+
+
+
