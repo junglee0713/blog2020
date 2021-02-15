@@ -28,6 +28,6 @@ diamonds %>%
 
 **3.** Recall the `starwars` data set we used in class. Which human female character has the shortest height with brown hair color?
 
-**4.** Assume that $X$ follows a normal distribution with mean 5 and standard deviation 2, say $N(3,2^2)$. Compute the probability that $3\leq X \leq 5$.
+**4.** Assume that $X$ follows a normal distribution with mean 3 and standard deviation 2, say $N(3,2^2)$. Compute the probability that $3\leq X \leq 5$.
 
 **5.** Determine $c$ so that the probability $0\leq Z \leq c$ is $0.45$, where $Z$ follows the standard normal distribution $N(0,1^2)$.
