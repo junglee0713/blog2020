@@ -1,0 +1,39 @@
+---
+title: "Homework 5"
+subtitle: "due Feb 23, 2021"
+output:
+  pdf_document: default
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  fig.align = "center")
+library(tidyverse)
+```
+
+\bigskip
+
+**1.** Assume that $Z$ follows the standard normal $N(0,1^2)$. Find $c$ so that $P(-c\leq Z \leq c) =  0.95.$ _Hint_: notice that $c=z_{0.025}$, where $z_{0.025}$ is characterized by the property that $P(Z\geq z_{0.025})=0.025$.
+
+\bigskip
+
+**2.** Assume that $X$ follows a $t$-distribution with $10$ degrees of freedom. Compute the probability that $1\leq X \leq 2$.
+
+\bigskip
+
+(Problems **3**, **4**, **5**) Recall the `heights.txt` data we used in class with 1375 mother/daughter height pairs. The following code reads in the data set as `ht`. Assume that daughter's heights data are taken from a normal distribution $N(\mu, \sigma^2)$
+
+```{r, echo = T}
+ht <- read.table(file = "heights.txt", header = T, sep = " ")
+```
+
+**3.** Compute the 95% confidence interval of $\mu$. Give a brief interpretation of the confidence interval you calculated.
+
+\bigskip
+
+**4.** Test the null hypothesis $H_0:\mu = 63.5$ by computing the $p$-value and stating your conclusion. 
+
+\bigskip
+
+**5.** Test the null hypothesis $H_0:\mu = 63.7$ by computing the $p$-value and stating your conclusion. 
