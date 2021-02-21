@@ -26,3 +26,5 @@ tags: []
 [Lecture 5](/Drexel_2021/Drexel_2021_Lecture_5.html)
 
 [Homework 5](/Drexel_2021/HW5.pdf)
+
+[Lecture 6](/Drexel_2021/Drexel_2021_Lecture_6.html)
