@@ -33,3 +33,6 @@ tags: []
 
 [Lecture 7](/Drexel_2021/Drexel_2021_Lecture_7.html)
 
+[Homework 7](/Drexel_2021/HW7.pdf)
+
+[Lecture 8](/Drexel_2021/Drexel_2021_Lecture_8.html)
