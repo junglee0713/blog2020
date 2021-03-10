@@ -1,0 +1,82 @@
+---
+title: "Homework 8"
+subtitle: "due Mar 16, 2021"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  fig.align = "center")
+library(tidyverse)
+```
+
+\bigskip
+
+(For questions **1**, **2**, **3**) These questions are related Homework 7 #4 and #5. In the following, the measurements of the mean fluorescence intensity of sperm cells stained with a fluorescent marker, 1-anilinonaphthalene-8-sulphonate (ANS), showing the effect of the presence of egg yolk in the diluent solution. ANS fluoresces only when bound to the sperm membrane. Each value represents the mean of 10 individual spermatozoa and is estimated by a densitometer from photographic film.
+
+```{r, echo = T}
+egg_yolk_1_percent <- c(0.944, 1.048, 1.026, 1.007, 0.933, 0.998, 1.035)
+egg_yolk_5_percent <- c(0.865, 1.000, 1.001, 0.900, 0.923, 0.876, 1.046, 0.990)
+egg_yolk_25_percent <- c(0.811, 0.862, 0.910, 0.799, 0.837, 0.854)
+```
+
+The following code creates a data frame `df` in which `percent` is turned into a factor variable:
+
+```{r, echo = T}
+df1 <- data.frame(percent = "1%", intensity = egg_yolk_1_percent)
+df5 <- data.frame(percent = "5%", intensity = egg_yolk_5_percent)
+df25 <- data.frame(percent = "25%", intensity = egg_yolk_25_percent)
+df <- rbind(df1, df5, df25) %>%
+  mutate(percent = factor(percent, levels = c("1%", "5%", "25%")))
+```
+
+**1.** Using `group_by` and `summarize` combination, compute the mean intensity for each percentage.
+
+**2.** Create the following box plot, where the blue dot represents the mean value in each column.
+
+```{r, fig.align = "center", fig.height = 3}
+ggplot(df, aes(percent, intensity)) + 
+  geom_boxplot() +
+  geom_point(stat = "summary", fun = mean, color = "blue", size = 5) +
+  theme_bw() +
+  theme(aspect.ratio = 1)
+```
+
+**3.** Recall Homework 7, Problem #5, in which the null hypothesis was rejected. Perform post hoc analyses, that is, determine which pair(s) of percentages, if any, shows difference in fluorescence intensity. 
+
+```{r, eval = F}
+oneway.test(df$intensity ~ df$percent, var.equal = T)
+## or
+anova_res <- aov(df$intensity ~ df$percent)
+summary(anova_res)
+TukeyHSD(anova_res)
+```
+
+\newpage
+
+(For questions **4**, **5**) Out of 183 female Beagles, 120 randomly selected dogs were given 0.026-106 kBq plutonium per kg by intravenous injection and compared with remaining 63 female control dogs with a view to determining whether plutonium deposit in bone affects the appearance of mammary tumors. 45 of the control dogs developed mammary tumors of any kind whereas 67 of the dogs given plutonium developed mammary tumors of any kind. The following is a $2\times 2$ contingency table describing the outcome:
+
+$$\begin{array}{c|ccc} & \text{Plutonium} & \text{Control} & \text{Total} \\ \hline   
+\text{Tumor} & 67 & 45 & 112 \\  
+\text{No tumor} & 53 & 18 & 71 \\
+\text{Total} & 120 & 63 & 183
+\end{array}$$
+
+**4.** Create the following $2\times 2$ contingency matrix:
+
+```{r}
+mat <- matrix(c(67, 53, 45, 18), nrow = 2, byrow = F)
+print(mat)
+```
+
+**5.** Using $\chi^2$-test _with Yates' correction_, determine whether tumor development is associated with plutonium deposit in bone. 
+
+```{r, eval = F}
+
+chisq.test(mat, correct = T)
+```
+
