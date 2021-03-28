@@ -37,4 +37,6 @@ tags: []
 
 [Lecture 8](/Drexel_2021/Drexel_2021_Lecture_8.html)
 
-[Homework 8](/Drexel_2021/HW8.pdf) 
+[Homework 8](/Drexel_2021/HW8.pdf)
+
+[Lecture 9](/Drexel_2021/Drexel_2021_Lecture_9.html) 
