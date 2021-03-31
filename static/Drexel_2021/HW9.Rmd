@@ -64,7 +64,7 @@ ggplot(mtcars, aes(wt, hp)) +
   theme(aspect.ratio = 1)
 ```
 
-**5.** Compute $r$, the correlation coefficient. 
+**5.** Compute the correlation coefficient between `wt` (weight) and `hp` (horsepower). Is the result consistent with what you observe in **4.** above?
 
 
 
