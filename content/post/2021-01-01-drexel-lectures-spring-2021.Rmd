@@ -40,3 +40,7 @@ tags: []
 [Homework 8](/Drexel_2021/HW8.pdf)
 
 [Lecture 9](/Drexel_2021/Drexel_2021_Lecture_9.html) 
+
+[Homework 9](/Drexel_2021/HW9.pdf)
+
+[Lecture 10](/Drexel_2021/Drexel_2021_Lecture_10.html)
