@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Lecture 11</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jung-Jin Lee" />
+    <script src="libs/header-attrs-2.6/header-attrs.js"></script>
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Drexel.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Lecture 11
+## Comparison of regression models
+### Jung-Jin Lee
+### Apr 13, 2021
+
+---
+
+ 
+
+
+## Comparison of nested models
+
+Read in data set [donkey.tsv](donkey.tsv). 
+
+
+```r
+donkey &lt;- read.table("donkey.tsv", header = T, sep = "\t") 
+dim(donkey)
+```
+
+```
+## [1] 386   8
+```
+
+```r
+head(donkey)
+```
+
+```
+##   Donkey  Sex Age Bodywt Heartgirth Umbgirth Length Height
+## 1     s1 male 3.5    128        111      126     95    106
+## 2     s2 male 2.0    102        106      120     75    101
+## 3     s3 male 3.0    100        103      125     76    101
+## 4     s4 male 3.0     92        102      121     73    101
+## 5     s5 male 3.0     98        105      121     70    101
+## 6     s6 male 4.0    110        101      126     80    101
+```
+
+---
+
+## Comparison of nested models
+
+Consider the following models to explain `Bodywt`:
+
+`$$\textbf{Model 1: } \texttt{Bodywt}=\beta_0+\beta_1 \texttt{Length}$$`
+
+`$$\textbf{Model 2: } \texttt{Bodywt}=\beta_0+\beta_1 \texttt{Height}$$`
+`$$\textbf{Model 3: } \texttt{Bodywt}=\beta_0+\beta_1\texttt{Length}+\beta_2\texttt{Height}$$`
+
+`\begin{align}
+\textbf{Model 4: } \texttt{Bodywt} = &amp; \beta_0 +  \beta_1\texttt{Length} + \beta_2\texttt{Height} \\
+  &amp; +\beta_3\texttt{Heartgirth} + \beta_4\texttt{Umbgirth}
+\end{align}`
+
+
+```r
+fit1 &lt;- lm(Bodywt ~ Length, data = donkey)
+fit2 &lt;- lm(Bodywt ~ Height, data = donkey)
+fit3 &lt;- lm(Bodywt ~ Length + Height, data = donkey)
+fit4 &lt;- lm(Bodywt ~ Length + Height + Heartgirth + Umbgirth, 
+           data = donkey)
+```
+
+---
+
+## Comparison of nested models
+
+Which is a better model, `\(\textbf{Model 3}\)` or `\(\textbf{Model 4}\)`?
+
+--
+
+- Recall that `\(\textbf{Model 4}\)` had a bigger `\(R^2\)` than `\(\textbf{Model 3}\)`:
+
+
+```r
+summary(fit3)$r.squared
+```
+
+```
+## [1] 0.6669952
+```
+
+```r
+summary(fit4)$r.squared
+```
+
+```
+## [1] 0.8561892
+```
+
+--
+
+- However, `\(\textbf{Model 4}\)` is more complicated. 
+
+--
+
+- Just comparing `\(R^2\)` is not enough. 
+
+--
+
+- Idea: if `\(\beta_3\)` and `\(\beta_4\)`, the coefficients of `Heartgirth` and `Umbgirth`, turn out to be close to `\(0\)`, then it would mean that `Heartgirth` and `Umbgirth` don't affect `Bodywt` much. 
+
+---
+
+## Comparison of nested models
+
+Under the assumption that `\(H_0: \beta_3=\beta_4=0\)`,
+
+  - It is known that 
+`$$F = \frac{(RSS_{M3}-RSS_{M4})/2}{RSS_{M4}/(386-5)}$$`
+follows an `\(F\)`-distribution with `\(df1=2\)` and `\(df2=386-5=381\)` degrees of freedom
+
+  - Here `\(RSS_{M3}\)` (respectively, `\(RSS_{M4}\)`) is the RSS from `\(\textbf{Model 3}\)` (respectively, from `\(\textbf{Model 4}\)`)
+  
+  - 2 comes from how many more `\(\beta\)`s `\(\textbf{Model 4}\)` has compared to `\(\textbf{Model 3}\)`, 386 from sample size, 5 from the number of `\(\beta\)`s in `\(\textbf{Model 4}\)`.
+  
+---
+
+## Comparison of nested models
+
+
+```r
+rss3 &lt;- sum(fit3$residuals^2)
+rss4 &lt;- sum(fit4$residuals^2)
+f &lt;- ((rss3-rss4)/2)/(rss4/(386-5))
+print(rss3)
+```
+
+```
+## [1] 79036.14
+```
+
+```r
+print(rss4)
+```
+
+```
+## [1] 34132.38
+```
+
+```r
+print(f)
+```
+
+```
+## [1] 250.6173
+```
+
+---
+
+## Comparison of nested models
+
+&lt;img src="Drexel_2021_Lecture_11_files/figure-html/unnamed-chunk-6-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+```r
+1-pf(f, df1 = 2, df2 = 381)
+```
+
+```
+## [1] 0
+```
+
+---
+
+## Comparison of nested models
+
+- With this extremely small `\(p\)`-value, we reject the null hypothesis that `\(\beta_3=\beta_4=0\)`. 
+
+--
+
+- This leads to either `\(\beta_3\neq 0\)` or `\(\beta_4\neq 0\)`.
+
+--
+
+- So either `Heartgirth` or `Umbgirth` (or both) significantly affects `Bodywt`
+
+--
+
+- Final conclusion: `\(\textbf{Model 4}\)` is preferred to `\(\textbf{Model 3}\)`.
+
+---
+
+## Comparison of nested models
+
+
+```r
+*anova(fit3, fit4)
+```
+
+```
+## Analysis of Variance Table
+## 
+## Model 1: Bodywt ~ Length + Height
+## Model 2: Bodywt ~ Length + Height + Heartgirth + Umbgirth
+##   Res.Df   RSS Df Sum of Sq      F    Pr(&gt;F)    
+## 1    383 79036                                  
+## 2    381 34132  2     44904 250.62 &lt; 2.2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+With small `\(p\)`-value, `\(\textbf{Model 4}\)` is preferred to `\(\textbf{Model 3}\)`. 
+
+---
+
+## Comparison of nested models
+
+`\begin{align}
+\textbf{Model 5: } \texttt{Bodywt} = &amp; \beta_0 +  \beta_1\texttt{Length} + \beta_2\texttt{Height} \\
+  &amp; +\beta_3\texttt{Heartgirth} + \beta_4\texttt{Umbgirth} + \beta_5\texttt{Age}
+\end{align}`
+
+
+```r
+fit5 &lt;- lm(Bodywt ~ Length + Height + Heartgirth + Umbgirth
+           + Age, data = donkey)
+```
+
+---
+
+## Comparison of nested models
+
+Which is preferred, `\(\textbf{Model 4}\)` or `\(\textbf{Model 5}\)`?
+
+--
+
+
+```r
+anova(fit4, fit5)
+```
+
+```
+## Analysis of Variance Table
+## 
+## Model 1: Bodywt ~ Length + Height + Heartgirth + Umbgirth
+## Model 2: Bodywt ~ Length + Height + Heartgirth + Umbgirth + Age
+##   Res.Df   RSS Df Sum of Sq      F  Pr(&gt;F)  
+## 1    381 34132                              
+## 2    380 33804  1    328.03 3.6875 0.05557 .
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+--
+
+With `\(p\)`-value &gt; `\(0.05\)`, we conclude that `\(\textbf{Model 4}\)` is preferred.
+
+---
+
+## Exercise
+
+Suppose we want to determine how fuel consumption varies as a function of state characteristics. Download a tab-delimited file [fuel.tsv](fuel.tsv). 
+
+
+```r
+fuel &lt;- read.table("fuel.tsv", header = T, sep = "\t")
+dim(fuel)
+```
+
+```
+## [1] 51 11
+```
+
+
+```r
+head(fuel)
+```
+
+&lt;style type="text/css"&gt;
+.small70 .remark-code { /*Change made here*/
+  font-size: 70% !important;
+}
+&lt;/style&gt;
+
+.small70[
+
+```
+##    Drivers    FuelC Income  Miles      MPC      Pop  Tax State
+## 1  3559897  2382507  23471  94440 12737.00  3451586 18.0    AL
+## 2   472211   235400  30064  13628  7639.16   457728  8.0    AK
+## 3  3550367  2428430  25578  55245  9411.55  3907526 18.0    AZ
+## 4  1961883  1358174  22257  98132 11268.40  2072622 21.7    AR
+## 5 21623793 14691753  32275 168771  8923.89 25599275 18.0    CA
+## 6  3287922  2048664  32949  85854  9722.73  3322455 22.0    CO
+##        Dlic     Fuel  LogMiles
+## 1 1031.3801 690.2644 11.455720
+## 2 1031.6411 514.2792  9.519882
+## 3  908.5972 621.4751 10.919533
+## 4  946.5706 655.2927 11.494069
+## 5  844.7033 573.9129 12.036298
+## 6  989.6062 616.6115 11.360403
+```
+]
+
+---
+
+## Exercise
+
+A brief explanation of variables:
+
+- `Drivers`: Number of licensed drivers in the state.
+- `FuelC`: Gasoline sold for road use, thousands of gallons.
+- `Income`: Per person personal income for the year 2000, in thousands of dollars.
+- `Miles`: Miles of Federal-aid highway miles in the state.
+- `MPC`: Estimated miles driven per capita.
+- `Pop`: 2001 population age 16 and over.
+- `Tax`: Gasoline state tax rate, cents per gallon.
+- `State`: State (including DC) names.
+
+The following additional variables were generated from other variables:
+- `Dlic`: `\(1000\times\)` `Drivers` / `Pop`.
+- `Fuel`: `\(1000\times\)` `FuelC` / `Pop`.
+- `LogMiles`: `\(\log\)` (`Miles`).
+
+---
+
+## Exercise
+
+**1**. Perform a simple linear regression on `LogMiles`: 
+`$$\textbf{Model 1: } \texttt{Fuel}=\beta_0+\beta_1 \texttt{LogMiles}.$$`
+Generate a scatter plot (`Fuel` vs `LogMiles`), find the best fitting line and overlay it to the previous scatter plot, find the estimators `\(\hat{\beta_0}\)` and `\(\hat{\beta_1}\)`, and compute `\(R^2\)`.
+
+--
+
+
+```r
+mod1 &lt;- lm(Fuel ~ LogMiles, data = fuel)
+beta0 &lt;- mod1$coefficients[1]
+beta1 &lt;- mod1$coefficients[2]
+summary(mod1)$r.squared
+```
+
+```
+## [1] 0.1781113
+```
+
+---
+
+## Exercise
+
+
+```r
+ggplot(fuel, aes(LogMiles, Fuel)) + geom_point() + 
+  geom_abline(intercept = beta0, slope = beta1, color = "red")
+```
+
+&lt;img src="Drexel_2021_Lecture_11_files/figure-html/unnamed-chunk-16-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Exercise
+
+**2**. Perform a multiple linear regression on `LogMiles`, `Pop`, and `Income`: 
+`$$\textbf{Model 2: } \texttt{Fuel}=\beta_0+\beta_1 \texttt{LogMiles}+\beta_2 \texttt{Pop}+\beta_3 \texttt{Income}.$$`
+Find the estimators `\(\hat{\beta_0}\)`, `\(\hat{\beta_1}\)`, `\(\hat{\beta_2}\)`, `\(\hat{\beta_3}\)` and give an interpretation of `\(\hat{\beta_1}\)`. 
+
+--
+
+
+```r
+mod2 &lt;- lm(Fuel ~ LogMiles + Pop + Income, data = fuel)
+mod2$coefficients
+```
+
+```
+##   (Intercept)      LogMiles           Pop        Income 
+##  2.155918e+02  4.922031e+01 -7.605603e-06 -3.776311e-03
+```
+
+--
+
+`\begin{align}
+\texttt{Fuel} = &amp;\quad215.6 \\
+  &amp;+49.2 \times \texttt{Logmiles} \\
+  &amp;-7.6 \times 10^{-6} \times \texttt{Pop} \\
+  &amp;-3.8 \times 10^{-3} \times \texttt{Income}
+\end{align}`
+
+--
+
+When `Pop` and `Income` remain unchanged, a unit increase in `Logmiles` will result in increase in `Fuel` by 49.2.
+
+---
+
+## Exercise
+
+**3**. Which model do you prefer, `\(\textbf{Model 1}\)` or `\(\textbf{Model 2}\)`? Justify your answer using `anova()`.
+
+--
+
+
+```r
+anova(mod1, mod2)
+```
+
+```
+## Analysis of Variance Table
+## 
+## Model 1: Fuel ~ LogMiles
+## Model 2: Fuel ~ LogMiles + Pop + Income
+##   Res.Df    RSS Df Sum of Sq      F    Pr(&gt;F)    
+## 1     49 325216                                  
+## 2     47 239636  2     85581 8.3925 0.0007646 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+--
+
+`\(\textbf{Model 2}\)` is preferred to `\(\textbf{Model 1}\)`.
+
+---
+
+## Exercise
+
+**4**. Which of the following models is preferred?
+
+`$$\textbf{Model 3: } \texttt{Fuel}=\beta_0+\beta_1 \texttt{LogMiles}+\beta_2 \texttt{Income} + \beta_3 \texttt{Dlic},$$`
+`$$\textbf{Model 4: } \texttt{Fuel}=\beta_0+\beta_1 \texttt{LogMiles}+\beta_2 \texttt{Income} + \beta3 \texttt{Dlic} + \beta_4 \texttt{Pop}.$$`
+
+--
+
+
+```r
+mod3 &lt;- lm(Fuel ~ LogMiles + Income + Dlic, data = fuel)
+mod4 &lt;- lm(Fuel ~ LogMiles + Income + Dlic + Pop, data = fuel)
+anova(mod3, mod4)
+```
+
+```
+## Analysis of Variance Table
+## 
+## Model 1: Fuel ~ LogMiles + Income + Dlic
+## Model 2: Fuel ~ LogMiles + Income + Dlic + Pop
+##   Res.Df    RSS Df Sum of Sq      F  Pr(&gt;F)  
+## 1     47 211964                              
+## 2     46 198357  1     13607 3.1555 0.08228 .
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+--
+
+`\(\textbf{Model 3}\)` is preferred. 
+
+---
+
+## Comparison of non-nested models
+
+Consider the models 
+`$$\textbf{Model 3: } \texttt{Fuel}=\beta_0+\beta_1 \texttt{LogMiles}+\beta_2 \texttt{Income} + \beta_3 \texttt{Dlic},$$`
+`$$\textbf{Model 5: } \texttt{Fuel}=\beta_0+\beta_1 \texttt{Income} + \beta_2 \texttt{Pop}.$$`
+
+
+```r
+mod5 &lt;- lm(Fuel ~ Income + Pop, data = fuel)
+anova(mod3, mod5) ## This is not so right
+```
+
+```
+## Analysis of Variance Table
+## 
+## Model 1: Fuel ~ LogMiles + Income + Dlic
+## Model 2: Fuel ~ Income + Pop
+##   Res.Df    RSS Df Sum of Sq     F    Pr(&gt;F)    
+## 1     47 211964                                 
+## 2     48 309646 -1    -97682 21.66 2.682e-05 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+This does **NOT** make sense because the models are not nested. 
+
+---
+
+## Comparison of non-nested models
+
+- AIC (Akaike information criterion) deals with the trade-off between the goodness-of-fit and the complexity of a model.
+
+--
+
+- AIC can be used to compare models that are not nested within each other
+
+--
+
+- A model with *smaller* AIC score is *better*.
+
+
+```r
+AIC(mod3, mod5)
+```
+
+```
+##      df      AIC
+## mod3  5 579.6814
+## mod5  4 597.0110
+```
+
+`\(\textbf{Model 3}\)` is preferred. 
+
+---
+
+## Comparison of non-nested models
+
+- AIC can be used to compare nested models, too
+
+
+```r
+AIC(mod3, mod4)
+```
+
+```
+##      df      AIC
+## mod3  5 579.6814
+## mod4  6 578.2976
+```
+
+Note that `AIC` result may not be consistent with `anova` result. 
+
+--
+
+- BIC (Bayesian information criterion) is also used to compare non-nested models. 
+
+--
+
+- A model with smaller BIC score is better.
+
+
+```r
+BIC(mod3, mod5)
+```
+
+```
+##      df      BIC
+## mod3  5 589.3405
+## mod5  4 604.7383
+```
+
+---
+
+## Automatic Model Selection
+
+There are several ways to find the best model: 
+
+- Forward selection: start with the single explanatory variable that contributes the most to the explained variation in `\(y\)`, and include more variables in the modelling equation, progressively, until the addition of an extra variable does not significantly improve the situation. 
+
+--
+
+- Backward elimination: start with all the variables, and take them away sequentially, starting with the variable that contributes the least, until the deletion of a variable does not significantly reduce the amount of explained variation in `\(y\)`. 
+
+--
+
+- Both
+
+--
+
+- `step()` in R can be used to automatically find the best model. 
+
+---
+
+## Automatic Model Selection
+
+
+```r
+donkey2 &lt;- donkey %&gt;%
+  mutate(Length2 = Length^2)
+```
+
+---
+
+## Automatic Model Selection
+
+&lt;style type="text/css"&gt;
+.tiny .remark-code { /*Change made here*/
+  font-size: 90% !important;
+}
+&lt;/style&gt;
+
+
+```r
+fit_full &lt;- lm(Bodywt ~ Age + Length + Length2 + Height + 
+                 Heartgirth + Umbgirth, data = donkey2)
+*step(fit_full)
+```
+
+.tiny[
+
+```
+## Start:  AIC=1726.16
+## Bodywt ~ Age + Length + Length2 + Height + Heartgirth + Umbgirth
+## 
+##              Df Sum of Sq   RSS    AIC
+## - Height      1       2.4 32584 1724.2
+## &lt;none&gt;                    32581 1726.2
+## - Age         1     483.8 33065 1729.8
+## - Length      1     714.7 33296 1732.5
+## - Length2     1    1223.2 33804 1738.4
+## - Umbgirth    1    2408.2 34989 1751.7
+## - Heartgirth  1   21930.4 54511 1922.8
+## 
+## Step:  AIC=1724.19
+## Bodywt ~ Age + Length + Length2 + Heartgirth + Umbgirth
+## 
+##              Df Sum of Sq   RSS    AIC
+## &lt;none&gt;                    32584 1724.2
+## - Age         1     496.3 33080 1728.0
+## - Length      1     876.7 33460 1732.4
+## - Length2     1    1563.5 34147 1740.3
+## - Umbgirth    1    2413.7 34997 1749.8
+## - Heartgirth  1   26794.4 59378 1953.8
+```
+
+```
+## 
+## Call:
+## lm(formula = Bodywt ~ Age + Length + Length2 + Heartgirth + Umbgirth, 
+##     data = donkey2)
+## 
+## Coefficients:
+## (Intercept)          Age       Length      Length2   Heartgirth  
+##   -55.42638      0.42784     -2.88210      0.02257      1.89461  
+##    Umbgirth  
+##     0.34975
+```
+]
+
+---
+
+## Introduction to factors
+
+- Factor is a data type for categorical data in R. 
+
+- A factor variable has a level, a collection of unique values in the variable with a certain order. 
+
+- Each level in a factor variable is internally treated as an integer in R.
+
+--
+
+
+```r
+vec &lt;- c("red", "blue", "orange", "red", "red", "blue", "green", 
+         "orange", "brown", "blue")
+print(vec)
+```
+
+```
+##  [1] "red"    "blue"   "orange" "red"    "red"    "blue"   "green" 
+##  [8] "orange" "brown"  "blue"
+```
+
+--
+
+
+```r
+*fac1 &lt;- factor(vec)
+print(fac1)
+```
+
+```
+##  [1] red    blue   orange red    red    blue   green  orange brown 
+## [10] blue  
+## Levels: blue brown green orange red
+```
+
+---
+
+## Introduction to factors
+
+- One can control the order of levels
+
+
+```r
+fac2 &lt;- factor(vec, 
+*              levels = c("green", "orange", "red", "blue", "brown"))
+print(fac2)
+```
+
+```
+##  [1] red    blue   orange red    red    blue   green  orange brown 
+## [10] blue  
+## Levels: green orange red blue brown
+```
+
+---
+
+## Categorical variable as a predictor in regression
+
+`str()` shows type of variables in a data frame:
+
+
+```r
+*str(donkey)
+```
+
+```
+## 'data.frame':	386 obs. of  8 variables:
+##  $ Donkey    : chr  "s1" "s2" "s3" "s4" ...
+##  $ Sex       : chr  "male" "male" "male" "male" ...
+##  $ Age       : num  3.5 2 3 3 3 4 4 3 6 5 ...
+##  $ Bodywt    : int  128 102 100 92 98 110 110 122 116 100 ...
+##  $ Heartgirth: int  111 106 103 102 105 101 110 115 112 107 ...
+##  $ Umbgirth  : int  126 120 125 121 121 126 125 128 124 122 ...
+##  $ Length    : int  95 75 76 73 70 80 80 82 85 77 ...
+##  $ Height    : int  106 101 101 101 101 101 106 103 111 105 ...
+```
+
+`str()` can be applied to individual variables:
+
+
+```r
+str(donkey$Sex)
+```
+
+```
+##  chr [1:386] "male" "male" "male" "male" "male" "male" "male" ...
+```
+
+---
+
+## Categorical variable as a predictor in regression
+
+
+```r
+fit &lt;- lm(Bodywt ~ Sex, data = donkey)
+summary(fit)
+```
+
+```
+## 
+## Call:
+## lm(formula = Bodywt ~ Sex, data = donkey)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -71.541 -15.541  -3.387  11.997  98.459 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  121.387      1.916  63.344   &lt;2e-16 ***
+## Sexmale        2.154      2.550   0.845    0.399    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 24.84 on 384 degrees of freedom
+## Multiple R-squared:  0.001855,	Adjusted R-squared:  -0.0007439 
+## F-statistic: 0.7138 on 1 and 384 DF,  p-value: 0.3987
+```
+
+---
+
+## Categorical variable as a predictor in regression
+
+- Interpretation of 2.154 after `Sexmale`: when `Sex` changes from `female` to `male`, `Bodywt` increases by 2.154. 
+
+--
+
+- `female` is the reference level in `Sex` variable, which can be changed using `levels` in `factor()`.
+
+
+```r
+donkey_new &lt;- donkey %&gt;%
+  mutate(Sex = factor(Sex, levels = c("male", "female")))
+str(donkey_new$Sex)
+```
+
+```
+##  Factor w/ 2 levels "male","female": 1 1 1 1 1 1 1 1 1 2 ...
+```
+
+---
+
+## Categorical variable as a predictor in regression
+
+
+```r
+fit_new &lt;- lm(Bodywt ~ Sex, data = donkey_new)
+summary(fit_new)
+```
+
+```
+## 
+## Call:
+## lm(formula = Bodywt ~ Sex, data = donkey_new)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -71.541 -15.541  -3.387  11.997  98.459 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  123.541      1.682  73.438   &lt;2e-16 ***
+## Sexfemale     -2.154      2.550  -0.845    0.399    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 24.84 on 384 degrees of freedom
+## Multiple R-squared:  0.001855,	Adjusted R-squared:  -0.0007439 
+## F-statistic: 0.7138 on 1 and 384 DF,  p-value: 0.3987
+```
+
+---
+
+## Categorical variable as a predictor in regression
+
+.pull-left[
+
+```r
+donkey %&gt;% 
+  ggplot(aes(Sex, Bodywt)) + 
+  geom_boxplot()
+```
+
+&lt;img src="Drexel_2021_Lecture_11_files/figure-html/unnamed-chunk-36-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+.pull-right[
+
+```r
+donkey_new %&gt;% 
+  ggplot(aes(Sex, Bodywt)) + 
+  geom_boxplot()
+```
+
+&lt;img src="Drexel_2021_Lecture_11_files/figure-html/unnamed-chunk-37-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+
+## Categorical variable as a predictor in regression
+
+
+```r
+crabs &lt;- read.table("crabs.tsv", header = T, sep = "\t")
+crabs &lt;- crabs %&gt;%
+  mutate(color = factor(color)) %&gt;%
+  mutate(spine = factor(spine))
+str(crabs)
+```
+
+```
+## 'data.frame':	173 obs. of  5 variables:
+##  $ color : Factor w/ 4 levels "2","3","4","5": 2 3 1 3 3 2 1 3 2 3 ...
+##  $ spine : Factor w/ 3 levels "1","2","3": 3 3 1 3 3 3 1 2 1 3 ...
+##  $ width : num  28.3 22.5 26 24.8 26 23.8 26.5 24.7 23.7 25.6 ...
+##  $ satell: int  8 0 9 0 4 0 0 0 0 0 ...
+##  $ weight: int  3050 1550 2300 2100 2600 2100 2350 1900 1950 2150 ...
+```
+
+---
+
+## Categorical variable as a predictor in regression
+
+
+```r
+ggplot(crabs, aes(spine, weight)) +
+  geom_boxplot()
+```
+
+&lt;img src="Drexel_2021_Lecture_11_files/figure-html/unnamed-chunk-39-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Categorical variable as a predictor in regression
+
+&lt;style type="text/css"&gt;
+.small80 .remark-code { /*Change made here*/
+  font-size: 80% !important;
+}
+&lt;/style&gt;
+
+
+```r
+fit_spine &lt;- lm(weight ~ spine, data = crabs)
+summary(fit_spine)
+```
+
+.small80[
+
+```
+## 
+## Call:
+## lm(formula = weight ~ spine, data = crabs)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1379.05  -373.42   -54.05   401.58  2520.95 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  2679.05      92.41  28.991  &lt; 2e-16 ***
+## spine2       -525.72     172.06  -3.055  0.00261 ** 
+## spine3       -280.63     105.60  -2.658  0.00862 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 562.1 on 170 degrees of freedom
+## Multiple R-squared:  0.06207,	Adjusted R-squared:  0.05104 
+## F-statistic: 5.626 on 2 and 170 DF,  p-value: 0.004308
+```
+]
+
+---
+
+## Categorical variable as a predictor in regression
+
+- Interpretation: 
+
+  - when `spine` changes from `1` to `2`, corresponding `weight` decreases by 525.72.
+  
+  - when `spine` changes from `1` to `3`, corresponding `weight` decreases by 280.63.
+
+--
+
+**Exercise**: change the reference level of `spine` from `1` to `3`.  
+
+
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

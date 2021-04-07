@@ -1,0 +1,618 @@
+---
+title: "Lecture 11"
+subtitle: "Comparison of regression models"
+author: "Jung-Jin Lee"
+date: "Apr 13, 2021"
+output:
+  xaringan::moon_reader:
+    css: ["default", "default-fonts", "Drexel.css"] 
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+ 
+```{r, message = F, echo = F, warning = F}
+library(tidyverse) 
+library(gridExtra)
+library(knitr) 
+library(latex2exp)
+opts_chunk$set(
+  tidy = FALSE,
+  cache = FALSE,
+  echo = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  dpi = 300,
+  fig.align = "center",
+  fig.width = 4,
+  fig.height = 4
+  )
+filter <- dplyr::filter
+options(width = 70) # controls console (and slide) output width
+```
+
+## Comparison of nested models
+
+Read in data set [donkey.tsv](donkey.tsv). 
+
+```{r}
+donkey <- read.table("donkey.tsv", header = T, sep = "\t") 
+dim(donkey)
+head(donkey)
+```
+
+---
+
+## Comparison of nested models
+
+Consider the following models to explain `Bodywt`:
+
+$$\textbf{Model 1: } \texttt{Bodywt}=\beta_0+\beta_1 \texttt{Length}$$
+
+$$\textbf{Model 2: } \texttt{Bodywt}=\beta_0+\beta_1 \texttt{Height}$$
+$$\textbf{Model 3: } \texttt{Bodywt}=\beta_0+\beta_1\texttt{Length}+\beta_2\texttt{Height}$$
+
+\begin{align}
+\textbf{Model 4: } \texttt{Bodywt} = & \beta_0 +  \beta_1\texttt{Length} + \beta_2\texttt{Height} \\
+  & +\beta_3\texttt{Heartgirth} + \beta_4\texttt{Umbgirth}
+\end{align}
+
+```{r}
+fit1 <- lm(Bodywt ~ Length, data = donkey)
+fit2 <- lm(Bodywt ~ Height, data = donkey)
+fit3 <- lm(Bodywt ~ Length + Height, data = donkey)
+fit4 <- lm(Bodywt ~ Length + Height + Heartgirth + Umbgirth, 
+           data = donkey)
+```
+
+---
+
+## Comparison of nested models
+
+Which is a better model, $\textbf{Model 3}$ or $\textbf{Model 4}$?
+
+--
+
+- Recall that $\textbf{Model 4}$ had a bigger $R^2$ than $\textbf{Model 3}$:
+
+```{r}
+summary(fit3)$r.squared
+summary(fit4)$r.squared
+```
+
+--
+
+- However, $\textbf{Model 4}$ is more complicated. 
+
+--
+
+- Just comparing $R^2$ is not enough. 
+
+--
+
+- Idea: if $\beta_3$ and $\beta_4$, the coefficients of `Heartgirth` and `Umbgirth`, turn out to be close to $0$, then it would mean that `Heartgirth` and `Umbgirth` don't affect `Bodywt` much. 
+
+---
+
+## Comparison of nested models
+
+Under the assumption that $H_0: \beta_3=\beta_4=0$,
+
+  - It is known that 
+$$F = \frac{(RSS_{M3}-RSS_{M4})/2}{RSS_{M4}/(386-5)}$$
+follows an $F$-distribution with $df1=2$ and $df2=386-5=381$ degrees of freedom
+
+  - Here $RSS_{M3}$ (respectively, $RSS_{M4}$) is the RSS from $\textbf{Model 3}$ (respectively, from $\textbf{Model 4}$)
+  
+  - 2 comes from how many more $\beta$s $\textbf{Model 4}$ has compared to $\textbf{Model 3}$, 386 from sample size, 5 from the number of $\beta$s in $\textbf{Model 4}$.
+  
+---
+
+## Comparison of nested models
+
+```{r}
+rss3 <- sum(fit3$residuals^2)
+rss4 <- sum(fit4$residuals^2)
+f <- ((rss3-rss4)/2)/(rss4/(386-5))
+print(rss3)
+print(rss4)
+print(f)
+```
+
+---
+
+## Comparison of nested models
+
+```{r, echo = F, fig.height = 3, fig.width = 4, out.width = "70%"}
+f_2_23 = function(x) df(x, df1 = 2, df = 5)
+gf <- ggplot(data.frame(x = 1), aes(x)) +
+  scale_x_continuous(lim = c(0, 8), breaks = c(0, 6), labels = c("0", round(f, 3))) +
+  theme_bw() + 
+  theme_classic() +
+  stat_function(fun = f_2_23, xlim = c(6, 8), geom = "area", fill = "red") + 
+  stat_function(fun = f_2_23) + 
+  ylim(0, 1) +
+  ggtitle(TeX("F_{df1=2, df2=381}"))
+print(gf)
+```
+
+```{r}
+1-pf(f, df1 = 2, df2 = 381)
+```
+
+---
+
+## Comparison of nested models
+
+- With this extremely small $p$-value, we reject the null hypothesis that $\beta_3=\beta_4=0$. 
+
+--
+
+- This leads to either $\beta_3\neq 0$ or $\beta_4\neq 0$.
+
+--
+
+- So either `Heartgirth` or `Umbgirth` (or both) significantly affects `Bodywt`
+
+--
+
+- Final conclusion: $\textbf{Model 4}$ is preferred to $\textbf{Model 3}$.
+
+---
+
+## Comparison of nested models
+
+```{r}
+anova(fit3, fit4) #<<
+```
+
+With small $p$-value, $\textbf{Model 4}$ is preferred to $\textbf{Model 3}$. 
+
+---
+
+## Comparison of nested models
+
+\begin{align}
+\textbf{Model 5: } \texttt{Bodywt} = & \beta_0 +  \beta_1\texttt{Length} + \beta_2\texttt{Height} \\
+  & +\beta_3\texttt{Heartgirth} + \beta_4\texttt{Umbgirth} + \beta_5\texttt{Age}
+\end{align}
+
+```{r}
+fit5 <- lm(Bodywt ~ Length + Height + Heartgirth + Umbgirth
+           + Age, data = donkey)
+```
+
+---
+
+## Comparison of nested models
+
+Which is preferred, $\textbf{Model 4}$ or $\textbf{Model 5}$?
+
+--
+
+```{r}
+anova(fit4, fit5)
+```
+
+--
+
+With $p$-value > $0.05$, we conclude that $\textbf{Model 4}$ is preferred.
+
+---
+
+## Exercise
+
+Suppose we want to determine how fuel consumption varies as a function of state characteristics. Download a tab-delimited file [fuel.tsv](fuel.tsv). 
+
+```{r}
+fuel <- read.table("fuel.tsv", header = T, sep = "\t")
+dim(fuel)
+```
+
+```{r, eval = F}
+head(fuel)
+```
+
+```{css, echo = FALSE}
+.small70 .remark-code { /*Change made here*/
+  font-size: 70% !important;
+}
+```
+
+.small70[
+```{r, echo = F}
+head(fuel)
+```
+]
+
+---
+
+## Exercise
+
+A brief explanation of variables:
+
+- `Drivers`: Number of licensed drivers in the state.
+- `FuelC`: Gasoline sold for road use, thousands of gallons.
+- `Income`: Per person personal income for the year 2000, in thousands of dollars.
+- `Miles`: Miles of Federal-aid highway miles in the state.
+- `MPC`: Estimated miles driven per capita.
+- `Pop`: 2001 population age 16 and over.
+- `Tax`: Gasoline state tax rate, cents per gallon.
+- `State`: State (including DC) names.
+
+The following additional variables were generated from other variables:
+- `Dlic`: $1000\times$ `Drivers` / `Pop`.
+- `Fuel`: $1000\times$ `FuelC` / `Pop`.
+- `LogMiles`: $\log$ (`Miles`).
+
+---
+
+## Exercise
+
+**1**. Perform a simple linear regression on `LogMiles`: 
+$$\textbf{Model 1: } \texttt{Fuel}=\beta_0+\beta_1 \texttt{LogMiles}.$$
+Generate a scatter plot (`Fuel` vs `LogMiles`), find the best fitting line and overlay it to the previous scatter plot, find the estimators $\hat{\beta_0}$ and $\hat{\beta_1}$, and compute $R^2$.
+
+--
+
+```{r}
+mod1 <- lm(Fuel ~ LogMiles, data = fuel)
+beta0 <- mod1$coefficients[1]
+beta1 <- mod1$coefficients[2]
+summary(mod1)$r.squared
+```
+
+---
+
+## Exercise
+
+```{r, out.width = "50%"}
+ggplot(fuel, aes(LogMiles, Fuel)) + geom_point() + 
+  geom_abline(intercept = beta0, slope = beta1, color = "red")
+```
+
+---
+
+## Exercise
+
+**2**. Perform a multiple linear regression on `LogMiles`, `Pop`, and `Income`: 
+$$\textbf{Model 2: } \texttt{Fuel}=\beta_0+\beta_1 \texttt{LogMiles}+\beta_2 \texttt{Pop}+\beta_3 \texttt{Income}.$$
+Find the estimators $\hat{\beta_0}$, $\hat{\beta_1}$, $\hat{\beta_2}$, $\hat{\beta_3}$ and give an interpretation of $\hat{\beta_1}$. 
+
+--
+
+```{r}
+mod2 <- lm(Fuel ~ LogMiles + Pop + Income, data = fuel)
+mod2$coefficients
+```
+
+--
+
+\begin{align}
+\texttt{Fuel} = &\quad215.6 \\
+  &+49.2 \times \texttt{Logmiles} \\
+  &-7.6 \times 10^{-6} \times \texttt{Pop} \\
+  &-3.8 \times 10^{-3} \times \texttt{Income}
+\end{align}
+
+--
+
+When `Pop` and `Income` remain unchanged, a unit increase in `Logmiles` will result in increase in `Fuel` by 49.2.
+
+---
+
+## Exercise
+
+**3**. Which model do you prefer, $\textbf{Model 1}$ or $\textbf{Model 2}$? Justify your answer using `anova()`.
+
+--
+
+```{r}
+anova(mod1, mod2)
+```
+
+--
+
+$\textbf{Model 2}$ is preferred to $\textbf{Model 1}$.
+
+---
+
+## Exercise
+
+**4**. Which of the following models is preferred?
+
+$$\textbf{Model 3: } \texttt{Fuel}=\beta_0+\beta_1 \texttt{LogMiles}+\beta_2 \texttt{Income} + \beta_3 \texttt{Dlic},$$
+$$\textbf{Model 4: } \texttt{Fuel}=\beta_0+\beta_1 \texttt{LogMiles}+\beta_2 \texttt{Income} + \beta3 \texttt{Dlic} + \beta_4 \texttt{Pop}.$$
+
+--
+
+```{r}
+mod3 <- lm(Fuel ~ LogMiles + Income + Dlic, data = fuel)
+mod4 <- lm(Fuel ~ LogMiles + Income + Dlic + Pop, data = fuel)
+anova(mod3, mod4)
+```
+
+--
+
+$\textbf{Model 3}$ is preferred. 
+
+---
+
+## Comparison of non-nested models
+
+Consider the models 
+$$\textbf{Model 3: } \texttt{Fuel}=\beta_0+\beta_1 \texttt{LogMiles}+\beta_2 \texttt{Income} + \beta_3 \texttt{Dlic},$$
+$$\textbf{Model 5: } \texttt{Fuel}=\beta_0+\beta_1 \texttt{Income} + \beta_2 \texttt{Pop}.$$
+
+```{r}
+mod5 <- lm(Fuel ~ Income + Pop, data = fuel)
+anova(mod3, mod5) ## This is not so right
+```
+
+This does **NOT** make sense because the models are not nested. 
+
+---
+
+## Comparison of non-nested models
+
+- AIC (Akaike information criterion) deals with the trade-off between the goodness-of-fit and the complexity of a model.
+
+--
+
+- AIC can be used to compare models that are not nested within each other
+
+--
+
+- A model with *smaller* AIC score is *better*.
+
+```{r}
+AIC(mod3, mod5)
+```
+
+$\textbf{Model 3}$ is preferred. 
+
+---
+
+## Comparison of non-nested models
+
+- AIC can be used to compare nested models, too
+
+```{r}
+AIC(mod3, mod4)
+```
+
+Note that `AIC` result may not be consistent with `anova` result. 
+
+--
+
+- BIC (Bayesian information criterion) is also used to compare non-nested models. 
+
+--
+
+- A model with smaller BIC score is better.
+
+```{r}
+BIC(mod3, mod5)
+```
+
+---
+
+## Automatic Model Selection
+
+There are several ways to find the best model: 
+
+- Forward selection: start with the single explanatory variable that contributes the most to the explained variation in $y$, and include more variables in the modelling equation, progressively, until the addition of an extra variable does not significantly improve the situation. 
+
+--
+
+- Backward elimination: start with all the variables, and take them away sequentially, starting with the variable that contributes the least, until the deletion of a variable does not significantly reduce the amount of explained variation in $y$. 
+
+--
+
+- Both
+
+--
+
+- `step()` in R can be used to automatically find the best model. 
+
+---
+
+## Automatic Model Selection
+
+```{r}
+donkey2 <- donkey %>%
+  mutate(Length2 = Length^2)
+```
+
+---
+
+## Automatic Model Selection
+
+```{css, echo = FALSE}
+.tiny .remark-code { /*Change made here*/
+  font-size: 90% !important;
+}
+```
+
+```{r, eval = F}
+fit_full <- lm(Bodywt ~ Age + Length + Length2 + Height + 
+                 Heartgirth + Umbgirth, data = donkey2)
+step(fit_full) #<<
+```
+
+.tiny[
+```{r, echo = F}
+fit_full <- lm(Bodywt ~ Age + Length + Length2 + Height + 
+                 Heartgirth + Umbgirth, data = donkey2)
+step(fit_full)
+```
+]
+
+---
+
+## Introduction to factors
+
+- Factor is a data type for categorical data in R. 
+
+- A factor variable has a level, a collection of unique values in the variable with a certain order. 
+
+- Each level in a factor variable is internally treated as an integer in R.
+
+--
+
+```{r}
+vec <- c("red", "blue", "orange", "red", "red", "blue", "green", 
+         "orange", "brown", "blue")
+print(vec)
+```
+
+--
+
+```{r}
+fac1 <- factor(vec) #<<
+print(fac1)
+```
+
+---
+
+## Introduction to factors
+
+- One can control the order of levels
+
+```{r}
+fac2 <- factor(vec, 
+               levels = c("green", "orange", "red", "blue", "brown")) #<<
+print(fac2)
+```
+
+---
+
+## Categorical variable as a predictor in regression
+
+`str()` shows type of variables in a data frame:
+
+```{r}
+str(donkey) #<<
+```
+
+`str()` can be applied to individual variables:
+
+```{r}
+str(donkey$Sex)
+```
+
+---
+
+## Categorical variable as a predictor in regression
+
+```{r}
+fit <- lm(Bodywt ~ Sex, data = donkey)
+summary(fit)
+```
+
+---
+
+## Categorical variable as a predictor in regression
+
+- Interpretation of `r round(fit$coefficient[2], 3)` after `Sexmale`: when `Sex` changes from `female` to `male`, `Bodywt` increases by `r round(fit$coefficient[2], 3)`. 
+
+--
+
+- `female` is the reference level in `Sex` variable, which can be changed using `levels` in `factor()`.
+
+```{r}
+donkey_new <- donkey %>%
+  mutate(Sex = factor(Sex, levels = c("male", "female")))
+str(donkey_new$Sex)
+```
+
+---
+
+## Categorical variable as a predictor in regression
+
+```{r}
+fit_new <- lm(Bodywt ~ Sex, data = donkey_new)
+summary(fit_new)
+```
+
+---
+
+## Categorical variable as a predictor in regression
+
+.pull-left[
+```{r}
+donkey %>% 
+  ggplot(aes(Sex, Bodywt)) + 
+  geom_boxplot()
+```
+]
+
+.pull-right[
+```{r}
+donkey_new %>% 
+  ggplot(aes(Sex, Bodywt)) + 
+  geom_boxplot()
+```
+]
+
+---
+
+## Categorical variable as a predictor in regression
+
+```{r}
+crabs <- read.table("crabs.tsv", header = T, sep = "\t")
+crabs <- crabs %>%
+  mutate(color = factor(color)) %>%
+  mutate(spine = factor(spine))
+str(crabs)
+```
+
+---
+
+## Categorical variable as a predictor in regression
+
+```{r, out.width = "50%"}
+ggplot(crabs, aes(spine, weight)) +
+  geom_boxplot()
+```
+
+---
+
+## Categorical variable as a predictor in regression
+
+```{css, echo = FALSE}
+.small80 .remark-code { /*Change made here*/
+  font-size: 80% !important;
+}
+```
+
+```{r, eval = F}
+fit_spine <- lm(weight ~ spine, data = crabs)
+summary(fit_spine)
+```
+
+.small80[
+```{r, echo = F}
+fit_spine <- lm(weight ~ spine, data = crabs)
+summary(fit_spine)
+```
+]
+
+---
+
+## Categorical variable as a predictor in regression
+
+- Interpretation: 
+
+  - when `spine` changes from `1` to `2`, corresponding `weight` decreases by 525.72.
+  
+  - when `spine` changes from `1` to `3`, corresponding `weight` decreases by 280.63.
+
+--
+
+**Exercise**: change the reference level of `spine` from `1` to `3`.  
+
+
+
