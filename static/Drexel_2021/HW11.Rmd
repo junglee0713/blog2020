@@ -1,0 +1,84 @@
+---
+title: "Homework 11"
+subtitle: "due Apr 20, 2021"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  fig.align = "center")
+library(tidyverse)
+```
+
+For all questions below, consider the `crabs` data set that we used in class:
+
+```{r, echo = T, eval = T}
+crabs <- read.table(file = "crabs.tsv", header = T, sep = "\t")
+dim(crabs); names(crabs)
+```
+
+Consider the following three models for `satell`:
+
+$$\textbf{Model 1: } \texttt{satell} = \beta_0 + \beta_1 \texttt{width},$$
+$$\textbf{Model 2: } \texttt{satell} = \beta_0 + \beta_1 \texttt{weight},$$
+$$\textbf{Model 3: } \texttt{satell} = \beta_0 + \beta_1 \texttt{width} + \beta_2 \texttt{weight}.$$
+
+```{r, echo = F, eval = F}
+crabs <- read_tsv("crabs.tsv")
+fit1 <- lm(satell ~ width, data = crabs)
+fit2 <- lm(satell ~ weight, data = crabs)
+fit3 <- lm(satell ~ width + weight, data = crabs)
+
+summary(fit1)$r.squared
+summary(fit2)$r.squared
+summary(fit3)$r.squared
+```
+
+**1.** Compute $R^2$ for each model. 
+
+```{r, echo = F, eval = F}
+AIC(fit1, fit2, fit3)
+anova(fit1, fit3)
+anova(fit2, fit3)
+```
+
+\bigskip
+
+**2.** Which model is the best? Justify your answer. 
+
+```{r}
+crabs <- crabs %>%
+  mutate(color = factor(color, levels = c(5,4,3,2))) %>%
+  mutate(spine = factor(spine))
+```
+
+\bigskip
+
+**3.** Create the following box plots. Note the order of the labels in the $x$-axis. _Hint_: change `color` to a factor variable with levels 5, 4, 3, 2, in this order. 
+
+```{r, fig.height=3}
+crabs %>%
+  ggplot(aes(color, weight)) +
+  geom_boxplot() +
+  theme(aspect.ratio = 1)
+```
+
+\newpage
+
+**4.** Carry out an appropriate regression between `weight` (response) and `color` (explanatory). How does the change in color from `5` to `3` affect `weight`?
+
+```{r}
+fit <- lm(weight ~ color, data = crabs)
+```
+
+**5.** How does the change in color from `2` to `4` affect `weight`? _Hint_: you might want to change `color` to a factor variable with levels 2, 3, 4, 5, in this order.
+
+```{r}
+fit <- lm(weight ~ color, data = crabs)
+```
+
+
